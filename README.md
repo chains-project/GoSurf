@@ -1,7 +1,7 @@
 # run_capslock.py
 
 ## Overview
-`run_capslock.py` is a Python script designed to analyze capabilities within an entire Go module installed on your system. It utilizes the Capslock tool, natively used for analyzing one package or a list of packages. However, `run_capslock.py` extends this functionality by automatically identifying all packages within a Go module and their respective locations. Subsequently, it executes the Capslock tool on these packages.
+`run_capslock.py` analyzes capabilities within an entire Go module installed on your system. It utilizes the Capslock tool, natively used for analyzing one package or a list of packages. However, `run_capslock.py` extends this functionality by automatically identifying all packages within a Go module and their respective locations. Subsequently, it executes the Capslock tool on these packages.
 
 Additionally, the repository includes analysis results for various popular Go modules.
 
