@@ -1,0 +1,1430 @@
+[
+    {
+        "name": "clientgo",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3"
+    },
+    {
+        "name": "applyconfigurations",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations"
+    },
+    {
+        "name": "discovery",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/discovery"
+    },
+    {
+        "name": "openapi",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/openapi"
+    },
+    {
+        "name": "openapi3",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/openapi3"
+    },
+    {
+        "name": "transport",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/transport"
+    },
+    {
+        "name": "metadata",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/metadata"
+    },
+    {
+        "name": "listers",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers"
+    },
+    {
+        "name": "dynamic",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/dynamic"
+    },
+    {
+        "name": "restmapper",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/restmapper"
+    },
+    {
+        "name": "scale",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/scale"
+    },
+    {
+        "name": "testing",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/testing"
+    },
+    {
+        "name": "kubernetes",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes"
+    },
+    {
+        "name": "rest",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/rest"
+    },
+    {
+        "name": "informers",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers"
+    },
+    {
+        "name": "internal",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/internal"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/policy/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/policy/v1beta1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/scheduling/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/scheduling/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/scheduling/v1beta1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/rbac/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/rbac/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/rbac/v1beta1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/meta/v1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/apiserverinternal/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/batch/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/batch/v1beta1"
+    },
+    {
+        "name": "v1alpha2",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/resource/v1alpha2"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/discovery/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/discovery/v1beta1"
+    },
+    {
+        "name": "v2",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/autoscaling/v2"
+    },
+    {
+        "name": "v2beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/autoscaling/v2beta1"
+    },
+    {
+        "name": "v2beta2",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/autoscaling/v2beta2"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/autoscaling/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/extensions/v1beta1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/certificates/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/certificates/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/certificates/v1beta1"
+    },
+    {
+        "name": "v1beta3",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/flowcontrol/v1beta3"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/flowcontrol/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/flowcontrol/v1beta1"
+    },
+    {
+        "name": "v1beta2",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/flowcontrol/v1beta2"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/core/v1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/networking/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/networking/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/networking/v1beta1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/imagepolicy/v1alpha1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/admissionregistration/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/admissionregistration/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/admissionregistration/v1beta1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/storage/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/storage/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/storage/v1beta1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/coordination/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/coordination/v1beta1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/apps/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/apps/v1beta1"
+    },
+    {
+        "name": "v1beta2",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/apps/v1beta2"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/node/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/node/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/node/v1beta1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/events/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/applyconfigurations/events/v1beta1"
+    },
+    {
+        "name": "auth",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/plugin/pkg/client/auth"
+    },
+    {
+        "name": "oidc",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/plugin/pkg/client/auth/oidc"
+    },
+    {
+        "name": "gcp",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/plugin/pkg/client/auth/gcp"
+    },
+    {
+        "name": "azure",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/plugin/pkg/client/auth/azure"
+    },
+    {
+        "name": "exec",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/plugin/pkg/client/auth/exec"
+    },
+    {
+        "name": "workqueue",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/util/workqueue"
+    },
+    {
+        "name": "jsonpath",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/util/jsonpath"
+    },
+    {
+        "name": "homedir",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/util/homedir"
+    },
+    {
+        "name": "csaupgrade",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/util/csaupgrade"
+    },
+    {
+        "name": "flowcontrol",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/util/flowcontrol"
+    },
+    {
+        "name": "certificate",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/util/certificate"
+    },
+    {
+        "name": "exec",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/util/exec"
+    },
+    {
+        "name": "keyutil",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/util/keyutil"
+    },
+    {
+        "name": "retry",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/util/retry"
+    },
+    {
+        "name": "cert",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/util/cert"
+    },
+    {
+        "name": "testing",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/util/testing"
+    },
+    {
+        "name": "connrotation",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/util/connrotation"
+    },
+    {
+        "name": "csr",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/util/certificate/csr"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/discovery/fake"
+    },
+    {
+        "name": "memory",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/discovery/cached"
+    },
+    {
+        "name": "memory",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/discovery/cached/memory"
+    },
+    {
+        "name": "disk",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/discovery/cached/disk"
+    },
+    {
+        "name": "openapitest",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/openapi/openapitest"
+    },
+    {
+        "name": "cached",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/openapi/cached"
+    },
+    {
+        "name": "main",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/examples/dynamic-create-update-delete-deployment"
+    },
+    {
+        "name": "main",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/examples/workqueue"
+    },
+    {
+        "name": "main",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/examples/leader-election"
+    },
+    {
+        "name": "main",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/examples/create-update-delete-deployment"
+    },
+    {
+        "name": "fakeclient",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/examples/fake-client"
+    },
+    {
+        "name": "main",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/examples/out-of-cluster-client-configuration"
+    },
+    {
+        "name": "main",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/examples/in-cluster-client-configuration"
+    },
+    {
+        "name": "spdy",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/transport/spdy"
+    },
+    {
+        "name": "websocket",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/transport/websocket"
+    },
+    {
+        "name": "pager",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/tools/pager"
+    },
+    {
+        "name": "cache",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/tools/cache"
+    },
+    {
+        "name": "auth_test",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/tools/auth"
+    },
+    {
+        "name": "record",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/tools/record"
+    },
+    {
+        "name": "leaderelection",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/tools/leaderelection"
+    },
+    {
+        "name": "remotecommand",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/tools/remotecommand"
+    },
+    {
+        "name": "portforward",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/tools/portforward"
+    },
+    {
+        "name": "clientcmd",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/tools/clientcmd"
+    },
+    {
+        "name": "watch",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/tools/watch"
+    },
+    {
+        "name": "metrics",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/tools/metrics"
+    },
+    {
+        "name": "reference",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/tools/reference"
+    },
+    {
+        "name": "events",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/tools/events"
+    },
+    {
+        "name": "framework",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/tools/cache/testing"
+    },
+    {
+        "name": "synctrack",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/tools/cache/synctrack"
+    },
+    {
+        "name": "exec",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/tools/auth/exec"
+    },
+    {
+        "name": "internal",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/tools/internal/events"
+    },
+    {
+        "name": "util",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/tools/record/util"
+    },
+    {
+        "name": "resourcelock",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/tools/leaderelection/resourcelock"
+    },
+    {
+        "name": "api",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/tools/clientcmd/api"
+    },
+    {
+        "name": "latest",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/tools/clientcmd/api/latest"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/tools/clientcmd/api/v1"
+    },
+    {
+        "name": "metadatainformer",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/metadata/metadatainformer"
+    },
+    {
+        "name": "metadatalister",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/metadata/metadatalister"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/metadata/fake"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/policy/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/policy/v1beta1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/scheduling/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/scheduling/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/scheduling/v1beta1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/rbac/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/rbac/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/rbac/v1beta1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/apiserverinternal/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/batch/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/batch/v1beta1"
+    },
+    {
+        "name": "v1alpha2",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/resource/v1alpha2"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/discovery/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/discovery/v1beta1"
+    },
+    {
+        "name": "v2",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/autoscaling/v2"
+    },
+    {
+        "name": "v2beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/autoscaling/v2beta1"
+    },
+    {
+        "name": "v2beta2",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/autoscaling/v2beta2"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/autoscaling/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/extensions/v1beta1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/certificates/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/certificates/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/certificates/v1beta1"
+    },
+    {
+        "name": "v1beta3",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/flowcontrol/v1beta3"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/flowcontrol/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/flowcontrol/v1beta1"
+    },
+    {
+        "name": "v1beta2",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/flowcontrol/v1beta2"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/core/v1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/networking/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/networking/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/networking/v1beta1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/imagepolicy/v1alpha1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/admissionregistration/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/admissionregistration/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/admissionregistration/v1beta1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/storage/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/storage/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/storage/v1beta1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/coordination/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/coordination/v1beta1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/apps/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/apps/v1beta1"
+    },
+    {
+        "name": "v1beta2",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/apps/v1beta2"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/node/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/node/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/node/v1beta1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/events/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/listers/events/v1beta1"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/dynamic/fake"
+    },
+    {
+        "name": "dynamiclister",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/dynamic/dynamiclister"
+    },
+    {
+        "name": "dynamicinformer",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/dynamic/dynamicinformer"
+    },
+    {
+        "name": "scheme",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/scale/scheme"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/scale/fake"
+    },
+    {
+        "name": "appsint",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/scale/scheme/appsint"
+    },
+    {
+        "name": "appsv1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/scale/scheme/appsv1beta1"
+    },
+    {
+        "name": "appsv1beta2",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/scale/scheme/appsv1beta2"
+    },
+    {
+        "name": "extensionsint",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/scale/scheme/extensionsint"
+    },
+    {
+        "name": "autoscalingv1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/scale/scheme/autoscalingv1"
+    },
+    {
+        "name": "extensionsv1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/scale/scheme/extensionsv1beta1"
+    },
+    {
+        "name": "is",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/third_party/forked/golang/template"
+    },
+    {
+        "name": "version",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/pkg/version"
+    },
+    {
+        "name": "clientauthentication",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/pkg/apis/clientauthentication"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/pkg/apis/clientauthentication/v1"
+    },
+    {
+        "name": "install",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/pkg/apis/clientauthentication/install"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/pkg/apis/clientauthentication/v1beta1"
+    },
+    {
+        "name": "scheme",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/scheme"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/fake"
+    },
+    {
+        "name": "has",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/policy/v1"
+    },
+    {
+        "name": "has",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/policy/v1beta1"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/policy/v1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/policy/v1beta1/fake"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/scheduling/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/scheduling/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/scheduling/v1beta1"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/scheduling/v1alpha1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/scheduling/v1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/scheduling/v1beta1/fake"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/rbac/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/rbac/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/rbac/v1beta1"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/rbac/v1alpha1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/rbac/v1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/rbac/v1beta1/fake"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/apiserverinternal/v1alpha1"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/apiserverinternal/v1alpha1/fake"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/batch/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/batch/v1beta1"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/batch/v1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/batch/v1beta1/fake"
+    },
+    {
+        "name": "v1alpha2",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/resource/v1alpha2"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/resource/v1alpha2/fake"
+    },
+    {
+        "name": "has",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/discovery/v1"
+    },
+    {
+        "name": "has",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/discovery/v1beta1"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/discovery/v1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/discovery/v1beta1/fake"
+    },
+    {
+        "name": "has",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/autoscaling/v2"
+    },
+    {
+        "name": "has",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/autoscaling/v2beta1"
+    },
+    {
+        "name": "has",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/autoscaling/v2beta2"
+    },
+    {
+        "name": "has",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/autoscaling/v1"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/autoscaling/v2/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/autoscaling/v2beta1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/autoscaling/v2beta2/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/autoscaling/v1/fake"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/extensions/v1beta1"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/extensions/v1beta1/fake"
+    },
+    {
+        "name": "has",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/certificates/v1alpha1"
+    },
+    {
+        "name": "has",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/certificates/v1"
+    },
+    {
+        "name": "has",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/certificates/v1beta1"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/certificates/v1alpha1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/certificates/v1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/certificates/v1beta1/fake"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/authorization/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/authorization/v1beta1"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/authorization/v1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/authorization/v1beta1/fake"
+    },
+    {
+        "name": "has",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/flowcontrol/v1beta3"
+    },
+    {
+        "name": "has",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/flowcontrol/v1"
+    },
+    {
+        "name": "has",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/flowcontrol/v1beta1"
+    },
+    {
+        "name": "has",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/flowcontrol/v1beta2"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/flowcontrol/v1beta3/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/flowcontrol/v1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/flowcontrol/v1beta1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/flowcontrol/v1beta2/fake"
+    },
+    {
+        "name": "has",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/authentication/v1alpha1"
+    },
+    {
+        "name": "has",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/authentication/v1"
+    },
+    {
+        "name": "has",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/authentication/v1beta1"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/authentication/v1alpha1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/authentication/v1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/authentication/v1beta1/fake"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/core/v1"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/core/v1/fake"
+    },
+    {
+        "name": "has",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/networking/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/networking/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/networking/v1beta1"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/networking/v1alpha1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/networking/v1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/networking/v1beta1/fake"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/admissionregistration/v1alpha1"
+    },
+    {
+        "name": "has",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/admissionregistration/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/admissionregistration/v1beta1"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/admissionregistration/v1alpha1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/admissionregistration/v1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/admissionregistration/v1beta1/fake"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/storage/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/storage/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/storage/v1beta1"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/storage/v1alpha1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/storage/v1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/storage/v1beta1/fake"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/coordination/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/coordination/v1beta1"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/coordination/v1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/coordination/v1beta1/fake"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/apps/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/apps/v1beta1"
+    },
+    {
+        "name": "v1beta2",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/apps/v1beta2"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/apps/v1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/apps/v1beta1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/apps/v1beta2/fake"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/node/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/node/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/node/v1beta1"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/node/v1alpha1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/node/v1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/node/v1beta1/fake"
+    },
+    {
+        "name": "has",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/events/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/events/v1beta1"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/events/v1/fake"
+    },
+    {
+        "name": "fake",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/kubernetes/typed/events/v1beta1/fake"
+    },
+    {
+        "name": "and",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/rest/fake"
+    },
+    {
+        "name": "versioned",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/rest/watch"
+    },
+    {
+        "name": "policy",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/policy"
+    },
+    {
+        "name": "scheduling",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/scheduling"
+    },
+    {
+        "name": "rbac",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/rbac"
+    },
+    {
+        "name": "apiserverinternal",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/apiserverinternal"
+    },
+    {
+        "name": "batch",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/batch"
+    },
+    {
+        "name": "resource",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/resource"
+    },
+    {
+        "name": "discovery",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/discovery"
+    },
+    {
+        "name": "autoscaling",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/autoscaling"
+    },
+    {
+        "name": "extensions",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/extensions"
+    },
+    {
+        "name": "internalinterfaces",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/internalinterfaces"
+    },
+    {
+        "name": "certificates",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/certificates"
+    },
+    {
+        "name": "flowcontrol",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/flowcontrol"
+    },
+    {
+        "name": "core",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/core"
+    },
+    {
+        "name": "networking",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/networking"
+    },
+    {
+        "name": "admissionregistration",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/admissionregistration"
+    },
+    {
+        "name": "storage",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/storage"
+    },
+    {
+        "name": "coordination",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/coordination"
+    },
+    {
+        "name": "apps",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/apps"
+    },
+    {
+        "name": "node",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/node"
+    },
+    {
+        "name": "events",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/events"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/policy/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/policy/v1beta1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/scheduling/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/scheduling/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/scheduling/v1beta1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/rbac/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/rbac/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/rbac/v1beta1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/apiserverinternal/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/batch/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/batch/v1beta1"
+    },
+    {
+        "name": "v1alpha2",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/resource/v1alpha2"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/discovery/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/discovery/v1beta1"
+    },
+    {
+        "name": "v2",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/autoscaling/v2"
+    },
+    {
+        "name": "v2beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/autoscaling/v2beta1"
+    },
+    {
+        "name": "v2beta2",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/autoscaling/v2beta2"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/autoscaling/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/extensions/v1beta1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/certificates/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/certificates/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/certificates/v1beta1"
+    },
+    {
+        "name": "v1beta3",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/flowcontrol/v1beta3"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/flowcontrol/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/flowcontrol/v1beta1"
+    },
+    {
+        "name": "v1beta2",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/flowcontrol/v1beta2"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/core/v1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/networking/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/networking/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/networking/v1beta1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/admissionregistration/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/admissionregistration/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/admissionregistration/v1beta1"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/storage/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/storage/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/storage/v1beta1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/coordination/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/coordination/v1beta1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/apps/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/apps/v1beta1"
+    },
+    {
+        "name": "v1beta2",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/apps/v1beta2"
+    },
+    {
+        "name": "v1alpha1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/node/v1alpha1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/node/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/node/v1beta1"
+    },
+    {
+        "name": "v1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/events/v1"
+    },
+    {
+        "name": "v1beta1",
+        "path": "/root/go/pkg/mod/k8s.io/client-go@v0.29.3/informers/events/v1beta1"
+    }
+]
