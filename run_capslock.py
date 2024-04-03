@@ -30,7 +30,7 @@ def is_go_package(dir_path):
 
 def can_build_go_package(dir_path):
     try:
-        result = subprocess.run(["go", "build"], cwd=dir_path, capture_output=True, text=True, timeout=20)
+        result = subprocess.run(["go", "build"], cwd=dir_path, capture_output=True, text=True, timeout=60)
         if result.returncode == 0:
             # Compilation successful
             return True, ""
@@ -73,9 +73,9 @@ def explore_go_packages(base_dir):
                 can_build, output = can_build_go_package(dir_path)
                 if can_build:
                     package_list.append({"name": package_name, "path": dir_path})
-                    #print(f"Directory Path: {dir_path}, Package Name: {package_name}")
+                    #print(f"\nDirectory Path: {dir_path}, Package Name: {package_name}")
                 #else:
-                    #print(f"Directory Path: {dir_path}, Compilation Error: {output}")
+                    #print(f"\nDirectory Path: {dir_path}, Compilation Error: {output}")
             processed_subdirs += 1
             print_progress(processed_subdirs, total_subdirs)
 
@@ -91,20 +91,22 @@ and executing capability analysis using Capslock.
     """)
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-output", help="Specify the output format for the capabilities list ('v' for verbose, 'json' for JSON)", required=True)
+    parser.add_argument("-output", help="Specify the output format for the capabilities list ('v' for verbose, 'json' for JSON, 'compare' for compare feature)", required=True)
     parser.add_argument("-module", help="Specify the module path (relative or absolute)", required=True)
     parser.add_argument("-packages", help="Specify the packages output file name", required=True)
     parser.add_argument("-capabilities", help="Specify the capabilities output file name", required=True)
+    parser.add_argument("-comparewith", help="Specify the capabilities file to compare with", required=False)
 
     args = parser.parse_args()
     output_format = args.output
     module_folder = args.module
     pkgs_output_file = args.packages
     caps_output_file = args.capabilities
+    compare_file = args.comparewith
 
     # Check output format
-    if output_format not in ('v', 'json'):
-        print("Invalid output format. Use '-output=v' for verbose or '-output=json' for JSON format.")
+    if output_format not in ('v', 'json', 'compare'):
+        print("Invalid output format. Use '-output=v' for verbose, '-output=json' for JSON format, '-output=compare' for compare feature.")
         system.exit(1)
 
     # Handling relative paths
@@ -131,8 +133,12 @@ and executing capability analysis using Capslock.
         command = ["capslock", "-packages", ','.join(pkgs_paths), "-output=v"]
     elif output_format == 'json':
         command = ["capslock", "-packages", ','.join(pkgs_paths), "-output=json"]
+    if output_format == 'compare':
+        compare_file = os.path.normpath(compare_file)
+        command = ["capslock", "-packages", ','.join(pkgs_paths), "-output=compare", compare_file]
+
     print("""Starting capability analysis. Please wait...""")
-    #print("Launched command:", ' '.join(command))
+
 
     try:
         with open(caps_output_file, "w") as cap_file:

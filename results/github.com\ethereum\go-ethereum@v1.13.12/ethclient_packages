@@ -1,0 +1,690 @@
+[
+    {
+        "name": "ethereum",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12"
+    },
+    {
+        "name": "common",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/common"
+    },
+    {
+        "name": "rlp",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/rlp"
+    },
+    {
+        "name": "trie",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/trie"
+    },
+    {
+        "name": "rpc",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/rpc"
+    },
+    {
+        "name": "miner",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/miner"
+    },
+    {
+        "name": "console",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/console"
+    },
+    {
+        "name": "log",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/log"
+    },
+    {
+        "name": "ethdb",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/ethdb"
+    },
+    {
+        "name": "tests",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/tests"
+    },
+    {
+        "name": "eth",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/eth"
+    },
+    {
+        "name": "ethstats",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/ethstats"
+    },
+    {
+        "name": "graphql",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/graphql"
+    },
+    {
+        "name": "accounts",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/accounts"
+    },
+    {
+        "name": "core",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/core"
+    },
+    {
+        "name": "consensus",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/consensus"
+    },
+    {
+        "name": "metrics",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/metrics"
+    },
+    {
+        "name": "event",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/event"
+    },
+    {
+        "name": "params",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/params"
+    },
+    {
+        "name": "p2p",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/p2p"
+    },
+    {
+        "name": "ethclient",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/ethclient"
+    },
+    {
+        "name": "crypto",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/crypto"
+    },
+    {
+        "name": "node",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/node"
+    },
+    {
+        "name": "bitutil",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/common/bitutil"
+    },
+    {
+        "name": "hexutil",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/common/hexutil"
+    },
+    {
+        "name": "compiler",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/common/compiler"
+    },
+    {
+        "name": "prque",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/common/prque"
+    },
+    {
+        "name": "math",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/common/math"
+    },
+    {
+        "name": "mclock",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/common/mclock"
+    },
+    {
+        "name": "lru",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/common/lru"
+    },
+    {
+        "name": "fdlimit",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/common/fdlimit"
+    },
+    {
+        "name": "main",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/rlp/rlpgen"
+    },
+    {
+        "name": "handles",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/rlp/internal/rlpstruct"
+    },
+    {
+        "name": "utils",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/trie/utils"
+    },
+    {
+        "name": "testutil",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/trie/testutil"
+    },
+    {
+        "name": "trienode",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/trie/trienode"
+    },
+    {
+        "name": "triestate",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/trie/triestate"
+    },
+    {
+        "name": "pathdb",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/trie/triedb/pathdb"
+    },
+    {
+        "name": "hashdb",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/trie/triedb/hashdb"
+    },
+    {
+        "name": "main",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/miner/stress/clique"
+    },
+    {
+        "name": "prompt",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/console/prompt"
+    },
+    {
+        "name": "merkle",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/beacon/merkle"
+    },
+    {
+        "name": "types",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/beacon/types"
+    },
+    {
+        "name": "light",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/beacon/light"
+    },
+    {
+        "name": "params",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/beacon/params"
+    },
+    {
+        "name": "engine",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/beacon/engine"
+    },
+    {
+        "name": "pebble",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/ethdb/pebble"
+    },
+    {
+        "name": "dbtest",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/ethdb/dbtest"
+    },
+    {
+        "name": "leveldb",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/ethdb/leveldb"
+    },
+    {
+        "name": "remotedb",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/ethdb/remotedb"
+    },
+    {
+        "name": "memorydb",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/ethdb/memorydb"
+    },
+    {
+        "name": "testlog",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/internal/testlog"
+    },
+    {
+        "name": "build",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/internal/build"
+    },
+    {
+        "name": "testing",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/internal/blocktest"
+    },
+    {
+        "name": "ethapi",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/internal/ethapi"
+    },
+    {
+        "name": "shutdowncheck",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/internal/shutdowncheck"
+    },
+    {
+        "name": "guide",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/internal/guide"
+    },
+    {
+        "name": "debug",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/internal/debug"
+    },
+    {
+        "name": "jsre",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/internal/jsre"
+    },
+    {
+        "name": "syncx",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/internal/syncx"
+    },
+    {
+        "name": "testing",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/internal/utesting"
+    },
+    {
+        "name": "web3ext",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/internal/web3ext"
+    },
+    {
+        "name": "reexec",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/internal/reexec"
+    },
+    {
+        "name": "version",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/internal/version"
+    },
+    {
+        "name": "flags",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/internal/flags"
+    },
+    {
+        "name": "era",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/internal/era"
+    },
+    {
+        "name": "cmdtest",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/internal/cmdtest"
+    },
+    {
+        "name": "deps",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/internal/jsre/deps"
+    },
+    {
+        "name": "e2store",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/internal/era/e2store"
+    },
+    {
+        "name": "txfetcher",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/tests/fuzzers/txfetcher"
+    },
+    {
+        "name": "bn256",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/tests/fuzzers/bn256"
+    },
+    {
+        "name": "difficulty",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/tests/fuzzers/difficulty"
+    },
+    {
+        "name": "bls",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/tests/fuzzers/bls12381"
+    },
+    {
+        "name": "rangeproof",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/tests/fuzzers/rangeproof"
+    },
+    {
+        "name": "gasprice",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/eth/gasprice"
+    },
+    {
+        "name": "filters",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/eth/filters"
+    },
+    {
+        "name": "fetcher",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/eth/fetcher"
+    },
+    {
+        "name": "ethconfig",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/eth/ethconfig"
+    },
+    {
+        "name": "gasestimator",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/eth/gasestimator"
+    },
+    {
+        "name": "tracers",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/eth/tracers"
+    },
+    {
+        "name": "downloader",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/eth/downloader"
+    },
+    {
+        "name": "catalyst",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/eth/catalyst"
+    },
+    {
+        "name": "snap",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/eth/protocols/snap"
+    },
+    {
+        "name": "eth",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/eth/protocols/eth"
+    },
+    {
+        "name": "native",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/eth/tracers/native"
+    },
+    {
+        "name": "logger",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/eth/tracers/logger"
+    },
+    {
+        "name": "js",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/eth/tracers/js"
+    },
+    {
+        "name": "tracetest",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/eth/tracers/internal/tracetest"
+    },
+    {
+        "name": "tracers",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/eth/tracers/js/internal/tracers"
+    },
+    {
+        "name": "graphiql",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/graphql/internal/graphiql"
+    },
+    {
+        "name": "external",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/accounts/external"
+    },
+    {
+        "name": "keystore",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/accounts/keystore"
+    },
+    {
+        "name": "abi",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/accounts/abi"
+    },
+    {
+        "name": "usbwallet",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/accounts/usbwallet"
+    },
+    {
+        "name": "scwallet",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/accounts/scwallet"
+    },
+    {
+        "name": "bind",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/accounts/abi/bind"
+    },
+    {
+        "name": "backends",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/accounts/abi/bind/backends"
+    },
+    {
+        "name": "trezor",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/accounts/usbwallet/trezor"
+    },
+    {
+        "name": "main",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/cmd/geth"
+    },
+    {
+        "name": "main",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/cmd/clef"
+    },
+    {
+        "name": "main",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/cmd/rlpdump"
+    },
+    {
+        "name": "utils",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/cmd/utils"
+    },
+    {
+        "name": "main",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/cmd/abigen"
+    },
+    {
+        "name": "main",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/cmd/abidump"
+    },
+    {
+        "name": "main",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/cmd/ethkey"
+    },
+    {
+        "name": "main",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/cmd/p2psim"
+    },
+    {
+        "name": "main",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/cmd/evm"
+    },
+    {
+        "name": "main",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/cmd/era"
+    },
+    {
+        "name": "main",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/cmd/devp2p"
+    },
+    {
+        "name": "main",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/cmd/bootnode"
+    },
+    {
+        "name": "compiler",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/cmd/evm/internal/compiler"
+    },
+    {
+        "name": "t8ntool",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/cmd/evm/internal/t8ntool"
+    },
+    {
+        "name": "v5test",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/cmd/devp2p/internal/v5test"
+    },
+    {
+        "name": "v4test",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/cmd/devp2p/internal/v4test"
+    },
+    {
+        "name": "ethtest",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/cmd/devp2p/internal/ethtest"
+    },
+    {
+        "name": "bloombits",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/core/bloombits"
+    },
+    {
+        "name": "forkid",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/core/forkid"
+    },
+    {
+        "name": "rawdb",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/core/rawdb"
+    },
+    {
+        "name": "vm",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/core/vm"
+    },
+    {
+        "name": "types",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/core/types"
+    },
+    {
+        "name": "state",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/core/state"
+    },
+    {
+        "name": "txpool",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/core/txpool"
+    },
+    {
+        "name": "asm",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/core/asm"
+    },
+    {
+        "name": "runtime",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/core/vm/runtime"
+    },
+    {
+        "name": "pruner",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/core/state/pruner"
+    },
+    {
+        "name": "snapshot",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/core/state/snapshot"
+    },
+    {
+        "name": "legacypool",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/core/txpool/legacypool"
+    },
+    {
+        "name": "blobpool",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/core/txpool/blobpool"
+    },
+    {
+        "name": "beacon",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/consensus/beacon"
+    },
+    {
+        "name": "misc",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/consensus/misc"
+    },
+    {
+        "name": "ethash",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/consensus/ethash"
+    },
+    {
+        "name": "clique",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/consensus/clique"
+    },
+    {
+        "name": "eip1559",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/consensus/misc/eip1559"
+    },
+    {
+        "name": "eip4844",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/consensus/misc/eip4844"
+    },
+    {
+        "name": "influxdb",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/metrics/influxdb"
+    },
+    {
+        "name": "librato",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/metrics/librato"
+    },
+    {
+        "name": "prometheus",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/metrics/prometheus"
+    },
+    {
+        "name": "internal",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/metrics/internal"
+    },
+    {
+        "name": "exp",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/metrics/exp"
+    },
+    {
+        "name": "forks",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/params/forks"
+    },
+    {
+        "name": "simulations",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/p2p/simulations"
+    },
+    {
+        "name": "nat",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/p2p/nat"
+    },
+    {
+        "name": "msgrate",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/p2p/msgrate"
+    },
+    {
+        "name": "tracker",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/p2p/tracker"
+    },
+    {
+        "name": "nodestate",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/p2p/nodestate"
+    },
+    {
+        "name": "rlpx",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/p2p/rlpx"
+    },
+    {
+        "name": "enr",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/p2p/enr"
+    },
+    {
+        "name": "enode",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/p2p/enode"
+    },
+    {
+        "name": "netutil",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/p2p/netutil"
+    },
+    {
+        "name": "discover",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/p2p/discover"
+    },
+    {
+        "name": "dnsdisc",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/p2p/dnsdisc"
+    },
+    {
+        "name": "main",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/p2p/simulations/examples"
+    },
+    {
+        "name": "adapters",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/p2p/simulations/adapters"
+    },
+    {
+        "name": "pipes",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/p2p/simulations/pipes"
+    },
+    {
+        "name": "v4wire",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/p2p/discover/v4wire"
+    },
+    {
+        "name": "v5wire",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/p2p/discover/v5wire"
+    },
+    {
+        "name": "simulated",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/ethclient/simulated"
+    },
+    {
+        "name": "gethclient",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/ethclient/gethclient"
+    },
+    {
+        "name": "fourbyte",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/signer/fourbyte"
+    },
+    {
+        "name": "rules",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/signer/rules"
+    },
+    {
+        "name": "core_test",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/signer/core"
+    },
+    {
+        "name": "storage",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/signer/storage"
+    },
+    {
+        "name": "apitypes",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/signer/core/apitypes"
+    },
+    {
+        "name": "signify",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/crypto/signify"
+    },
+    {
+        "name": "blake2b",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/crypto/blake2b"
+    },
+    {
+        "name": "kzg4844",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/crypto/kzg4844"
+    },
+    {
+        "name": "bn256",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/crypto/bn256"
+    },
+    {
+        "name": "ecies",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/crypto/ecies"
+    },
+    {
+        "name": "bls12381",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/crypto/bls12381"
+    },
+    {
+        "name": "secp256k1",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/crypto/secp256k1"
+    },
+    {
+        "name": "bn256",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/crypto/bn256/google"
+    },
+    {
+        "name": "bn256",
+        "path": "/root/go/pkg/mod/github.com/ethereum/go-ethereum@v1.13.12/crypto/bn256/cloudflare"
+    }
+]

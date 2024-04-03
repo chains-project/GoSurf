@@ -1,0 +1,116 @@
+Capslock is an experimental tool for static analysis of Go packages.
+Share feedback and file bugs at https://github.com/google/capslock.
+To get machine-readable full analysis output, use -output=json
+
+Analyzed packages:
+  github.com/google/go-cmp v0.5.5
+
+CAPABILITY_FILES: 141 references (22 direct, 119 transitive)
+Example callpath:
+  google.golang.org/protobuf/internal/testprotos/legacy/proto3_20190205_c823c79e.init
+  google.golang.org/protobuf/internal/protolegacy.init
+  google.golang.org/protobuf/reflect/protoregistry.init
+  google.golang.org/protobuf/internal/errors.init
+  google.golang.org/protobuf/internal/detrand.init
+  rand.go:38:26:google.golang.org/protobuf/internal/detrand.binaryHash
+  rand.go:46:19:os.Open
+
+CAPABILITY_READ_SYSTEM_STATE: 2125 references (18 direct, 2107 transitive)
+Example callpath:
+  (*google.golang.org/protobuf/internal/impl.MessageInfo).makeCoderMethods$7
+  codec_message.go:170:25:(*google.golang.org/protobuf/internal/filedesc.Fields).ByNumber
+  desc_list_gen.go:174:20:(*google.golang.org/protobuf/internal/filedesc.Fields).lazyInit
+  (*google.golang.org/protobuf/internal/filedesc.Fields).lazyInit$1
+  desc_list_gen.go:195:36:(*google.golang.org/protobuf/internal/filedesc.Field).JSONName
+  desc.go:315:90:(*google.golang.org/protobuf/internal/filedesc.stringName).getJSON
+  desc.go:591:89:(*google.golang.org/protobuf/internal/filedesc.stringName).lazyInit
+  (*google.golang.org/protobuf/internal/filedesc.stringName).lazyInit$1
+  desc.go:584:35:(*google.golang.org/protobuf/internal/filedesc.Extension).Message
+  desc.go:454:93:(*google.golang.org/protobuf/internal/filedesc.Extension).lazyInit
+  desc.go:459:27:(*google.golang.org/protobuf/internal/filedesc.File).lazyInit
+  desc.go:128:18:(*google.golang.org/protobuf/internal/filedesc.File).lazyInitOnce
+  desc.go:136:17:(*google.golang.org/protobuf/internal/filedesc.File).lazyRawInit
+  desc_lazy.go:22:22:(*google.golang.org/protobuf/internal/filedesc.File).resolveExtensions
+  desc_lazy.go:66:43:(*google.golang.org/protobuf/internal/filedesc.File).resolveEnumDependency
+  desc_lazy.go:98:30:(*google.golang.org/protobuf/internal/filetype.resolverByIndex).FindEnumByIndex
+  build.go:286:41:(google.golang.org/protobuf/internal/impl.Export).EnumDescriptorOf
+  api_export.go:55:28:google.golang.org/protobuf/internal/impl.LegacyLoadEnumDesc
+  legacy_enum.go:136:26:google.golang.org/protobuf/internal/impl.legacyLoadFileDesc
+  legacy_file.go:62:9:(google.golang.org/protobuf/internal/filedesc.Builder).Build
+  build.go:112:40:(*google.golang.org/protobuf/reflect/protoregistry.Files).RegisterFile
+  registry.go:130:42:google.golang.org/protobuf/reflect/protoregistry.init$1
+  registry.go:51:19:os.Getenv
+
+CAPABILITY_MODIFY_SYSTEM_STATE: 3 references (3 direct, 0 transitive)
+Example callpath:
+  google.golang.org/protobuf/internal/cmd/generate-types.main
+  main.go:41:12:google.golang.org/protobuf/internal/cmd/generate-types.chdirRoot
+  main.go:57:16:os.Chdir
+
+CAPABILITY_UNANALYZED: 2095 references (237 direct, 1858 transitive)
+Example callpath:
+  (*google.golang.org/protobuf/internal/impl.MessageInfo).makeCoderMethods$7
+  codec_message.go:170:25:(*google.golang.org/protobuf/internal/filedesc.Fields).ByNumber
+  desc_list_gen.go:174:20:(*google.golang.org/protobuf/internal/filedesc.Fields).lazyInit
+  (*google.golang.org/protobuf/internal/filedesc.Fields).lazyInit$1
+  desc_list_gen.go:195:36:(*google.golang.org/protobuf/internal/filedesc.Field).JSONName
+  desc.go:315:90:(*google.golang.org/protobuf/internal/filedesc.stringName).getJSON
+  desc.go:591:89:(*google.golang.org/protobuf/internal/filedesc.stringName).lazyInit
+  (*google.golang.org/protobuf/internal/filedesc.stringName).lazyInit$1
+  desc.go:584:35:(*google.golang.org/protobuf/internal/filedesc.Extension).Message
+  desc.go:454:93:(*google.golang.org/protobuf/internal/filedesc.Extension).lazyInit
+  desc.go:459:27:(*google.golang.org/protobuf/internal/filedesc.File).lazyInit
+  desc.go:128:18:(*google.golang.org/protobuf/internal/filedesc.File).lazyInitOnce
+  desc.go:136:17:(*google.golang.org/protobuf/internal/filedesc.File).lazyRawInit
+  desc_lazy.go:20:18:(*google.golang.org/protobuf/internal/filedesc.File).unmarshalFull
+  desc_lazy.go:132:18:google.golang.org/protobuf/internal/filedesc.getBuilder
+  desc_init.go:454:28:(*sync.Pool).Get
+
+CAPABILITY_UNSAFE_POINTER: 4071 references (496 direct, 3575 transitive)
+Example callpath:
+  (*google.golang.org/protobuf/internal/impl.MessageInfo).makeCoderMethods$7
+  codec_message.go:170:25:(*google.golang.org/protobuf/internal/filedesc.Fields).ByNumber
+  desc_list_gen.go:174:20:(*google.golang.org/protobuf/internal/filedesc.Fields).lazyInit
+  (*google.golang.org/protobuf/internal/filedesc.Fields).lazyInit$1
+  desc_list_gen.go:195:36:(*google.golang.org/protobuf/internal/filedesc.Field).JSONName
+  desc.go:315:90:(*google.golang.org/protobuf/internal/filedesc.stringName).getJSON
+  desc.go:591:89:(*google.golang.org/protobuf/internal/filedesc.stringName).lazyInit
+  (*google.golang.org/protobuf/internal/filedesc.stringName).lazyInit$1
+  desc.go:584:35:(*google.golang.org/protobuf/internal/filedesc.Extension).Message
+  desc.go:454:93:(*google.golang.org/protobuf/internal/filedesc.Extension).lazyInit
+  desc.go:459:27:(*google.golang.org/protobuf/internal/filedesc.File).lazyInit
+  desc.go:128:18:(*google.golang.org/protobuf/internal/filedesc.File).lazyInitOnce
+  desc.go:136:17:(*google.golang.org/protobuf/internal/filedesc.File).lazyRawInit
+  desc_lazy.go:22:22:(*google.golang.org/protobuf/internal/filedesc.File).resolveExtensions
+  desc_lazy.go:75:44:(google.golang.org/protobuf/reflect/protoreflect.Value).Bytes
+  value_union.go:324:20:(google.golang.org/protobuf/reflect/protoreflect.Value).getBytes
+
+CAPABILITY_REFLECT: 2207 references (346 direct, 1861 transitive)
+Example callpath:
+  (*google.golang.org/protobuf/internal/impl.MessageInfo).makeCoderMethods$7
+  codec_message.go:170:25:(*google.golang.org/protobuf/internal/filedesc.Fields).ByNumber
+  desc_list_gen.go:174:20:(*google.golang.org/protobuf/internal/filedesc.Fields).lazyInit
+  (*google.golang.org/protobuf/internal/filedesc.Fields).lazyInit$1
+  desc_list_gen.go:195:36:(*google.golang.org/protobuf/internal/filedesc.Field).JSONName
+  desc.go:315:90:(*google.golang.org/protobuf/internal/filedesc.stringName).getJSON
+  desc.go:591:89:(*google.golang.org/protobuf/internal/filedesc.stringName).lazyInit
+  (*google.golang.org/protobuf/internal/filedesc.stringName).lazyInit$1
+  desc.go:584:35:(*google.golang.org/protobuf/internal/filedesc.Extension).Message
+  desc.go:454:93:(*google.golang.org/protobuf/internal/filedesc.Extension).lazyInit
+  desc.go:459:27:(*google.golang.org/protobuf/internal/filedesc.File).lazyInit
+  desc.go:128:18:(*google.golang.org/protobuf/internal/filedesc.File).lazyInitOnce
+  desc.go:136:17:(*google.golang.org/protobuf/internal/filedesc.File).lazyRawInit
+  desc_lazy.go:22:22:(*google.golang.org/protobuf/internal/filedesc.File).resolveExtensions
+  desc_lazy.go:66:43:(*google.golang.org/protobuf/internal/filedesc.File).resolveEnumDependency
+  desc_lazy.go:98:30:(*google.golang.org/protobuf/internal/filetype.resolverByIndex).FindEnumByIndex
+  build.go:286:41:(google.golang.org/protobuf/internal/impl.Export).EnumDescriptorOf
+  api_export.go:55:28:google.golang.org/protobuf/internal/impl.LegacyLoadEnumDesc
+  legacy_enum.go:124:20:reflect.Zero
+
+CAPABILITY_EXEC: 13 references (13 direct, 0 transitive)
+Example callpath:
+  google.golang.org/protobuf/internal/cmd/generate-protos.syncOutput
+  main.go:418:15:path/filepath.Walk
+  path.go:570:11:google.golang.org/protobuf/internal/cmd/generate-protos.syncOutput$1
+  main.go:431:23:os/exec.Command
+
