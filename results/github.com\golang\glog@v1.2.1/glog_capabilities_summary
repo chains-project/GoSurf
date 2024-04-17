@@ -1,0 +1,79 @@
+Capslock is an experimental tool for static analysis of Go packages.
+Share feedback and file bugs at https://github.com/google/capslock.
+To get machine-readable full analysis output, use -output=json
+
+
+CAPABILITY_FILES: 78 references (75 direct, 3 transitive)
+Example callpath:
+  (github.com/golang/glog.Verbose).Info
+  glog.go:414:13:(github.com/golang/glog.Verbose).InfoDepth
+  glog.go:421:7:github.com/golang/glog.logf
+  glog.go:206:9:github.com/golang/glog.ctxlogf
+  glog.go:234:7:github.com/golang/glog.sinkf
+  glog.go:251:19:(*github.com/golang/glog.fileSink).Flush
+  glog_file.go:367:16:(*github.com/golang/glog.fileSink).flush
+  glog_file.go:395:22:(*github.com/golang/glog.syncBuffer).Sync
+  glog_file.go:253:21:(*os.File).Sync
+
+CAPABILITY_RUNTIME: 12 references (12 direct, 0 transitive)
+Example callpath:
+  github.com/golang/glog.Fatal
+  glog.go:664:12:github.com/golang/glog.FatalDepth
+  glog.go:670:8:github.com/golang/glog.fatalf
+  glog.go:657:11:github.com/golang/glog.ctxfatalf
+  glog.go:652:14:runtime/pprof.Lookup
+
+CAPABILITY_READ_SYSTEM_STATE: 73 references (8 direct, 65 transitive)
+Example callpath:
+  github.com/golang/glog.Fatal
+  glog.go:664:12:github.com/golang/glog.FatalDepth
+  glog.go:670:8:github.com/golang/glog.fatalf
+  glog.go:657:11:github.com/golang/glog.ctxfatalf
+  glog.go:644:9:github.com/golang/glog.ctxlogf
+  glog.go:234:7:github.com/golang/glog.sinkf
+  glog.go:243:26:github.com/golang/glog/internal/logsink.Printf
+  logsink.go:313:21:github.com/golang/glog/internal/logsink.textPrintf
+  logsink.go:258:21:(*github.com/golang/glog.fileSink).Emit
+  glog_file.go:220:31:(*github.com/golang/glog.fileSink).createMissingFiles
+  glog_file.go:338:26:(*github.com/golang/glog.syncBuffer).rotateFile
+  glog_file.go:277:27:github.com/golang/glog.create
+  github.com/golang/glog.createLogDirs
+  glog_file.go:55:38:os.TempDir
+
+CAPABILITY_MODIFY_SYSTEM_STATE: 1 references (1 direct, 0 transitive)
+Example callpath:
+  github.com/golang/glog.CopyStandardLogTo
+  glog.go:270:17:log.SetFlags
+
+CAPABILITY_SYSTEM_CALLS: 12 references (12 direct, 0 transitive)
+Example callpath:
+  github.com/golang/glog.Fatal
+  glog.go:664:12:github.com/golang/glog.FatalDepth
+  glog.go:670:8:github.com/golang/glog.fatalf
+  glog.go:657:11:github.com/golang/glog.ctxfatalf
+  glog.go:647:21:github.com/golang/glog.abortProcess
+  glog_file_linux.go:35:41:syscall.Getpid
+
+CAPABILITY_UNANALYZED: 77 references (76 direct, 1 transitive)
+Example callpath:
+  github.com/golang/glog.Fatal
+  glog.go:664:12:github.com/golang/glog.FatalDepth
+  glog.go:670:8:github.com/golang/glog.fatalf
+  glog.go:657:11:github.com/golang/glog.ctxfatalf
+  glog.go:644:9:github.com/golang/glog.ctxlogf
+  glog.go:223:28:github.com/golang/glog.metaPoolGet
+  glog.go:168:26:(*sync.Pool).Get
+
+CAPABILITY_UNSAFE_POINTER: 70 references (8 direct, 62 transitive)
+Example callpath:
+  github.com/golang/glog.Fatal
+  glog.go:664:12:github.com/golang/glog.FatalDepth
+  glog.go:670:8:github.com/golang/glog.fatalf
+  glog.go:657:11:github.com/golang/glog.ctxfatalf
+  glog.go:644:9:github.com/golang/glog.ctxlogf
+  glog.go:234:7:github.com/golang/glog.sinkf
+  glog.go:243:26:github.com/golang/glog/internal/logsink.Printf
+  logsink.go:313:21:github.com/golang/glog/internal/logsink.textPrintf
+  logsink.go:269:20:github.com/golang/glog/internal/logsink.fatalMessageStore
+  logsink_fatal.go:10:30:sync/atomic.CompareAndSwapPointer
+

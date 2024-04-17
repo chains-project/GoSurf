@@ -324,3 +324,35 @@ func main() {
 	os.Getenv("example")
 }
 ```
+#
+### Use of Reflection
+
+Call graph analysis typically examines the code at rest, without executing it. If your Go package uses reflection or other forms of dynamic code execution to invoke methods, these may not be captured by static analysis.
+
+```golang
+package main
+
+import (
+	"fmt"
+	"reflect"
+)
+
+type Foo struct{}
+
+func (f Foo) Method() {
+	// Capability invocation here
+}
+
+func main() {
+	var f Foo
+	v := reflect.ValueOf(f)
+	m := v.MethodByName("Method")
+	m.Call(nil) 
+}
+```
+
+**Outcome**: WEAK FALSE NEGATIVE.
+
+**Details**: Detects only the CAPABILITY_REFLECT, but cannot detect the real capability
+
+**TODO**: Try other real-world examples, because it might identify the real capability.
