@@ -194,9 +194,13 @@ We performed capability analysis on different Go packages, from different catego
     CAPABILITY_EXEC: 309 references (0 direct, 309 transitive)
 
 
+### [aws-sdk-go](https://pkg.go.dev/github.com/aws/aws-sdk-go/aws)
 
 
+**Category**: cloud tools
 
+**Imported by**: 35.193
 
+**Capabilities**:
 
-
+	TODO
