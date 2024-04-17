@@ -91,7 +91,16 @@ func NewPerson(name string, age int) *Person {
 
 
 ### [R3] Insert code in commonly-used methods [Applicable in Go]
-Attackers may target methods within 3rd-party dependencies that they distribute to downstream users. These methods are attractive because they are commonly used, increasing the likelihood that downstream users will invoke and rely on them.
+Attackers may target commonly-used methods within popular imported packages. Attackers might target functions that are widely used by developers. 
+
+For example:
+
+    fmt.Printf() - Formatting output (package: fmt)
+    time.Now() - Getting the current time (package: time)
+    strconv.Itoa() - Converting an integer to a string (package: strconv)
+    http.Get() - Making an HTTP GET request (package: net/http)
+    json.Marshal() - Encoding data to JSON (package: encoding/json)
+    encoding/base64.StdEncoding.EncodeToString() - Encoding data to base64 (package: encoding/base64)
 
 
 ### [R4] Run code as build plugin [Not Applicable in Go]
@@ -100,7 +109,7 @@ Execute the dependency as a plugin within the build of a downstream project. How
 
 ## Extend the classification 
 
-### [R5] Indirect method invocations via interfaces [Applicable in Go]
+### [R5] Run code by using indirect method invocations via interfaces [Applicable in Go]
 Go's interface mechanism allows for dynamic method dispatch. If a method is invoked indirectly via an interface, the specific method implementation is determined at runtime.
 
 ```golang
@@ -242,8 +251,8 @@ func main() {
 **TODO**: Quantify these cases in real-world packages.
 
 
-### [R8] Execute dynamically loaded code [Applicable in Go]
-Go packages can loads at runtime code (e.g., via plugins or external modules).
+### [R8] Execute pre-built code loaded at runtime[Applicable in Go]
+Go packages can load code at runtime (e.g., via plugins or external modules).
 
 ```go
 // plugin.go

@@ -18,6 +18,10 @@ We performed capability analysis on different Go packages, from different catego
     CAPABILITY_UNSAFE_POINTER: 1 references (0 direct, 1 transitive)
     CAPABILITY_REFLECT: 120 references (117 direct, 3 transitive)
 
+**Attack surface**:
+
+    [R1] init() usage: 4 occurrences
+
 ### [cobra](https://pkg.go.dev/github.com/spf13/cobra) 
 **Category**: productivity
 
@@ -31,6 +35,10 @@ We performed capability analysis on different Go packages, from different catego
     CAPABILITY_UNANALYZED: 78 references (10 direct, 68 transitive)
     CAPABILITY_UNSAFE_POINTER: 18 references (13 direct, 5 transitive)
     CAPABILITY_REFLECT: 22 references (13 direct, 9 transitive)
+
+**Attack surface**:
+
+    [R1] init() usage: 1 occurrences
 
 ### [protobuf/reflect/protoreflect](https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect) 
 
@@ -48,6 +56,9 @@ We performed capability analysis on different Go packages, from different catego
     CAPABILITY_REFLECT: 2371 references (345 direct, 2026 transitive)
     CAPABILITY_EXEC: 13 references (13 direct, 0 transitive)
 
+**Attack surface**:
+
+    [R1] init() usage: 133 occurrences
 
 ### [glog](https://pkg.go.dev/github.com/golang/glog) 
 
@@ -64,6 +75,10 @@ We performed capability analysis on different Go packages, from different catego
     CAPABILITY_SYSTEM_CALLS: 12 references (12 direct, 0 transitive)
     CAPABILITY_UNANALYZED: 77 references (76 direct, 1 transitive)
     CAPABILITY_UNSAFE_POINTER: 70 references (8 direct, 62 transitive)
+
+**Attack surface**:
+
+    [R1] init() usage: 5 occurrences
 
 ### [k8s.io/client-go/rest](https://pkg.go.dev/k8s.io/client-go/rest) 
 
@@ -85,6 +100,10 @@ We performed capability analysis on different Go packages, from different catego
     CAPABILITY_REFLECT: 4558 references (60 direct, 4498 transitive)
     CAPABILITY_EXEC: 3535 references (5 direct, 3530 transitive)
 
+**Attack surface**:
+
+    [R1] init() usage: 32 occurrences
+
 
 ### [Testify/mock](https://pkg.go.dev/github.com/stretchr/testify/mock) 
     
@@ -100,6 +119,10 @@ We performed capability analysis on different Go packages, from different catego
     CAPABILITY_UNSAFE_POINTER: 110 references (34 direct, 76 transitive)
     CAPABILITY_REFLECT: 156 references (73 direct, 83 transitive)
 
+**Attack surface**:
+
+    [R1] init() usage: 0 occurrences
+
 ### [errors](https://pkg.go.dev/github.com/juju/errors) 
 
 **Category**: error handling
@@ -109,6 +132,10 @@ We performed capability analysis on different Go packages, from different catego
 **Capabilities**:
     
     CAPABILITY_UNANALYZED: 36 references (36 direct, 0 transitive)
+
+**Attack surface**:
+
+    [R1] init() usage: 0 occurrences
 
 ### [go-ethereum](https://pkg.go.dev/github.com/ethereum/go-ethereum) 
 
@@ -132,7 +159,10 @@ We performed capability analysis on different Go packages, from different catego
     CAPABILITY_REFLECT: 3971 references (513 direct, 3458 transitive)
     CAPABILITY_EXEC: 3361 references (130 direct, 3231 transitive)
 
-        
+**Attack surface**:
+
+    [R1] init() usage: 71 occurrences
+
 ### [Gomega](https://pkg.go.dev/github.com/onsi/gomega) 
 
 **Category**: testing
@@ -151,6 +181,9 @@ We performed capability analysis on different Go packages, from different catego
     CAPABILITY_REFLECT: 274 references (106 direct, 168 transitive)
     CAPABILITY_EXEC: 15 references (15 direct, 0 transitive)
 
+**Attack surface**:
+
+    [R1] init() usage: 1 occurrences
 
 ### [Ginko](https://pkg.go.dev/github.com/onsi/ginkgo) 
     
@@ -171,6 +204,9 @@ We performed capability analysis on different Go packages, from different catego
     CAPABILITY_REFLECT: 96 references (61 direct, 35 transitive)
     CAPABILITY_EXEC: 63 references (45 direct, 18 transitive)
 
+**Attack surface**:
+
+    [R1] init() usage: 4 occurrences
 
 ### [coredns/core/dnsserver](https://pkg.go.dev/github.com/coredns/coredns/core/dnsserver) 
 
@@ -193,9 +229,12 @@ We performed capability analysis on different Go packages, from different catego
     CAPABILITY_REFLECT: 336 references (6 direct, 330 transitive)
     CAPABILITY_EXEC: 309 references (0 direct, 309 transitive)
 
+**Attack surface**:
+
+    [R1] init() usage: 98 occurrences
+
 
 ### [aws-sdk-go](https://pkg.go.dev/github.com/aws/aws-sdk-go/aws)
-
 
 **Category**: cloud tools
 
