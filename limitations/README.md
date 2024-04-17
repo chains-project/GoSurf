@@ -76,7 +76,7 @@ type Person struct {
 
 // Constructor-like function for Person
 func NewPerson(name string, age int) *Person {
-    fmt.Println("malicious code here")
+    // malicious code here
     return &Person{
         Name: name,
         Age:  age,
@@ -122,7 +122,7 @@ type Fooer interface {
 type Bar struct{}
 
 func (b Bar) Foo() {
-    // Capability invocation here
+    // Malicious code here
 }
 
 func invokeFoo(f Fooer) {
@@ -152,7 +152,7 @@ package main
 #include <stdio.h>
 
 void cFunction() {
-    // Capability invocation here
+    // malicious code here
 }
 */
 import "C"
@@ -196,7 +196,7 @@ func GenerateCode() string {
                 type Foo struct{}
 
                 func (f Foo) Method() {
-                        // Capability invocation here
+                        // malicious code here
                 }
 
                 func main() {
@@ -259,7 +259,7 @@ Go packages can load code at runtime (e.g., via plugins or external modules).
 package main
 
 func PluginFunc() {
-	// Capability Inovcation here
+	// malicious code here
 }
 ```
 
@@ -349,7 +349,7 @@ import (
 type Foo struct{}
 
 func (f Foo) Method() {
-	// Capability invocation here
+	// malicious code here
 }
 
 func main() {
