@@ -266,7 +266,7 @@ func main() {
 ### [R9] Execute pre-built code loaded at runtime [Applicable in Go]
 Attackers could load pre-built code at runtime making the detection of malicious behavior challenging. In Go, this is possibile mainly in two ways:
 
-*R9.1* By importing and using external binary `plugins`
+*R9.1 By importing and using external binary `plugins`*
 
 ```go
 // plugin.go
@@ -303,7 +303,7 @@ func main() {
 }
 ```
 
-*R9.2* By using the `os.exec` package to execute arbitrary external commands.
+*R9.2 By using the `os.exec` package to execute arbitrary external commands.*
 
 ```go
 package main
