@@ -2,13 +2,13 @@
 We performed capability analysis on different Go packages, from different categories. The following are the most imported repos on GitHub, hosting a Go package.
 
 ### [Logrus](https://pkg.go.dev/github.com/sirupsen/logrus) 
-    
+
 **Category**: logging
 
 **Imported by**: 178.805 packages
 
 **Capabilities**:
-        
+
     CAPABILITY_FILES: 123 references (119 direct, 4 transitive)
     CAPABILITY_NETWORK: 22 references (22 direct, 0 transitive)
     CAPABILITY_RUNTIME: 4 references (4 direct, 0 transitive)
@@ -20,7 +20,8 @@ We performed capability analysis on different Go packages, from different catego
 
 **Attack surface**:
 
-    [R1] init() usage: 4 occurrences
+    [R1.1] init() usage: 4 occurrences
+    [R5] reflection usage: 120 occurrences
 
 ### [cobra](https://pkg.go.dev/github.com/spf13/cobra) 
 **Category**: productivity
@@ -28,7 +29,7 @@ We performed capability analysis on different Go packages, from different catego
 **Imported by**: 125.960 packages
 
 **Capabilities**:
-        
+
     CAPABILITY_FILES: 123 references (76 direct, 47 transitive)
     CAPABILITY_NETWORK: 36 references (36 direct, 0 transitive)
     CAPABILITY_READ_SYSTEM_STATE: 15 references (15 direct, 0 transitive)
@@ -38,16 +39,17 @@ We performed capability analysis on different Go packages, from different catego
 
 **Attack surface**:
 
-    [R1] init() usage: 1 occurrences
+    [R1.1] init() usage: 1 occurrences
+    [R5] reflection usage: 22 occurrences
 
 ### [protobuf/reflect/protoreflect](https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect) 
 
 **Category**: productivity
-    
+
 **Imported by**: 81.933 packages
 
 **Capabilities**:
-        
+
     CAPABILITY_FILES: 149 references (22 direct, 127 transitive)
     CAPABILITY_READ_SYSTEM_STATE: 2289 references (18 direct, 2271 transitive)
     CAPABILITY_MODIFY_SYSTEM_STATE: 3 references (3 direct, 0 transitive)
@@ -58,7 +60,8 @@ We performed capability analysis on different Go packages, from different catego
 
 **Attack surface**:
 
-    [R1] init() usage: 133 occurrences
+    [R1.1] init() usage: 133 occurrences
+    [R5] reflection usage: 2207 occurrences
 
 ### [glog](https://pkg.go.dev/github.com/golang/glog) 
 
@@ -67,7 +70,7 @@ We performed capability analysis on different Go packages, from different catego
 **Imported by**: 73.536 packages
 
 **Capabilities**:
-    
+
     CAPABILITY_FILES: 78 references (75 direct, 3 transitive)
     CAPABILITY_RUNTIME: 12 references (12 direct, 0 transitive)
     CAPABILITY_READ_SYSTEM_STATE: 73 references (8 direct, 65 transitive)
@@ -78,7 +81,8 @@ We performed capability analysis on different Go packages, from different catego
 
 **Attack surface**:
 
-    [R1] init() usage: 5 occurrences
+    [R1.1] init() usage: 5 occurrences
+    [R5] reflection usage: 0 occurrences
 
 ### [k8s.io/client-go/rest](https://pkg.go.dev/k8s.io/client-go/rest) 
 
@@ -87,7 +91,7 @@ We performed capability analysis on different Go packages, from different catego
 **Imported by**: 57.095 packages
 
 **Capabilities**:
-    
+
     CAPABILITY_FILES: 3626 references (131 direct, 3495 transitive)
     CAPABILITY_NETWORK: 3594 references (120 direct, 3474 transitive)
     CAPABILITY_READ_SYSTEM_STATE: 3586 references (59 direct, 3527 transitive)
@@ -102,17 +106,17 @@ We performed capability analysis on different Go packages, from different catego
 
 **Attack surface**:
 
-    [R1] init() usage: 32 occurrences
-
+    [R1.1] init() usage: 32 occurrences
+    [R5] reflection usage: 4558 references
 
 ### [Testify/mock](https://pkg.go.dev/github.com/stretchr/testify/mock) 
-    
+
 **Category**: testing
 
 **Imported by**: 24.721 packages
 
 **Capabilities**:
-    
+
     CAPABILITY_FILES: 371 references (174 direct, 197 transitive)
     CAPABILITY_NETWORK: 50 references (26 direct, 24 transitive)
     CAPABILITY_UNANALYZED: 39 references (0 direct, 39 transitive)
@@ -121,21 +125,23 @@ We performed capability analysis on different Go packages, from different catego
 
 **Attack surface**:
 
-    [R1] init() usage: 0 occurrences
+    [R1.1] init() usage: 0 occurrences
+    [R5] reflection usage: 156 occurrences
 
 ### [errors](https://pkg.go.dev/github.com/juju/errors) 
 
 **Category**: error handling
 
-**Imported by**: 18.733 ackages
+**Imported by**: 18.733 packages
 
 **Capabilities**:
-    
+
     CAPABILITY_UNANALYZED: 36 references (36 direct, 0 transitive)
 
 **Attack surface**:
 
-    [R1] init() usage: 0 occurrences
+    [R1.1] init() usage: 0 occurrences
+    [R5] reflection usage: 0 occurrences
 
 ### [go-ethereum](https://pkg.go.dev/github.com/ethereum/go-ethereum) 
 
@@ -144,7 +150,7 @@ We performed capability analysis on different Go packages, from different catego
 **Imported by**: 11.189 packages
 
 **Capabilities**:
-    
+
     CAPABILITY_FILES: 3638 references (599 direct, 3039 transitive)
     CAPABILITY_NETWORK: 3516 references (700 direct, 2816 transitive)
     CAPABILITY_RUNTIME: 3370 references (360 direct, 3010 transitive)
@@ -161,7 +167,8 @@ We performed capability analysis on different Go packages, from different catego
 
 **Attack surface**:
 
-    [R1] init() usage: 71 occurrences
+    [R1.1] init() usage: 71 occurrences
+    [R5] reflection usage: 3971 occurrences
 
 ### [Gomega](https://pkg.go.dev/github.com/onsi/gomega) 
 
@@ -170,7 +177,7 @@ We performed capability analysis on different Go packages, from different catego
 **Imported by**: 8.192 packages
 
 **Capabilities**:
-    
+
     CAPABILITY_FILES: 262 references (27 direct, 235 transitive)
     CAPABILITY_NETWORK: 241 references (78 direct, 163 transitive)
     CAPABILITY_READ_SYSTEM_STATE: 69 references (17 direct, 52 transitive)
@@ -183,16 +190,17 @@ We performed capability analysis on different Go packages, from different catego
 
 **Attack surface**:
 
-    [R1] init() usage: 1 occurrences
+    [R1.1] init() usage: 1 occurrences
+    [R5] reflection usage: 274 occurrences 
 
 ### [Ginko](https://pkg.go.dev/github.com/onsi/ginkgo) 
-    
+
 **Category**: testing
 
 **Imported by**: 5.961 packages
 
 **Capabilities**:
-    
+
     CAPABILITY_FILES: 128 references (95 direct, 33 transitive)
     CAPABILITY_NETWORK: 122 references (80 direct, 42 transitive)
     CAPABILITY_READ_SYSTEM_STATE: 119 references (74 direct, 45 transitive)
@@ -206,7 +214,8 @@ We performed capability analysis on different Go packages, from different catego
 
 **Attack surface**:
 
-    [R1] init() usage: 4 occurrences
+    [R1.1] init() usage: 4 occurrences
+    [R5] reflection usage: 96 occurrences
 
 ### [coredns/core/dnsserver](https://pkg.go.dev/github.com/coredns/coredns/core/dnsserver) 
 
@@ -215,7 +224,7 @@ We performed capability analysis on different Go packages, from different catego
 **Imported by**: 3.594 packages
 
 **Capabilities**: 
-    
+
     CAPABILITY_FILES: 410 references (57 direct, 353 transitive)
     CAPABILITY_NETWORK: 404 references (75 direct, 329 transitive)
     CAPABILITY_RUNTIME: 326 references (21 direct, 305 transitive)
@@ -231,8 +240,8 @@ We performed capability analysis on different Go packages, from different catego
 
 **Attack surface**:
 
-    [R1] init() usage: 98 occurrences
-
+    [R1.1] init() usage: 98 occurrences
+    [R5] reflection usage: 336 occurrences 
 
 ### [aws-sdk-go](https://pkg.go.dev/github.com/aws/aws-sdk-go/aws)
 
