@@ -7,7 +7,7 @@ For each of these cases, we performed a capability analysis by using Capslock to
 ## Install-Time Execution
 There are three types of techniques to achieve ACE when downstream projects install a 3rd-party dependency using package managers, but none of them seems to be applicable to the Go ecosystem.
 
-### [I1] Run command/scripts leveraging install-hooks [Not applicable in Go
+### [I1] Run command/scripts leveraging install-hooks [Not applicable in Go]
 Execution of code by hooking the install process of dependecies in different stages, using specific key-words that package managers may provide.
 
 ### [I2] Run code in build script [Not applicable in Go]
@@ -19,50 +19,45 @@ Execution of extensions of dependencies that are necessary for their build proce
 
 
 ## Runtime Execution
-There are four scenarios where malicious code can be executed at runtime. The first three seem to be applicable to the Go ecosystem.
+There are four techniques to achieve ACE at runtime. The first three seem to be applicable to the Go ecosystem.
 
 
 ### [R1] Insert code in methods executed when importing a module [Applicable in Go]
-    
-Execution of code when an import statement is processed, even before the code from the imported module is actually used. In Go, dependencies can execute code upon import in two ways:
+Attackers can insert malicious code that executes when an import statement is processed, even before the code from the imported module is actually used. In Go, dependencies can execute code upon import in two ways:
 
-1. By defining an `init()` method. [Examples here](https://itnext.io/golang-stop-trusting-your-dependencies-a4c916533b04).
+*R1.1 By defining an `init()` method. [Examples here](https://itnext.io/golang-stop-trusting-your-dependencies-a4c916533b04).*
 
-    ```golang
-    package mylib
+```go
+package mylib
 
-    func init() {
-        // malicious code here
-    }
-    ```
-    If the evilpkg is imported with an underscore prefix, which prevents Go's automatic removal of unused dependencies, this ensures that event tough the package is not directly used in the code, its init() function wil till be executed.
+func init() {
+    // malicious code here
+}
+```
 
+*R1.2 By initializing a global variable with an anonymous function. [Examples here](https://itnext.io/golang-stop-trusting-your-dependencies-a4c916533b04).*
 
-2. By initializing a variable with an anonymous function. [Examples here](https://itnext.io/golang-stop-trusting-your-dependencies-a4c916533b04).
+```go
+package mylib
 
-    ```go
-    package mylib
+var anonym_func string = func() string {
+    // malicious code here
+    return ""
+}()
+```
 
-    var anonym_func string = func() string {
-        // malicious code here
-        return ""
-    }()
-    ```
-    When this package is imported into another Go program, this initialization code will execute.
+N.B. Importing a package with an underscore prefix prevents Go from automatically removing unused dependencies. This ensures that even if the package is not directly used in the code, its init() function or any anonymous functions assigned to global variables will still be executed.
 
 
-**Outcome**: <span style="color:green">*NO FALSE NEGATIVE*</span>
+- **Capslock Outcome**: <span style="color:green">*NO FALSE NEGATIVE*</span>
 
-**Details**: Identifies the real capability within the method.
+- **Details**: Identifies the real capability within the method.
 
 
 
 ### [R2] Insert code in constructors methods [Applicable in Go]
-Attackers may target constructors methods as suitable places to insert malicious code. 
+Attackers may target constructor methods as suitable places to insert malicious code because those functions are frequently used in the code to create instances of a struct. While Go doesn't have traditional constructors, developers often define and use common functions as "constructor" functions to initialize structs.
 
-Go have a mechanism called "struct initialization" which can be considered somewhat similar to constructor methods. In Go, structs are used to define types with a collection of fields. When a struct is initialized, all its fields are initialized to their zero values by default.
-
-An attacker could potentially insert malicious code into a function that initializes a struct or into a function that is commonly used to create instances of a struct. 
 
 ```go                                                 
 package mylib
@@ -85,13 +80,13 @@ func NewPerson(name string, age int) *Person {
 
 ```
 
-**Outcome**: <span style="color:green">*NO FALSE NEGATIVE*</span>
+- **Capslock Outcome**: <span style="color:green">*NO FALSE NEGATIVE*</span>
 
-**Details**: Identifies the real capability within the method.
+- **Details**: Identifies the real capability within the method.
 
 
 ### [R3] Insert code in commonly-used methods [Applicable in Go]
-Attackers may target commonly-used methods within popular imported packages. Attackers might target functions that are widely used by developers. 
+Attackers may target commonly-used methods within popular imported packages.
 
 For example:
 
@@ -102,15 +97,51 @@ For example:
     json.Marshal() - Encoding data to JSON (package: encoding/json)
     encoding/base64.StdEncoding.EncodeToString() - Encoding data to base64 (package: encoding/base64)
 
+- **Capslock Outcome**: <span style="color:green">*NO FALSE NEGATIVE*</span>
+
+- **Details**: Identifies the real capability within the method.
+
 
 ### [R4] Run code as build plugin [Not Applicable in Go]
-Execute the dependency as a plugin within the build of a downstream project. However, in Go there isn't a direct equivalent of Maven plugins for injecting code into the build process. 
+Execute the dependency as a plugin within the build of a downstream project. However, in Go there isn't a direct equivalent for example of Maven plugins for injecting code into the build process. 
 
 
 ## Extend the classification 
 
+### [R5] Run code by using Reflection
+Reflection in Go enables dynamic inspection and manipulation of structures, functions, and variables at runtime, facilitating flexible and generic code. Attackers can insert malicious code by exploiting the reflection feature, making challenging to analyze the behavior and the intent of functions and code statically.
+
+
+```golang
+package main
+
+import (
+	"fmt"
+	"reflect"
+)
+
+type Foo struct{}
+
+func (f Foo) Method() {
+	// malicious code here
+}
+
+func main() {
+	var f Foo
+	v := reflect.ValueOf(f)
+	m := v.MethodByName("Method")
+	m.Call(nil) 
+}
+```
+
+- **Capslock Outcome**: <span style="color:orange">*WEAK FALSE NEGATIVE*</span>
+
+- **Details**: Detects only the `CAPABILITY_REFLECT`, but cannot detect the real capability
+
+- **TODO**: Try other real-world examples, because it might identify the real capability.
+
 ### [R5] Run code by using indirect method invocations via interfaces [Applicable in Go]
-Go's interface mechanism allows for dynamic method dispatch. If a method is invoked indirectly via an interface, the specific method implementation is determined at runtime.
+Attackers can use Go's interface mechanism for dynamic method dispatch. When methods are indirectly invoked via an interface, their specific implementation is determined at runtime, posing challenges for static detection of malicious behavior. 
 
 ```golang
 package main
@@ -135,15 +166,15 @@ func main() {
 }
 ```
 
-**Outcome**: <span style="color:green">*NO FALSE NEGATIVE*</span>
+- **Capslock Outcome**: <span style="color:green">*NO FALSE NEGATIVE*</span>
 
-**Details**: Identifies the real capability within the method (e.g., `CAPABILITY_NETWORK`, `CAPABILITY_EXEC`).
+- **Details**: Identifies the real capability within the method.
 
-**TODO**: Investigate the false positives.
+- **TODO**: Investigate the false positives.
 
 
 ### [R6] Execute imported C code through cgo feature [Applicable in Go]
-Execute code from different languages in Go binaries. Go packages can interact with C code using cgo feature. 
+cg features enable executing C code in Go binaries. Attackers could exploit this capability to gain more control over the system, and also exploit memory safety concerns related to these low level languages.  
 
 ```golang
 package main
@@ -168,14 +199,14 @@ func main() {
     invoker.InvokeMethod()
 }
 ```
-**Outcome**: <span style="color:orange">*WEAK FALSE NEGATIVE*</span>
+- **Capslock Outcome**: <span style="color:orange">*WEAK FALSE NEGATIVE*</span>
 
-**Details**: Detects only the `CAPABILITY_CGO`, but cannot detect the actual capability.
+- **Details**: Detects only the `CAPABILITY_CGO`, but cannot detect the actual capability.
 
-**TODO**: Investigate the false positives.
+- **TODO**: Investigate the false positives.
 
 ### [R7] Execute dynamically generated code [Applicable in Go]
-Execute code generated at runtime. Go packages can generate functions or other code at runtime by creating temporary files, building them and executing them.
+Attackers can insert functions to dynamically generate and execute code at runtime, creating temporary files, building and executing them. This could make detecting malicious behaviors challenging. 
 
 ```golang
 package main
@@ -244,15 +275,15 @@ func main() {
 
 ```
 
-**Outocome**: <span style="color:red">*STRONG FALSE NEGATIVE*</span>
+- **Capslock Outocome**: <span style="color:red">*STRONG FALSE NEGATIVE*</span>
 
-**Details**: It does not identify any capability in the dynamically generated code.
+- **Details**: It does not identify any capability in the dynamically generated code.
 
-**TODO**: Quantify these cases in real-world packages.
+- **TODO**: Quantify these cases in real-world packages.
 
 
-### [R8] Execute pre-built code loaded at runtime[Applicable in Go]
-Go packages can load code at runtime (e.g., via plugins or external modules).
+### [R8] Execute pre-built code loaded at runtime [Applicable in Go]
+Attackers could load pre-built code at runtime (e.g., via plugins) making the detection of malicious behavior challenging.
 
 ```go
 // plugin.go
@@ -297,11 +328,11 @@ func main() {
 }
 ```
 
-**Outcomes**: <span style="color:red">*STRONG FALSE NEGATIVE*</span>
+- **Outcomes**: <span style="color:red">*STRONG FALSE NEGATIVE*</span>
 
-**Details**: It does not identify any capability in the (pre-compiled) dynamically imported plugin.
+- **Details**: It does not identify any capability in the (pre-compiled) dynamically imported plugin.
 
-**TODO**: Quantify these cases in real-world packages.
+- **TODO**: Quantify these cases in real-world packages.
 
 #
 ### Buggy Case to analyze
@@ -333,35 +364,4 @@ func main() {
 	os.Getenv("example")
 }
 ```
-#
-### Use of Reflection
 
-Call graph analysis typically examines the code at rest, without executing it. If your Go package uses reflection or other forms of dynamic code execution to invoke methods, these may not be captured by static analysis.
-
-```golang
-package main
-
-import (
-	"fmt"
-	"reflect"
-)
-
-type Foo struct{}
-
-func (f Foo) Method() {
-	// malicious code here
-}
-
-func main() {
-	var f Foo
-	v := reflect.ValueOf(f)
-	m := v.MethodByName("Method")
-	m.Call(nil) 
-}
-```
-
-**Outcome**: WEAK FALSE NEGATIVE.
-
-**Details**: Detects only the CAPABILITY_REFLECT, but cannot detect the real capability
-
-**TODO**: Try other real-world examples, because it might identify the real capability.
