@@ -306,20 +306,12 @@ import "plugin"
 
 func main() {
 	// Load the plugin dynamically
-	p, err := plugin.Open("./plugin.so")
-	if err != nil {
-		fmt.Println("Error loading plugin:", err)
-		return
-	}
-
-	// Look up the symbol (function) from the loaded plugin
-	sym, err := p.Lookup("PluginFunc")
-	if err != nil {
-		fmt.Println("Error looking up symbol:", err)
-		return
-	}
-
-	// Assert and call the function if found
+	p, _ := plugin.Open("./plugin.so")
+	
+    // Look up the symbol (function) from the loaded plugin
+	sym, _ := p.Lookup("PluginFunc")
+	
+    // Assert and call the function if found
 	if fn, ok := sym.(func()); ok {
 		fn()
 	} else {
@@ -328,11 +320,27 @@ func main() {
 }
 ```
 
-- **Outcomes**: <span style="color:red">*STRONG FALSE NEGATIVE*</span>
+Furthemore, attackers could use the 'exec' package to execute arbitrary external commands, included prebuilt binaries
 
-- **Details**: It does not identify any capability in the (pre-compiled) dynamically imported plugin.
+```go
+package main
 
-- **TODO**: Quantify these cases in real-world packages.
+import (
+    "fmt"
+    "os/exec"
+)
+
+func main() {
+    binaryPath := "/path/to/prebuilt/binary"
+    cmd := exec.Command(binaryPath)
+    _ := cmd.Run()
+}
+```
+
+- **Outcomes**: <span style="color:orange">*WEAK FALSE NEGATIVE*</span>
+
+- **Details**: Detects only the `CAPABILITY_EXEC`, but cannot detect the actual capabilities.
+
 
 #
 ### Buggy Case to analyze
