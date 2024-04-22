@@ -140,7 +140,7 @@ func main() {
 
 - **TODO**: Try other real-world examples, because it might identify the real capability.
 
-### [R5] Run code by using indirect method invocations via interfaces [Applicable in Go]
+### [R6] Run code by using indirect method invocations via interfaces [Applicable in Go]
 Attackers can use Go's interface mechanism for dynamic method dispatch. When methods are indirectly invoked via an interface, their specific implementation is determined at runtime, posing challenges for static detection of malicious behavior. 
 
 ```golang
@@ -173,7 +173,7 @@ func main() {
 - **TODO**: Investigate the false positives.
 
 
-### [R6] Execute imported C code through cgo feature [Applicable in Go]
+### [R7] Execute imported C code through cgo feature [Applicable in Go]
 cg features enable executing C code in Go binaries. Attackers could exploit this capability to gain more control over the system, and also exploit memory safety concerns related to these low level languages.  
 
 ```golang
@@ -205,7 +205,7 @@ func main() {
 
 - **TODO**: Investigate the false positives.
 
-### [R7] Execute dynamically generated code [Applicable in Go]
+### [R8] Execute dynamically generated code [Applicable in Go]
 Attackers can insert functions to dynamically generate and execute code at runtime, creating temporary files, building and executing them. This could make detecting malicious behaviors challenging. 
 
 ```golang
@@ -282,7 +282,7 @@ func main() {
 - **TODO**: Quantify these cases in real-world packages.
 
 
-### [R8] Execute pre-built code loaded at runtime [Applicable in Go]
+### [R9] Execute pre-built code loaded at runtime [Applicable in Go]
 Attackers could load pre-built code at runtime (e.g., via plugins) making the detection of malicious behavior challenging.
 
 ```go
