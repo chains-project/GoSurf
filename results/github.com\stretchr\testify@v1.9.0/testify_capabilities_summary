@@ -1,0 +1,72 @@
+Capslock is an experimental tool for static analysis of Go packages.
+Share feedback and file bugs at https://github.com/google/capslock.
+To get machine-readable full analysis output, use -output=json
+
+Analyzed packages:
+  github.com/davecgh/go-spew v1.1.1
+  github.com/pmezard/go-difflib v1.0.0
+  github.com/stretchr/objx v0.5.2
+  github.com/stretchr/testify v1.9.0
+  gopkg.in/yaml.v3 v3.0.1
+
+CAPABILITY_FILES: 371 references (174 direct, 197 transitive)
+Example callpath:
+  (*testify.v1/require.Assertions).Zerof
+  require_forward.go:956:7:testify.v1/require.Zerof
+  require.go:1220:17:github.com/stretchr/testify/assert.Zerof
+  assertion_format.go:814:13:github.com/stretchr/testify/assert.Zero
+  assertions.go:1668:14:github.com/stretchr/testify/assert.Fail
+  assertions.go:363:35:github.com/stretchr/testify/assert.labeledOutput
+  assertions.go:391:110:github.com/stretchr/testify/assert.indentMessageLines
+  assertions.go:304:81:(*bufio.Scanner).Scan
+  scan.go:214:22:(*os.File).Read
+
+CAPABILITY_NETWORK: 50 references (26 direct, 24 transitive)
+Example callpath:
+  (*testify.v1/require.Assertions).HTTPSuccessf
+  require_forward.go:428:14:testify.v1/require.HTTPSuccessf
+  require.go:536:24:github.com/stretchr/testify/assert.HTTPSuccessf
+  assertion_format.go:338:20:github.com/stretchr/testify/assert.HTTPSuccess
+  http_assertions.go:33:23:github.com/stretchr/testify/assert.httpCode
+  http_assertions.go:15:29:net/http.NewRequest
+
+CAPABILITY_UNANALYZED: 39 references (0 direct, 39 transitive)
+Example callpath:
+  (*testify.v1/require.Assertions).JSONEqf
+  require_forward.go:568:9:testify.v1/require.JSONEqf
+  require.go:724:19:github.com/stretchr/testify/assert.JSONEqf
+  assertion_format.go:456:15:github.com/stretchr/testify/assert.JSONEq
+  assertions.go:1774:14:github.com/stretchr/testify/assert.Equal
+  assertions.go:464:15:github.com/stretchr/testify/assert.diff
+  assertions.go:1838:41:github.com/pmezard/go-difflib/difflib.GetUnifiedDiffString
+  difflib.go:637:25:github.com/pmezard/go-difflib/difflib.WriteUnifiedDiff
+  difflib.go:561:2:(*bufio.Writer).Flush
+
+CAPABILITY_UNSAFE_POINTER: 110 references (34 direct, 76 transitive)
+Example callpath:
+  (*testify.v1/require.Assertions).JSONEqf
+  require_forward.go:568:9:testify.v1/require.JSONEqf
+  require.go:724:19:github.com/stretchr/testify/assert.JSONEqf
+  assertion_format.go:456:15:github.com/stretchr/testify/assert.JSONEq
+  assertions.go:1774:14:github.com/stretchr/testify/assert.Equal
+  assertions.go:464:15:github.com/stretchr/testify/assert.diff
+  assertions.go:1831:38:(*github.com/davecgh/go-spew/spew.ConfigState).Sdump
+  config.go:281:7:github.com/davecgh/go-spew/spew.fdump
+  dump.go:465:9:(*github.com/davecgh/go-spew/spew.dumpState).dump
+  dump.go:306:31:github.com/davecgh/go-spew/spew.handleMethods
+  common.go:97:25:github.com/davecgh/go-spew/spew.unsafeReflectValue
+  bypass.go:97:27:github.com/davecgh/go-spew/spew.flagField
+
+CAPABILITY_REFLECT: 156 references (73 direct, 83 transitive)
+Example callpath:
+  (*testify.v1/require.Assertions).Exactlyf
+  require_forward.go:236:10:testify.v1/require.Exactlyf
+  require.go:290:20:github.com/stretchr/testify/assert.Exactlyf
+  assertion_format.go:204:16:github.com/stretchr/testify/assert.Exactly
+  assertions.go:662:14:github.com/stretchr/testify/assert.Equal
+  assertions.go:464:15:github.com/stretchr/testify/assert.diff
+  assertions.go:1831:38:(*github.com/davecgh/go-spew/spew.ConfigState).Sdump
+  config.go:281:7:github.com/davecgh/go-spew/spew.fdump
+  dump.go:465:9:(*github.com/davecgh/go-spew/spew.dumpState).dump
+  dump.go:444:38:(reflect.Value).Interface
+

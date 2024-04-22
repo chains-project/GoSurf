@@ -21,8 +21,10 @@ We performed capability analysis on different Go packages, from different catego
 **Attack surface**:
 
     [R1.1] init() usage: 4 occurrences
+    [R1.2] anonym function usage: 0 occurrences
     [R5] reflection usage: 120 occurrences
     [R7] CGO usage: 0 occurrences
+    [R8, R9.1, R9.2] exec usage: 0 occurrences
 
 ### [cobra](https://pkg.go.dev/github.com/spf13/cobra) 
 **Category**: productivity
@@ -41,8 +43,10 @@ We performed capability analysis on different Go packages, from different catego
 **Attack surface**:
 
     [R1.1] init() usage: 1 occurrences
+    [R1.2] anonym function usage: 0 occurrences
     [R5] reflection usage: 22 occurrences
     [R7] CGO usage: 0 occurrences
+    [R8, R9.1, R9.2] exec usage: 0 occurrences
 
 ### [protobuf/reflect/protoreflect](https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect) 
 
@@ -63,8 +67,10 @@ We performed capability analysis on different Go packages, from different catego
 **Attack surface**:
 
     [R1.1] init() usage: 133 occurrences
+    [R1.2] anonym function usage: 0 occurrences
     [R5] reflection usage: 2371 occurrences
     [R7] CGO usage: 0 occurrences
+    [R8, R9.1, R9.2] exec usage: 13 occurrences
 
 ### [glog](https://pkg.go.dev/github.com/golang/glog) 
 
@@ -85,8 +91,10 @@ We performed capability analysis on different Go packages, from different catego
 **Attack surface**:
 
     [R1.1] init() usage: 5 occurrences
+    [R1.2] anonym function usage: 0 occurrences
     [R5] reflection usage: 0 occurrences
     [R7] CGO usage: 0 occurrences
+    [R8, R9.1, R9.2] exec usage: 0 occurrences
 
 ### [k8s.io/client-go/rest](https://pkg.go.dev/k8s.io/client-go/rest) 
 
@@ -111,8 +119,10 @@ We performed capability analysis on different Go packages, from different catego
 **Attack surface**:
 
     [R1.1] init() usage: 32 occurrences
+    [R1.2] anonym function usage: 0 occurrences
     [R5] reflection usage: 4558 references
     [R7] CGO usage: 0 occurrences
+    [R8, R9.1, R9.2] exec usage: 3535 occurrences
 
 ### [Testify/mock](https://pkg.go.dev/github.com/stretchr/testify/mock) 
 
@@ -131,8 +141,10 @@ We performed capability analysis on different Go packages, from different catego
 **Attack surface**:
 
     [R1.1] init() usage: 0 occurrences
+    [R1.2] anonym function usage: 0 occurrences
     [R5] reflection usage: 156 occurrences
     [R7] CGO usage: 0 occurrences
+    [R8, R9.1, R9.2] exec usage: 0 occurrences
 
 ### [errors](https://pkg.go.dev/github.com/juju/errors) 
 
@@ -147,8 +159,10 @@ We performed capability analysis on different Go packages, from different catego
 **Attack surface**:
 
     [R1.1] init() usage: 0 occurrences
+    [R1.2] anonym function usage: 0 occurrences
     [R5] reflection usage: 0 occurrences
     [R7] CGO usage: 0 occurrences
+    [R8, R9.1, R9.2] exec usage: 0 occurrences
 
 ### [go-ethereum](https://pkg.go.dev/github.com/ethereum/go-ethereum) 
 
@@ -175,8 +189,10 @@ We performed capability analysis on different Go packages, from different catego
 **Attack surface**:
 
     [R1.1] init() usage: 71 occurrences
+    [R1.2] anonym function usage: 1 occurrences
     [R5] reflection usage: 3971 occurrences
     [R7] CGO usage: 3505 occurrences
+    [R8, R9.1, R9.2] exec usage: 3361 occurrences
 
 ### [Gomega](https://pkg.go.dev/github.com/onsi/gomega) 
 
@@ -199,8 +215,10 @@ We performed capability analysis on different Go packages, from different catego
 **Attack surface**:
 
     [R1.1] init() usage: 1 occurrences
+    [R1.2] anonym function usage: 0 occurrences
     [R5] reflection usage: 274 occurrences
     [R7] CGO usage: 0 occurrences 
+    [R8, R9.1, R9.2] exec usage: 15 occurrences
 
 ### [Ginko](https://pkg.go.dev/github.com/onsi/ginkgo) 
 
@@ -224,8 +242,10 @@ We performed capability analysis on different Go packages, from different catego
 **Attack surface**:
 
     [R1.1] init() usage: 4 occurrences
+    [R1.2] anonym function usage: 0 occurrences
     [R5] reflection usage: 96 occurrences
     [R7] CGO usage: 0 occurrences
+    [R8, R9.1, R9.2] exec usage: 63 occurrences
 
 ### [coredns/core/dnsserver](https://pkg.go.dev/github.com/coredns/coredns/core/dnsserver) 
 
@@ -251,8 +271,10 @@ We performed capability analysis on different Go packages, from different catego
 **Attack surface**:
 
     [R1.1] init() usage: 98 occurrences
+    [R1.2] anonym function usage: 0 occurrences
     [R5] reflection usage: 336 occurrences 
     [R7] CGO usage: 0 occurrences
+    [R8, R9.1, R9.2] exec usage: 309 occurrences
     
 ### [aws-sdk-go](https://pkg.go.dev/github.com/aws/aws-sdk-go/aws)
 

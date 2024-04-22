@@ -258,9 +258,9 @@ func main() {
 
 ```
 
-- **Capslock Outocome**: <span style="color:red">*STRONG FALSE NEGATIVE*</span>
+- **Capslock Outocome**: <span style="color:orange">*WEAK FALSE NEGATIVE*</span>
 
-- **Details**: It does not identify any capability in the dynamically generated code.
+- **Details**: Detects only the `CAPABILITY_EXEC`, but cannot detect the actual capabilities.
 
 
 ### [R9] Execute pre-built code loaded at runtime [Applicable in Go]
