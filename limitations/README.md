@@ -108,7 +108,7 @@ Execute the dependency as a plugin within the build of a downstream project. How
 
 ## Extend the classification 
 
-### [R5] Run code by using Reflection
+### [R5] Run code by using Reflection [Applicable in Go]
 Reflection in Go enables dynamic inspection and manipulation of structures, functions, and variables at runtime, facilitating flexible and generic code. Attackers can insert malicious code by exploiting the reflection feature, making challenging to analyze the behavior and the intent of functions and code statically.
 
 
@@ -139,6 +139,7 @@ func main() {
 - **Details**: Detects only the `CAPABILITY_REFLECT`, but cannot detect the real capability
 
 - **TODO**: Try other real-world examples, because it might identify the real capability.
+
 
 ### [R6] Run code by using indirect method invocations via interfaces [Applicable in Go]
 Attackers can use Go's interface mechanism for dynamic method dispatch. When methods are indirectly invoked via an interface, their specific implementation is determined at runtime, posing challenges for static detection of malicious behavior. 
@@ -173,8 +174,8 @@ func main() {
 - **TODO**: Investigate the false positives.
 
 
-### [R7] Execute imported C code through cgo feature [Applicable in Go]
-cg features enable executing C code in Go binaries. Attackers could exploit this capability to gain more control over the system, and also exploit memory safety concerns related to these low level languages.  
+### [R7] Execute imported C code through CGO feature [Applicable in Go]
+CGO features enable executing C code in Go binaries. Attackers could exploit this capability to gain more control over the system, and also exploit memory safety concerns related to these low level languages.  
 
 ```golang
 package main
@@ -241,36 +242,18 @@ func main() {
     code := GenerateCode()
 
     // Create a temporary Go file to hold the generated code
-    file, err := os.CreateTemp("", "generated_*.go")
-    if err != nil {
-            fmt.Println("Error creating temporary file:", err)
-            return
-    }
+    file, _ := os.CreateTemp("", "generated_*.go")
     defer os.Remove(file.Name()) // Clean up temporary file
 
     // Write the generated code to the temporary file
-    if _, err := file.WriteString(code); err != nil {
-            fmt.Println("Error writing to temporary file:", err)
-            return
-    }
+    file.WriteString(code);
+    file.Close();
 
-    // Close the file
-    if err := file.Close(); err != nil {
-            fmt.Println("Error closing temporary file:", err)
-            return
-    }
-
-    // Run the Go file as a subprocess
+    // Run the Go file
     cmd := exec.Command("go", "run", file.Name())
     cmd.Stdout = os.Stdout
     cmd.Stderr = os.Stderr
-
-    // Execute the command
-    err = cmd.Run()
-    if err != nil {
-            fmt.Println("Error executing generated code:", err)
-            return
-    }
+    cmd.Run()
 }
 
 ```
@@ -278,8 +261,6 @@ func main() {
 - **Capslock Outocome**: <span style="color:red">*STRONG FALSE NEGATIVE*</span>
 
 - **Details**: It does not identify any capability in the dynamically generated code.
-
-- **TODO**: Quantify these cases in real-world packages.
 
 
 ### [R9] Execute pre-built code loaded at runtime [Applicable in Go]
@@ -308,10 +289,10 @@ func main() {
 	// Load the plugin dynamically
 	p, _ := plugin.Open("./plugin.so")
 	
-    // Look up the symbol (function) from the loaded plugin
+    	// Look up the symbol (function) from the loaded plugin
 	sym, _ := p.Lookup("PluginFunc")
 	
-    // Assert and call the function if found
+    	// Assert and call the function if found
 	if fn, ok := sym.(func()); ok {
 		fn()
 	} else {
