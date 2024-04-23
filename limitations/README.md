@@ -53,8 +53,6 @@ N.B. Importing a package with an underscore prefix prevents Go from automaticall
 
 - **Details**: Identifies the real capability within the method.
 
-
-
 ### [R2] Insert code in constructors methods [Applicable in Go]
 Attackers may target constructor methods as suitable places to insert malicious code because those functions are frequently used in the code to create instances of a struct. While Go doesn't have traditional constructors, developers often define and use common functions as "constructor" functions to initialize structs.
 
@@ -147,24 +145,30 @@ Attackers can use Go's interface mechanism for dynamic method dispatch. When met
 ```golang
 package main
 
-type Fooer interface {
-    Foo()
+type DynamicMethodInterface interface {
+    Invoke()
 }
 
-type Bar struct{}
-
-func (b Bar) Foo() {
+type MethodA struct{}
+func (m MethodA) Invoke() {
     // Malicious code here
 }
 
-func invokeFoo(f Fooer) {
-    f.Foo()
+type MethodB struct{}
+func (m MethodB) Invoke() {
+    // Malicious code here
 }
 
 func main() {
-    var b Bar
-    invokeFoo(b)
+
+    methodA := MethodA{}
+    methodB := MethodB{}
+
+    invokeMethod(methodA)
+    invokeMethod(methodB)
 }
+
+func invokeMethod(method DynamicMethodInterface)
 ```
 
 - **Capslock Outcome**: <span style="color:green">*NO FALSE NEGATIVE*</span>
@@ -324,35 +328,4 @@ func main() {
 
 - **Details**: Detects only the `CAPABILITY_EXEC`, but cannot detect the actual capabilities.
 
-
-#
-### Buggy Case to analyze
-
-The second occurence of `CAPABILITY_READ_SYSTEM_STATE` is not identified
-
-```go     
-package main
-
-import "os"
-import "encoding/json"
-
-func main() {
-	// CAPABILITY_REFLECT, 1°CAPABILITY_READ_SYSTEM_STATE
-	json.Marshal(os.Environ())      
-	// 2°CAPABILTIY_READ_SYSTEM_STATE 
-	os.Getenv("example")
-}
-```
-
-In the following case, the `CAPABILITY_READ_SYSTEM_STATE` is identified
-```go     
-package main
-
-import "os"
-
-func main() {
-	// CAPABILTIY_READ_SYSTEM_STATE 
-	os.Getenv("example")
-}
-```
 

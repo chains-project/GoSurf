@@ -1,1 +1,2 @@
-utilities/anonym_func/anonym_func_trans.go
+*.mod
+/utilities/anonym_func/anonym_func_trans.go

