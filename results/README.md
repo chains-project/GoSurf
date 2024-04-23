@@ -26,6 +26,13 @@ We performed capability analysis on different Go packages, from different catego
     [R7] CGO usage: 0 occurrences
     [R8, R9.1, R9.2] exec usage: 0 occurrences
 
+```mermaid
+pie 
+    "R1.1 init()" : 4
+    "R5 reflection" : 120
+```
+
+
 ### [cobra](https://pkg.go.dev/github.com/spf13/cobra) 
 **Category**: productivity
 
@@ -47,6 +54,13 @@ We performed capability analysis on different Go packages, from different catego
     [R5] reflection usage: 22 occurrences
     [R7] CGO usage: 0 occurrences
     [R8, R9.1, R9.2] exec usage: 0 occurrences
+
+
+```mermaid
+pie 
+    "R1.1 init()" : 1
+    "R5 reflection" : 22
+```
 
 ### [protobuf/reflect/protoreflect](https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect) 
 
@@ -72,6 +86,14 @@ We performed capability analysis on different Go packages, from different catego
     [R7] CGO usage: 0 occurrences
     [R8, R9.1, R9.2] exec usage: 13 occurrences
 
+```mermaid
+pie 
+    "R1.1 init()" : 133
+    "R5 reflection" : 2371
+    "R8 R9.1 R9.2 exec" : 13
+```
+
+
 ### [glog](https://pkg.go.dev/github.com/golang/glog) 
 
 **Category**: logging
@@ -95,6 +117,13 @@ We performed capability analysis on different Go packages, from different catego
     [R5] reflection usage: 0 occurrences
     [R7] CGO usage: 0 occurrences
     [R8, R9.1, R9.2] exec usage: 0 occurrences
+
+
+```mermaid
+pie 
+    "R1.1 init()" : 5
+
+```
 
 ### [k8s.io/client-go/rest](https://pkg.go.dev/k8s.io/client-go/rest) 
 
@@ -124,6 +153,14 @@ We performed capability analysis on different Go packages, from different catego
     [R7] CGO usage: 0 occurrences
     [R8, R9.1, R9.2] exec usage: 3535 occurrences
 
+```mermaid
+pie 
+    "R1.1 init()" : 32
+    "R5 reflection" : 4558
+    "R8 R9.1 R9.2 exec" : 3535
+```
+
+
 ### [Testify/mock](https://pkg.go.dev/github.com/stretchr/testify/mock) 
 
 **Category**: testing
@@ -146,6 +183,11 @@ We performed capability analysis on different Go packages, from different catego
     [R7] CGO usage: 0 occurrences
     [R8, R9.1, R9.2] exec usage: 0 occurrences
 
+```mermaid
+pie 
+    "R5 reflection" : 156
+```
+
 ### [errors](https://pkg.go.dev/github.com/juju/errors) 
 
 **Category**: error handling
@@ -163,6 +205,7 @@ We performed capability analysis on different Go packages, from different catego
     [R5] reflection usage: 0 occurrences
     [R7] CGO usage: 0 occurrences
     [R8, R9.1, R9.2] exec usage: 0 occurrences
+
 
 ### [go-ethereum](https://pkg.go.dev/github.com/ethereum/go-ethereum) 
 
@@ -194,6 +237,16 @@ We performed capability analysis on different Go packages, from different catego
     [R7] CGO usage: 3505 occurrences
     [R8, R9.1, R9.2] exec usage: 3361 occurrences
 
+```mermaid
+pie 
+    "R1.1 init()" : 71
+    "R1.2 anonym func" : 1
+    "R5 reflection" : 3971
+    "R7 cgo" : 3505
+    "R8 R9.1 R9.2 exec" : 3361
+```
+
+
 ### [Gomega](https://pkg.go.dev/github.com/onsi/gomega) 
 
 **Category**: testing
@@ -219,6 +272,13 @@ We performed capability analysis on different Go packages, from different catego
     [R5] reflection usage: 274 occurrences
     [R7] CGO usage: 0 occurrences 
     [R8, R9.1, R9.2] exec usage: 15 occurrences
+
+```mermaid
+pie 
+    "R1.1 init()" : 1
+    "R5 reflection" : 274
+    "R8 R9.1 R9.2 exec" : 15
+```
 
 ### [Ginko](https://pkg.go.dev/github.com/onsi/ginkgo) 
 
@@ -246,6 +306,13 @@ We performed capability analysis on different Go packages, from different catego
     [R5] reflection usage: 96 occurrences
     [R7] CGO usage: 0 occurrences
     [R8, R9.1, R9.2] exec usage: 63 occurrences
+
+```mermaid
+pie 
+    "R1.1 init()" : 4
+    "R5 reflection" : 96
+    "R8 R9.1 R9.2 exec" : 63
+```
 
 ### [coredns/core/dnsserver](https://pkg.go.dev/github.com/coredns/coredns/core/dnsserver) 
 
@@ -276,6 +343,13 @@ We performed capability analysis on different Go packages, from different catego
     [R7] CGO usage: 0 occurrences
     [R8, R9.1, R9.2] exec usage: 309 occurrences
     
+```mermaid
+pie 
+    "R1.1 init()" : 98
+    "R5 reflection" : 336
+    "R8 R9.1 R9.2 exec" : 309
+```
+
 ### [aws-sdk-go](https://pkg.go.dev/github.com/aws/aws-sdk-go/aws)
 
 **Category**: cloud tools
