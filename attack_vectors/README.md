@@ -28,7 +28,7 @@ Execution of extensions of dependencies that are necessary for their build proce
 There are four techniques to achieve ACE at runtime. The first three seem to be applicable to the Go ecosystem.
 
 
-### [R1] Insert code in methods executed when importing a module [Applicable in Go][[POC]](https://github.com/chains-project/capslock-analysis/tree/main/limitations/1_init_fnc)
+### [R1] Insert code in methods executed when importing a module [Applicable in Go][[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/import_module)
 Attackers can insert malicious code that executes upon import with higher order of precedence, before the code of importing application and even before the code from the imported module is actually invoked. In Go, dependencies can execute code upon import in two ways:
 
 *R1.1 By defining an `init()` method.* 
@@ -61,7 +61,7 @@ var anonym_func string = func() string {
 
 
 
-### [R2] Insert code in constructors methods [Applicable in Go] [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/limitations/3_constructor)
+### [R2] Insert code in constructors methods [Applicable in Go] [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/constructors)
 Attackers may target constructor methods as suitable places to insert malicious code because those functions are frequently used in the code to create instances of a struct. While Go doesn't have traditional constructors, developers often define and use common functions as "constructor" functions to initialize structs.
 
 
@@ -114,7 +114,7 @@ Execute the dependency as a plugin within the build of a downstream project. How
 
 ## Extend the classification 
 
-### [R5] Run code by using Reflection [Applicable in Go][[POC]](https://github.com/chains-project/capslock-analysis/tree/main/limitations/8_reflection)
+### [R5] Run code by using Reflection [Applicable in Go][[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/reflection)
 Reflection in Go enables dynamic inspection and manipulation of structures, functions, and variables at runtime, facilitating flexible and generic code. Attackers can insert malicious code by exploiting the reflection feature, making challenging to analyze the behavior and the intent of functions and code statically.
 
 
@@ -147,7 +147,7 @@ func main() {
 - **TODO**: Try other real-world examples, because it might identify the real capability.
 
 
-### [R6] Run code by using indirect method invocations via interfaces [Applicable in Go][[POC]](https://github.com/chains-project/capslock-analysis/tree/main/limitations/4_interfaces)
+### [R6] Run code by using indirect method invocations via interfaces [Applicable in Go][[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/interfaces)
 Attackers can use Go's interface mechanism for dynamic method dispatch. When methods are indirectly invoked via an interface, their specific implementation is determined at runtime, posing challenges for static detection of malicious behavior. 
 
 ```golang
@@ -186,7 +186,7 @@ func invokeMethod(method DynamicMethodInterface)
 - **TODO**: Investigate the false positives.
 
 
-### [R7] Execute imported C code through CGO feature [Applicable in Go][[POC]](https://github.com/chains-project/capslock-analysis/tree/main/limitations/5_cgo)
+### [R7] Execute imported C code through CGO feature [Applicable in Go][[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/cgo)
 CGO features enable executing C code in Go binaries. Attackers could exploit this capability to gain more control over the system, and also exploit memory safety concerns related to these low level languages.  
 
 ```golang
@@ -218,7 +218,7 @@ func main() {
 
 - **TODO**: Investigate the false positives.
 
-### [R8] Execute dynamically generated code [Applicable in Go][[POC]](https://github.com/chains-project/capslock-analysis/tree/main/limitations/6_dyngen_code)
+### [R8] Execute dynamically generated code [Applicable in Go][[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/dyngen_code)
 Attackers can insert functions to dynamically generate and execute code at runtime, creating temporary files, building and executing them. This could make detecting malicious behaviors challenging. 
 
 ```golang
@@ -275,7 +275,7 @@ func main() {
 - **Details**: Detects only the `CAPABILITY_EXEC`, but cannot detect the actual capabilities.
 
 
-### [R9] Execute pre-built code loaded at runtime [Applicable in Go][[POC]](https://github.com/chains-project/capslock-analysis/tree/main/limitations/7_dynload_code)
+### [R9] Execute pre-built code loaded at runtime [Applicable in Go][[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/dynload_code)
 Attackers could load pre-built code at runtime making the detection of malicious behavior challenging. In Go, this is possibile mainly in two ways:
 
 *R9.1 By importing and using external binary `plugins`* 
