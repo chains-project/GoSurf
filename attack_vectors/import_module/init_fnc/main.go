@@ -1,9 +1,8 @@
 package main
 
 import (
-	"1_init_fnc/mylib"
+	"init_fnc/mylib"
 	"fmt"
-	//"strings"
 )
 
 func init() {

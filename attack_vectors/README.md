@@ -278,7 +278,30 @@ func main() {
 ### [R9] Execute pre-built code loaded at runtime [Applicable in Go][[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/dynload_code)
 Attackers could load pre-built code at runtime making the detection of malicious behavior challenging. In Go, this is possibile mainly in two ways:
 
-*R9.1 By importing and using external binary `plugins`* 
+
+*R9.1 By using the `os.exec` package to execute arbitrary external commands.*
+
+```go
+package main
+
+import (
+    "fmt"
+    "os/exec"
+)
+
+func main() {
+    binaryPath := "/path/to/prebuilt/binary"
+    cmd := exec.Command(binaryPath)
+    _ := cmd.Run()
+}
+```
+
+- **Outcomes**: <span style="color:orange">*WEAK FALSE NEGATIVE*</span>
+
+- **Details**: Detects only the `CAPABILITY_EXEC`, but cannot detect the actual capabilities.
+
+
+*R9.2 By importing and using external binary `plugins`* 
 
 ```go
 // plugin.go
@@ -314,26 +337,5 @@ func main() {
 	}
 }
 ```
-
-*R9.2 By using the `os.exec` package to execute arbitrary external commands.*
-
-```go
-package main
-
-import (
-    "fmt"
-    "os/exec"
-)
-
-func main() {
-    binaryPath := "/path/to/prebuilt/binary"
-    cmd := exec.Command(binaryPath)
-    _ := cmd.Run()
-}
-```
-
-- **Outcomes**: <span style="color:orange">*WEAK FALSE NEGATIVE*</span>
-
-- **Details**: Detects only the `CAPABILITY_EXEC`, but cannot detect the actual capabilities.
 
 

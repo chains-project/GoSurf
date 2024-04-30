@@ -27,7 +27,7 @@ Here are the parameters you need to specify when using the script:
 - `-output`: Specify the output format for the capabilities list (*'v'* for verbose, *'json'* for JSON) 
 - `-module`: Specify the module path (relative or absolute)
 - `-packages`: Specify the path and filename for the packages output file 
-- `-packages`: Specify the path and filename for the capabilities ouput file 
+- `-capabilities`: Specify the path and filename for the capabilities ouput file 
 
 `run_capslock.py` automatically infers the packages contained within the provided Go module and execute the Capslock tool on each of these packages.
 

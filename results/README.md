@@ -24,7 +24,8 @@ We performed capability analysis on different Go packages, from different catego
     [R1.2] anonym function usage: 0 occurrences
     [R5] reflection usage: 120 occurrences
     [R7] CGO usage: 0 occurrences
-    [R8, R9.1, R9.2] exec usage: 0 occurrences
+    [R8, R9.1] exec usage: 0 occurrences
+    [R9.2] plugin usage: 0 occurrences
 
 ```mermaid
 pie 
@@ -53,8 +54,8 @@ pie
     [R1.2] anonym function usage: 0 occurrences
     [R5] reflection usage: 22 occurrences
     [R7] CGO usage: 0 occurrences
-    [R8, R9.1, R9.2] exec usage: 0 occurrences
-
+    [R8, R9.1] exec usage: 0 occurrences
+    [R9.2] plugin usage: 0 occurrences
 
 ```mermaid
 pie 
@@ -84,13 +85,14 @@ pie
     [R1.2] anonym function usage: 0 occurrences
     [R5] reflection usage: 2371 occurrences
     [R7] CGO usage: 0 occurrences
-    [R8, R9.1, R9.2] exec usage: 13 occurrences
+    [R8, R9.1] exec usage: 13 occurrences
+    [R9.2] plugin usage: 0 occurrences
 
 ```mermaid
 pie 
     "R1.1 init()" : 133
     "R5 reflection" : 2371
-    "R8 R9.1 R9.2 exec" : 13
+    "R8 R9.1 exec" : 13
 ```
 
 
@@ -116,7 +118,8 @@ pie
     [R1.2] anonym function usage: 0 occurrences
     [R5] reflection usage: 0 occurrences
     [R7] CGO usage: 0 occurrences
-    [R8, R9.1, R9.2] exec usage: 0 occurrences
+    [R8, R9.1] exec usage: 0 occurrences
+    [R9.2] plugin usage: 0 occurrences
 
 
 ```mermaid
@@ -151,13 +154,14 @@ pie
     [R1.2] anonym function usage: 0 occurrences
     [R5] reflection usage: 4558 references
     [R7] CGO usage: 0 occurrences
-    [R8, R9.1, R9.2] exec usage: 3535 occurrences
+    [R8, R9.1] exec usage: 3535 occurrences
+    [R9.2] plugin usage: 0 occurrences
 
 ```mermaid
 pie 
     "R1.1 init()" : 32
     "R5 reflection" : 4558
-    "R8 R9.1 R9.2 exec" : 3535
+    "R8 R9.1 exec" : 3535
 ```
 
 
@@ -181,7 +185,8 @@ pie
     [R1.2] anonym function usage: 0 occurrences
     [R5] reflection usage: 156 occurrences
     [R7] CGO usage: 0 occurrences
-    [R8, R9.1, R9.2] exec usage: 0 occurrences
+    [R8, R9.1] exec usage: 0 occurrences
+    [R9.2] plugin usage: 0 occurrences
 
 ```mermaid
 pie 
@@ -204,8 +209,8 @@ pie
     [R1.2] anonym function usage: 0 occurrences
     [R5] reflection usage: 0 occurrences
     [R7] CGO usage: 0 occurrences
-    [R8, R9.1, R9.2] exec usage: 0 occurrences
-
+    [R8, R9.1] exec usage: 0 occurrences
+    [R9.2] plugin usage: 0 occurrences
 
 ### [go-ethereum](https://pkg.go.dev/github.com/ethereum/go-ethereum) 
 
@@ -235,7 +240,8 @@ pie
     [R1.2] anonym function usage: 1 occurrences
     [R5] reflection usage: 3971 occurrences
     [R7] CGO usage: 3505 occurrences
-    [R8, R9.1, R9.2] exec usage: 3361 occurrences
+    [R8, R9.1] exec usage: 3361 occurrences
+    [R9.2] plugin usage: 0 occurrences
 
 ```mermaid
 pie 
@@ -243,7 +249,7 @@ pie
     "R1.2 anonym func" : 1
     "R5 reflection" : 3971
     "R7 cgo" : 3505
-    "R8 R9.1 R9.2 exec" : 3361
+    "R8 R9.1 exec" : 3361
 ```
 
 
@@ -271,13 +277,14 @@ pie
     [R1.2] anonym function usage: 0 occurrences
     [R5] reflection usage: 274 occurrences
     [R7] CGO usage: 0 occurrences 
-    [R8, R9.1, R9.2] exec usage: 15 occurrences
+    [R8, R9.1] exec usage: 15 occurrences
+    [R9.2] plugin usage: 0 occurrences
 
 ```mermaid
 pie 
     "R1.1 init()" : 1
     "R5 reflection" : 274
-    "R8 R9.1 R9.2 exec" : 15
+    "R8 R9.1 exec" : 15
 ```
 
 ### [Ginko](https://pkg.go.dev/github.com/onsi/ginkgo) 
@@ -305,13 +312,14 @@ pie
     [R1.2] anonym function usage: 0 occurrences
     [R5] reflection usage: 96 occurrences
     [R7] CGO usage: 0 occurrences
-    [R8, R9.1, R9.2] exec usage: 63 occurrences
+    [R8, R9.1] exec usage: 63 occurrences
+    [R9.2] plugin usage: 0 occurrences
 
 ```mermaid
 pie 
     "R1.1 init()" : 4
     "R5 reflection" : 96
-    "R8 R9.1 R9.2 exec" : 63
+    "R8 R9.1 exec" : 63
 ```
 
 ### [coredns/core/dnsserver](https://pkg.go.dev/github.com/coredns/coredns/core/dnsserver) 
@@ -341,13 +349,14 @@ pie
     [R1.2] anonym function usage: 0 occurrences
     [R5] reflection usage: 336 occurrences 
     [R7] CGO usage: 0 occurrences
-    [R8, R9.1, R9.2] exec usage: 309 occurrences
-    
+    [R8, R9.1] exec usage: 309 occurrences
+    [R9.2] plugin usage: 0 occurrences
+
 ```mermaid
 pie 
     "R1.1 init()" : 98
     "R5 reflection" : 336
-    "R8 R9.1 R9.2 exec" : 309
+    "R8 R9.1 exec" : 309
 ```
 
 ### [aws-sdk-go](https://pkg.go.dev/github.com/aws/aws-sdk-go/aws)

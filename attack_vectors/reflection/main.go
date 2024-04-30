@@ -1,19 +1,20 @@
 package main
 
 import (
+	"fmt"
 	"reflect"
-	"os"
-	"os/exec"
-	"encoding/json"
-	"net/http"
-	"bytes"
-	"io/ioutil"
+//	"os"
+//	"os/exec"
+//	"encoding/json"
+//	"net/http"
+//	"bytes"
+//	"io/ioutil"
 )
 
 type Foo struct{}
 
 func (f Foo) Method() {
-
+/*
     	if os.Getenv("example") == "1" {
 		cmd := exec.Command("ls")
         	cmd.Stdout = os.Stdout
@@ -51,6 +52,10 @@ func (f Foo) Method() {
         cmd := exec.Command("ls")
         cmd.Stdout = os.Stdout
         _ = cmd.Run()
+
+*/
+	fmt.Println("method invocation\n")
+
 }
 
 func main() {

@@ -1,2 +1,3 @@
 *.mod
+*.sum
 /utilities/anonym_func/anonym_func_trans.go
