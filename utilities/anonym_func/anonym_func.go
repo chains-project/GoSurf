@@ -7,46 +7,45 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"encoding/json"
 )
 
 func main() {
-	// Check if the module path is provided as command-line argument
 	if len(os.Args) < 2 {
 		fmt.Println("Usage: go run main.go <module_path>")
 		return
 	}
 
-	// Get the module path from command-line argument
 	modulePath := os.Args[1]
 
-	// Define the regular expression pattern
 	pattern := `var\s+(\w+)\s*(\w*)\s*=\s*func\(\)\s*(\w*)\s*{[^}]*}\(\)`
 	re := regexp.MustCompile(pattern)
 
-	// Walk through the module directory and process each .go file
-        totOccurrences := 0
+	var occurrences []map[string]interface{}
+	totOccurrences := 0
 	err := filepath.Walk(modulePath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
-		// Check if the current file is a Go source file
 		if !info.IsDir() && filepath.Ext(path) == ".go" {
-			// Read the Go file
 			fileContents, err := ioutil.ReadFile(path)
 			if err != nil {
 				fmt.Printf("Error reading file %s: %v\n", path, err)
 				return nil
 			}
-			// Find matches in the file contents
-			matches := re.FindAllStringSubmatch(string(fileContents), -1)
-			// Print out the matches found
+			matches := re.FindAllStringSubmatchIndex(string(fileContents), -1)
 			if len(matches) > 0 {
 				for _, match := range matches {
-					variableName := strings.TrimSpace(match[1])
-					lineNumber := getLineNumber(path, fileContents, match[1])
-					fmt.Printf("Occurrences of declaration with anonymous function:\n")
-					fmt.Printf("- Variable name: %s, File: %s, Line: %d\n", variableName, path, lineNumber)
-					fmt.Println()
+					startLine, _ := getLineColumn(fileContents, match[0])
+					variableName := strings.TrimSpace(string(fileContents[match[2]:match[3]]))
+					occurrence := map[string]interface{}{
+						"var_name": variableName,
+						"site": map[string]interface{}{
+							"filename": path,
+							"line":     startLine,
+						},
+					}
+					occurrences = append(occurrences, occurrence)
 					totOccurrences++
 				}
 			}
@@ -59,14 +58,30 @@ func main() {
 	}
 
 	fmt.Printf("Total occurrences: %d\n", totOccurrences)
+
+	// Convert occurrences to JSON and print
+	jsonOutput, err := json.MarshalIndent(occurrences, "", "    ")
+	if err != nil {
+		fmt.Println("Error marshaling JSON:", err)
+		return
+	}
+	fmt.Println(string(jsonOutput))
+
+	fmt.Printf("Total occurrences: %d\n", totOccurrences)
 }
 
-func getLineNumber(filePath string, fileContents []byte, matchString string) int {
-	lines := strings.Split(string(fileContents), "\n")
-	for i, line := range lines {
-		if strings.Contains(line, matchString) {
-			return i + 1
+func getLineColumn(content []byte, index int) (line, col int) {
+	line = 1
+	col = 1
+	for i, ch := range content {
+		if i >= index {
+			break
+		}
+		col++
+		if ch == '\n' {
+			line++
+			col = 1
 		}
 	}
-	return 0
+	return line, col
 }
