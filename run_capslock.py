@@ -139,7 +139,6 @@ and executing capability analysis using Capslock.
 
     print("""Starting capability analysis. Please wait...""")
 
-
     try:
         with open(caps_output_file, "w") as cap_file:
             subprocess.run(command, check=True, stdout=cap_file)
