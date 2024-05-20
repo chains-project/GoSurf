@@ -127,7 +127,7 @@ and executing capability analysis using Capslock.
         json.dump(pkgs_list, pkgs_file, indent=4)
     print("\nPackages list saved to", pkgs_output_file)
 
-
+    print(pkgs_paths)
     # Execute Capslock on the explored packages
     if output_format == 'v':
         command = ["capslock", "-packages", ','.join(pkgs_paths), "-output=v"]

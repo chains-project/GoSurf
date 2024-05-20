@@ -1,7 +1,7 @@
 package main
 
 import (
-        "2_anonym_test/mylib"
+        "example.com/anonym_func/mylib"
         "fmt"
 )
 

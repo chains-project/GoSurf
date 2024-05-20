@@ -1,7 +1,7 @@
 package main
 
 import (
-	"init_fnc/mylib"
+	"example.com/init_fnc/mylib"
 	"fmt"
 )
 

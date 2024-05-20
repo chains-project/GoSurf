@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"3_constructor/mylib"
+	"example.com/constructors/mylib"
 )
 
 
