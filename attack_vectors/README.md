@@ -233,61 +233,7 @@ func main() {
 
 - **TODO**: Investigate the false positives.
 
-### [R5] Dynamically generated code [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/run_time/dyngen_code)
-Attackers can insert functions to dynamically generate and execute code at runtime, creating temporary files, building and executing them. This could make detecting malicious behaviors challenging. 
-
-```golang
-package main
-
-import (
-    "fmt"
-    "os"
-    "os/exec"
-)
-
-type Foo struct{}
-
-func (f Foo) Method() {}
-
-func GenerateCode() string {
-        return `package main
-
-                type Foo struct{}
-
-                func (f Foo) Method() {
-                        // malicious code here
-                }
-
-                func main() {
-                        f := Foo{}
-                        f.Method()
-                }
-                `
-}
-
-func main() {
-    code := GenerateCode()
-
-    // Create a temporary Go file to hold the generated code
-    file, _ := os.CreateTemp("", "generated_*.go")
-    defer os.Remove(file.Name()) // Clean up temporary file
-
-    // Write the generated code to the temporary file
-    file.WriteString(code);
-    file.Close();
-
-    // Run the Go file
-    cmd := exec.Command("go", "run", file.Name())
-    cmd.Stdout = os.Stdout
-    cmd.Stderr = os.Stderr
-    cmd.Run()
-}
-
-```
-
-- **Capslock Outocome**: <span style="color:orange">*WEAK FALSE NEGATIVE*</span>
-
-- **Details**: Detects only the `CAPABILITY_EXEC`, but cannot detect the actual capabilities.
+### [R5] Unsafe pointers [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/run_time/unsafe)
 
 
 ### [R6] os/exec package [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/run_time/exec)
@@ -354,3 +300,59 @@ func main() {
 - **Outcomes**: <span style="color:orange">*WEAK FALSE NEGATIVE*</span>
 
 - **Details**: Detects only the `CAPABILITY_EXEC`, but cannot detect the actual capabilities. We can specialize the identified capability into `CAPABILITY_PLUGIN`
+
+### [R8] Dynamically generated code [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/run_time/dyngen_code)
+Attackers can insert functions to dynamically generate and execute code at runtime, creating temporary files, building and executing them. This could make detecting malicious behaviors challenging. 
+
+```golang
+package main
+
+import (
+    "fmt"
+    "os"
+    "os/exec"
+)
+
+type Foo struct{}
+
+func (f Foo) Method() {}
+
+func GenerateCode() string {
+        return `package main
+
+                type Foo struct{}
+
+                func (f Foo) Method() {
+                        // malicious code here
+                }
+
+                func main() {
+                        f := Foo{}
+                        f.Method()
+                }
+                `
+}
+
+func main() {
+    code := GenerateCode()
+
+    // Create a temporary Go file to hold the generated code
+    file, _ := os.CreateTemp("", "generated_*.go")
+    defer os.Remove(file.Name()) // Clean up temporary file
+
+    // Write the generated code to the temporary file
+    file.WriteString(code);
+    file.Close();
+
+    // Run the Go file
+    cmd := exec.Command("go", "run", file.Name())
+    cmd.Stdout = os.Stdout
+    cmd.Stderr = os.Stderr
+    cmd.Run()
+}
+
+```
+
+- **Capslock Outocome**: <span style="color:orange">*WEAK FALSE NEGATIVE*</span>
+
+- **Details**: Detects only the `CAPABILITY_EXEC`, but cannot detect the actual capabilities.
