@@ -12,8 +12,9 @@ import (
 
 type InitFuncParser struct{}
 type AnonymFuncParser struct{}
-type OsExecParser struct{}
+type ExecParser struct{}
 type PluginParser struct{}
+type GoGenerateParser struct{}
 
 // Parser for Anonym Function analysis
 func (p InitFuncParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
@@ -64,8 +65,20 @@ func (p AnonymFuncParser) FindOccurrences(path string, occurrences *[]*Occurrenc
 	}
 }
 
-// Parser for os/exec Function analysis
-func (p OsExecParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
+type execFuncInfo struct {
+	pkgName   string
+	funcNames []string
+}
+
+// Add here exec functions to check for exec analysis
+var execFuncs = []execFuncInfo{
+	{"syscall", []string{"Exec", "ForkExec", "StartProcess"}},
+	{"exec", []string{"Command", "CommandContext"}},
+	{"os", []string{"StartProcess"}},
+}
+
+// Parser for exec function analysis
+func (p ExecParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
 	if err != nil {
@@ -82,20 +95,26 @@ func (p OsExecParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 			}
 
 			pkg, ok := fun.X.(*ast.Ident)
-			if !ok || pkg.Name != "exec" {
+			if !ok {
 				return true
 			}
 
-			// Add this if you want to check for specific functions
-			// if strings.HasPrefix(fun.Sel.Name, "Command") {
+			for _, execFunc := range execFuncs {
+				if pkg.Name == execFunc.pkgName {
+					for _, funcName := range execFunc.funcNames {
+						if fun.Sel.Name == funcName {
+							*occurrences = append(*occurrences, &Occurrence{
+								Type:       "exec",
+								Function:   pkg.Name + "." + fun.Sel.Name,
+								FilePath:   path,
+								LineNumber: fset.Position(x.Pos()).Line,
+							})
+							break
+						}
+					}
+				}
+			}
 
-			// Check for all functions within the os/exec package
-			*occurrences = append(*occurrences, &Occurrence{
-				Type:       "exec",
-				Function:   fun.Sel.Name,
-				FilePath:   path,
-				LineNumber: fset.Position(x.Pos()).Line,
-			})
 		}
 		return true
 	})
@@ -135,4 +154,27 @@ func (p PluginParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 		}
 		return true
 	})
+}
+
+// Parser for go:generate directive analysis
+func (p GoGenerateParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
+	fset := token.NewFileSet()
+	node, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
+	if err != nil {
+		fmt.Printf("Error parsing file %s: %v\n", path, err)
+		return
+	}
+
+	for _, cg := range node.Comments {
+		for _, c := range cg.List {
+			if strings.HasPrefix(c.Text, "//go:generate") {
+				*occurrences = append(*occurrences, &Occurrence{
+					Type:       "go:generate",
+					Command:    strings.TrimPrefix(c.Text, "//go:generate "),
+					FilePath:   path,
+					LineNumber: fset.Position(c.Pos()).Line,
+				})
+			}
+		}
+	}
 }

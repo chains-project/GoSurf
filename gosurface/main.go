@@ -23,52 +23,59 @@ func main() {
 		fmt.Printf("Error getting dependencies: %v\n", err)
 		return
 	}
-	jsonDependencies, err := json.MarshalIndent(dependencies, "", "  ")
-	if err != nil {
-		fmt.Println("Error marshaling JSON:", err)
-		return
-	}
-	fmt.Println(string(jsonDependencies))
+
+	// Print the dependencies
+	/*
+		jsonDependencies, err := json.MarshalIndent(dependencies, "", "  ")
+		if err != nil {
+			fmt.Println("Error marshaling JSON:", err)
+			return
+		}
+		fmt.Println(string(jsonDependencies))
+	*/
 
 	// Analyze module and its dependencies
 	for _, dep := range dependencies {
 		analysis.AnalyzeModule(dep.Path, &analysis.InitOccurrences, analysis.InitFuncParser{})
 		analysis.AnalyzeModule(dep.Path, &analysis.AnonymOccurrences, analysis.AnonymFuncParser{})
-		analysis.AnalyzeModule(dep.Path, &analysis.OsExecOccurrences, analysis.OsExecParser{})
+		analysis.AnalyzeModule(dep.Path, &analysis.ExecOccurrences, analysis.ExecParser{})
 		analysis.AnalyzeModule(dep.Path, &analysis.PluginOccurrences, analysis.PluginParser{})
+		analysis.AnalyzeModule(dep.Path, &analysis.GoGenerateOccurrences, analysis.GoGenerateParser{})
 	}
 
 	// Convert occurrences to JSON
-	occurrences := append(append(append(
+	occurrences := append(append(append(append(
 		analysis.InitOccurrences,
 		analysis.AnonymOccurrences...),
-		analysis.OsExecOccurrences...),
-		analysis.PluginOccurrences...)
+		analysis.ExecOccurrences...),
+		analysis.PluginOccurrences...),
+		analysis.GoGenerateOccurrences...)
 
 	// Print all the occurrences
-	jsonData, err := json.MarshalIndent(occurrences, "", "  ")
-	if err != nil {
-		fmt.Println("Error marshaling JSON:", err)
-		return
-	}
-	fmt.Println("Occurrences:")
-	fmt.Println(string(jsonData))
-
-	// Print all the occurrences of plugin usage
 	/*
-		execJsonData, err := json.MarshalIndent(analysis.PluginOccurrences, "", "  ")
+		jsonData, err := json.MarshalIndent(occurrences, "", "  ")
 		if err != nil {
 			fmt.Println("Error marshaling JSON:", err)
 			return
 		}
-		fmt.Println("ExecOccurrences:")
-		fmt.Println(string(execJsonData))
+		fmt.Println("Occurrences:")
+		fmt.Println(string(jsonData))
 	*/
 
+	// Print all the occurrences of os/exec usage
+	execJsonData, err := json.MarshalIndent(analysis.ExecOccurrences, "", "  ")
+	if err != nil {
+		fmt.Println("Error marshaling JSON:", err)
+		return
+	}
+	fmt.Println("ExecOccurrences:")
+	fmt.Println(string(execJsonData))
+
 	// Count unique occurrences
-	initCount, anonymCount, osExecCount, pluginCount := analysis.CountUniqueOccurrences(occurrences)
+	initCount, anonymCount, osExecCount, pluginCount, goGenerateCount := analysis.CountUniqueOccurrences(occurrences)
 	fmt.Printf("Unique occurrences of init() function: %d\n", initCount)
-	fmt.Printf("Unique occurrences of anonymous function: %d\n", anonymCount)
-	fmt.Printf("Unique occurrences of os/exec package: %d\n", osExecCount)
-	fmt.Printf("Unique occurrences of plugin usage: %d\n", pluginCount)
+	fmt.Printf("Unique occurrences of initialization with anonymous function: %d\n", anonymCount)
+	fmt.Printf("Unique occurrences of invocation from the os/exec package: %d\n", osExecCount)
+	fmt.Printf("Unique occurrences of plugin dynamically loaded: %d\n", pluginCount)
+	fmt.Printf("Unique occurrences of go:generate directive: %d\n", goGenerateCount)
 }
