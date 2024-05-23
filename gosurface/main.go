@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -15,28 +16,29 @@ func main() {
 
 	modulePath := os.Args[1]
 
-	// Get module dependencies
+	// Get paths of packages imported by module (it includes the main package)
+	fmt.Printf("Analyzing the dependencies for module: %s", modulePath)
 	dependencies, err := analysis.GetDependencies(modulePath)
 	if err != nil {
 		fmt.Printf("Error getting dependencies: %v\n", err)
 		return
 	}
-	fmt.Println("Dependencies:", dependencies)
+	jsonDependencies, err := json.MarshalIndent(dependencies, "", "  ")
+	if err != nil {
+		fmt.Println("Error marshaling JSON:", err)
+		return
+	}
+	fmt.Println(string(jsonDependencies))
 
 	// Analyze module and its dependencies
-	analysis.AnalyzeModule(modulePath, &analysis.InitOccurrences, analysis.InitFuncParser{})
-	analysis.AnalyzeModule(modulePath, &analysis.AnonymOccurrences, analysis.AnonymFuncParser{})
-	analysis.AnalyzeModule(modulePath, &analysis.OsExecOccurrences, analysis.OsExecParser{})
-	analysis.AnalyzeModule(modulePath, &analysis.PluginOccurrences, analysis.OsExecParser{})
 	for _, dep := range dependencies {
-		analysis.AnalyzeModule(dep, &analysis.InitOccurrences, analysis.InitFuncParser{})
-		analysis.AnalyzeModule(dep, &analysis.AnonymOccurrences, analysis.AnonymFuncParser{})
-		analysis.AnalyzeModule(modulePath, &analysis.OsExecOccurrences, analysis.OsExecParser{})
-		analysis.AnalyzeModule(modulePath, &analysis.PluginOccurrences, analysis.PluginParser{})
+		analysis.AnalyzeModule(dep.Path, &analysis.InitOccurrences, analysis.InitFuncParser{})
+		analysis.AnalyzeModule(dep.Path, &analysis.AnonymOccurrences, analysis.AnonymFuncParser{})
+		analysis.AnalyzeModule(dep.Path, &analysis.OsExecOccurrences, analysis.OsExecParser{})
+		analysis.AnalyzeModule(dep.Path, &analysis.PluginOccurrences, analysis.PluginParser{})
 	}
 
 	// Convert occurrences to JSON and print
-
 	occurrences := append(append(append(
 		analysis.InitOccurrences,
 		analysis.AnonymOccurrences...),

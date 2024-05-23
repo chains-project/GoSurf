@@ -17,6 +17,11 @@ type Occurrence struct {
 	LineNumber   int
 }
 
+type Dependency struct {
+	Name string
+	Path string
+}
+
 var (
 	InitOccurrences   []*Occurrence
 	AnonymOccurrences []*Occurrence
@@ -28,53 +33,17 @@ type OccurrenceParser interface {
 	FindOccurrences(path string, occurrences *[]*Occurrence)
 }
 
-/*
-func GetDependencies(modulePath string) ([]string, error) {
-	var dependencies []string
+func GetDependencies(modulePath string) ([]Dependency, error) {
+
+	var dependencies []Dependency
 
 	// Check if the parent folder is a package
-	isPackage, packageName := isGoPackage(modulePath)
+	isPackage, packageName, packagePath := isGoPackage(modulePath)
 	if isPackage {
 		canBuild, _ := canBuildGoPackage(modulePath)
 		if canBuild {
-			dependencies = append(dependencies, packageName)
-		}
-	}
-
-	// Recursively check each subfolder
-	err := filepath.Walk(modulePath, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if info.IsDir() {
-			isPackage, packagePath := isGoPackage(path)
-			if isPackage {
-				canBuild, _ := canBuildGoPackage(path)
-				if canBuild {
-					dependencies = append(dependencies, packagePath)
-				}
-			}
-		}
-		return nil
-	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	return dependencies, nil
-}
-*/
-
-func GetDependencies(modulePath string) ([]string, error) {
-	var dependencies []string
-
-	// Check if the parent folder is a package
-	isPackage, packageName := isGoPackage(modulePath)
-	if isPackage {
-		canBuild, _ := canBuildGoPackage(modulePath)
-		if canBuild {
-			dependencies = append(dependencies, packageName)
+			dependency := Dependency{Name: packageName, Path: packagePath}
+			dependencies = append(dependencies, dependency)
 		}
 	}
 
@@ -97,12 +66,13 @@ func GetDependencies(modulePath string) ([]string, error) {
 	processedSubdirs := 0
 
 	// Process each subdirectory
-	for _, path := range subdirs {
-		isPackage, packagePath := isGoPackage(path)
+	for _, dirPath := range subdirs {
+		isPackage, packageName, packagePath := isGoPackage(dirPath)
 		if isPackage {
-			canBuild, _ := canBuildGoPackage(path)
+			canBuild, _ := canBuildGoPackage(dirPath)
 			if canBuild {
-				dependencies = append(dependencies, packagePath)
+				dependency := Dependency{Name: packageName, Path: packagePath}
+				dependencies = append(dependencies, dependency)
 			}
 		}
 		processedSubdirs++
@@ -114,7 +84,7 @@ func GetDependencies(modulePath string) ([]string, error) {
 	return dependencies, nil
 }
 
-func isGoPackage(dirPath string) (bool, string) {
+func isGoPackage(dirPath string) (bool, string, string) {
 	goFiles := findGoFiles(dirPath)
 	for _, goFile := range goFiles {
 		filePath := filepath.Join(dirPath, goFile)
@@ -124,10 +94,11 @@ func isGoPackage(dirPath string) (bool, string) {
 		}
 		match := packageRegex.FindSubmatch(content)
 		if len(match) > 1 {
-			return true, dirPath
+			packageName := string(match[1])
+			return true, packageName, dirPath
 		}
 	}
-	return false, ""
+	return false, "", ""
 }
 
 func canBuildGoPackage(dirPath string) (bool, string) {
