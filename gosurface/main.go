@@ -38,22 +38,23 @@ func main() {
 		analysis.AnalyzeModule(dep.Path, &analysis.PluginOccurrences, analysis.PluginParser{})
 	}
 
-	// Convert occurrences to JSON and print
+	// Convert occurrences to JSON
 	occurrences := append(append(append(
 		analysis.InitOccurrences,
 		analysis.AnonymOccurrences...),
 		analysis.OsExecOccurrences...),
 		analysis.PluginOccurrences...)
 
-	/*	jsonData, err := json.MarshalIndent(occurrences)
-		if err != nil {
-			fmt.Println("Error marshaling JSON:", err)
-			return
-		}
-		fmt.Println("Occurrences:")
-		fmt.Println(string(jsonData))
-	*/
+	// Print all the occurrences
+	jsonData, err := json.MarshalIndent(occurrences, "", "  ")
+	if err != nil {
+		fmt.Println("Error marshaling JSON:", err)
+		return
+	}
+	fmt.Println("Occurrences:")
+	fmt.Println(string(jsonData))
 
+	// Print all the occurrences of plugin usage
 	/*
 		execJsonData, err := json.MarshalIndent(analysis.PluginOccurrences, "", "  ")
 		if err != nil {
