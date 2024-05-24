@@ -67,7 +67,6 @@ func GetDependencies(modulePath string) ([]Dependency, error) {
 	processedSubdirs := 0
 
 	// Process each subdirectory
-
 	for _, dirPath := range subdirs {
 		isPackage, packageName, packagePath := isGoPackage(dirPath)
 		if isPackage {
