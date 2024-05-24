@@ -25,14 +25,12 @@ func main() {
 	}
 
 	// Print the dependencies
-	/*
-		jsonDependencies, err := json.MarshalIndent(dependencies, "", "  ")
-		if err != nil {
-			fmt.Println("Error marshaling JSON:", err)
-			return
-		}
-		fmt.Println(string(jsonDependencies))
-	*/
+	jsonDependencies, err := json.MarshalIndent(dependencies, "", "  ")
+	if err != nil {
+		fmt.Println("Error marshaling JSON:", err)
+		return
+	}
+	fmt.Println(string(jsonDependencies))
 
 	// Analyze module and its dependencies
 	for _, dep := range dependencies {
@@ -63,13 +61,15 @@ func main() {
 	*/
 
 	// Print all the occurrences of os/exec usage
-	execJsonData, err := json.MarshalIndent(analysis.ExecOccurrences, "", "  ")
-	if err != nil {
-		fmt.Println("Error marshaling JSON:", err)
-		return
-	}
-	fmt.Println("ExecOccurrences:")
-	fmt.Println(string(execJsonData))
+	/*
+		execJsonData, err := json.MarshalIndent(analysis.ExecOccurrences, "", "  ")
+		if err != nil {
+			fmt.Println("Error marshaling JSON:", err)
+			return
+		}
+		fmt.Println("ExecOccurrences:")
+		fmt.Println(string(execJsonData))
+	*/
 
 	// Count unique occurrences
 	initCount, anonymCount, osExecCount, pluginCount, goGenerateCount := analysis.CountUniqueOccurrences(occurrences)
