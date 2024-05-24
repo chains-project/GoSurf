@@ -40,13 +40,22 @@ func GetDependencies(modulePath string) ([]Dependency, error) {
 	var dependencies []Dependency
 
 	// Check if the parent folder is a package
+	/*
+		isPackage, packageName, packagePath := isGoPackage(modulePath)
+		if isPackage {
+			canBuild, _ := canBuildGoPackage(modulePath)
+			if canBuild {
+				dependency := Dependency{Name: packageName, Path: packagePath}
+				dependencies = append(dependencies, dependency)
+			}
+		}
+	*/
 	isPackage, packageName, packagePath := isGoPackage(modulePath)
 	if isPackage {
-		canBuild, _ := canBuildGoPackage(modulePath)
-		if canBuild {
-			dependency := Dependency{Name: packageName, Path: packagePath}
-			dependencies = append(dependencies, dependency)
-		}
+
+		dependency := Dependency{Name: packageName, Path: packagePath}
+		dependencies = append(dependencies, dependency)
+
 	}
 
 	// Gather subdirectories
@@ -68,14 +77,27 @@ func GetDependencies(modulePath string) ([]Dependency, error) {
 	processedSubdirs := 0
 
 	// Process each subdirectory
+	/*
+		for _, dirPath := range subdirs {
+			isPackage, packageName, packagePath := isGoPackage(dirPath)
+			if isPackage {
+				canBuild, _ := canBuildGoPackage(dirPath)
+				if canBuild {
+					dependency := Dependency{Name: packageName, Path: packagePath}
+					dependencies = append(dependencies, dependency)
+				}
+			}
+			processedSubdirs++
+			updateProgressBar(processedSubdirs, totalSubdirs)
+		}
+	*/
 	for _, dirPath := range subdirs {
 		isPackage, packageName, packagePath := isGoPackage(dirPath)
 		if isPackage {
-			canBuild, _ := canBuildGoPackage(dirPath)
-			if canBuild {
-				dependency := Dependency{Name: packageName, Path: packagePath}
-				dependencies = append(dependencies, dependency)
-			}
+
+			dependency := Dependency{Name: packageName, Path: packagePath}
+			dependencies = append(dependencies, dependency)
+
 		}
 		processedSubdirs++
 		updateProgressBar(processedSubdirs, totalSubdirs)
