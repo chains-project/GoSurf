@@ -3,7 +3,6 @@ package analysis
 import (
 	"fmt"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -40,22 +39,13 @@ func GetDependencies(modulePath string) ([]Dependency, error) {
 	var dependencies []Dependency
 
 	// Check if the parent folder is a package
-	/*
-		isPackage, packageName, packagePath := isGoPackage(modulePath)
-		if isPackage {
-			canBuild, _ := canBuildGoPackage(modulePath)
-			if canBuild {
-				dependency := Dependency{Name: packageName, Path: packagePath}
-				dependencies = append(dependencies, dependency)
-			}
-		}
-	*/
 	isPackage, packageName, packagePath := isGoPackage(modulePath)
 	if isPackage {
-
+		//canBuild, _ := canBuildGoPackage(modulePath)
+		//if canBuild {
 		dependency := Dependency{Name: packageName, Path: packagePath}
 		dependencies = append(dependencies, dependency)
-
+		//}
 	}
 
 	// Gather subdirectories
@@ -77,27 +67,15 @@ func GetDependencies(modulePath string) ([]Dependency, error) {
 	processedSubdirs := 0
 
 	// Process each subdirectory
-	/*
-		for _, dirPath := range subdirs {
-			isPackage, packageName, packagePath := isGoPackage(dirPath)
-			if isPackage {
-				canBuild, _ := canBuildGoPackage(dirPath)
-				if canBuild {
-					dependency := Dependency{Name: packageName, Path: packagePath}
-					dependencies = append(dependencies, dependency)
-				}
-			}
-			processedSubdirs++
-			updateProgressBar(processedSubdirs, totalSubdirs)
-		}
-	*/
+
 	for _, dirPath := range subdirs {
 		isPackage, packageName, packagePath := isGoPackage(dirPath)
 		if isPackage {
-
+			//canBuild, _ := canBuildGoPackage(dirPath)
+			//if canBuild {
 			dependency := Dependency{Name: packageName, Path: packagePath}
 			dependencies = append(dependencies, dependency)
-
+			//}
 		}
 		processedSubdirs++
 		updateProgressBar(processedSubdirs, totalSubdirs)
@@ -125,6 +103,7 @@ func isGoPackage(dirPath string) (bool, string, string) {
 	return false, "", ""
 }
 
+/*
 func canBuildGoPackage(dirPath string) (bool, string) {
 	cmd := exec.Command("go", "build")
 	cmd.Dir = dirPath
@@ -134,6 +113,7 @@ func canBuildGoPackage(dirPath string) (bool, string) {
 	}
 	return true, ""
 }
+*/
 
 func findGoFiles(dirPath string) []string {
 	var goFiles []string
