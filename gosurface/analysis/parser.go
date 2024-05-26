@@ -15,6 +15,7 @@ type AnonymFuncParser struct{}
 type ExecParser struct{}
 type PluginParser struct{}
 type GoGenerateParser struct{}
+type UnsafeParser struct{}
 
 // Parser for Anonym Function analysis
 func (p InitFuncParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
@@ -177,4 +178,35 @@ func (p GoGenerateParser) FindOccurrences(path string, occurrences *[]*Occurrenc
 			}
 		}
 	}
+}
+
+// Parser for unsafe pointer usage
+func (p UnsafeParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
+	fset := token.NewFileSet()
+	node, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
+	if err != nil {
+		fmt.Printf("Error parsing file %s: %v\n", path, err)
+		return
+	}
+	occurs := false
+	ast.Inspect(node, func(n ast.Node) bool {
+		if occurs { // only count one unsafe per file
+			return false
+		}
+		switch x := n.(type) {
+		case *ast.CallExpr:
+			if sel, ok := x.Fun.(*ast.SelectorExpr); ok {
+				if pkg, ok := sel.X.(*ast.Ident); ok && pkg.Name == "unsafe" && sel.Sel.Name == "Pointer" {
+					*occurrences = append(*occurrences, &Occurrence{
+						Type:       "unsafe",
+						FilePath:   path,
+						LineNumber: fset.Position(x.Pos()).Line,
+					})
+					occurs = true
+				}
+			}
+		}
+		return true
+	})
+
 }
