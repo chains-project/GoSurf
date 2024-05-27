@@ -17,7 +17,8 @@ func main() {
 	modulePath := os.Args[1]
 
 	// Get paths of packages imported by module (it includes the main package)
-	fmt.Printf("Analyzing the dependencies for module: %s", modulePath)
+	// TODO: currently only fetches subdirectories in module, not external dependencies
+	fmt.Printf("Analyzing module: %s", modulePath)
 	dependencies, err := analysis.GetDependencies(modulePath)
 	if err != nil {
 		fmt.Printf("Error getting dependencies: %v\n", err)
@@ -39,15 +40,17 @@ func main() {
 		analysis.AnalyzeModule(dep.Path, &analysis.ExecOccurrences, analysis.ExecParser{})
 		analysis.AnalyzeModule(dep.Path, &analysis.PluginOccurrences, analysis.PluginParser{})
 		analysis.AnalyzeModule(dep.Path, &analysis.GoGenerateOccurrences, analysis.GoGenerateParser{})
+		analysis.AnalyzeModule(dep.Path, &analysis.UnsafeOccurrences, analysis.UnsafeParser{})
 	}
 
 	// Convert occurrences to JSON
-	occurrences := append(append(append(append(
+	occurrences := append(append(append(append(append(
 		analysis.InitOccurrences,
 		analysis.AnonymOccurrences...),
 		analysis.ExecOccurrences...),
 		analysis.PluginOccurrences...),
-		analysis.GoGenerateOccurrences...)
+		analysis.GoGenerateOccurrences...),
+		analysis.UnsafeOccurrences...)
 
 	// Print all the occurrences
 	/*
@@ -72,10 +75,11 @@ func main() {
 	*/
 
 	// Count unique occurrences
-	initCount, anonymCount, osExecCount, pluginCount, goGenerateCount := analysis.CountUniqueOccurrences(occurrences)
+	initCount, anonymCount, osExecCount, pluginCount, goGenerateCount, unsafeCount := analysis.CountUniqueOccurrences(occurrences)
 	fmt.Printf("Unique occurrences of init() function: %d\n", initCount)
 	fmt.Printf("Unique occurrences of initialization with anonymous function: %d\n", anonymCount)
 	fmt.Printf("Unique occurrences of invocation from the os/exec package: %d\n", osExecCount)
 	fmt.Printf("Unique occurrences of plugin dynamically loaded: %d\n", pluginCount)
 	fmt.Printf("Unique occurrences of go:generate directive: %d\n", goGenerateCount)
+	fmt.Printf("Unique occurrences of unsafe pointers: %d\n", unsafeCount)
 }
