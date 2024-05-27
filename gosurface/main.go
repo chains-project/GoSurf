@@ -18,7 +18,7 @@ func main() {
 
 	// Get paths of packages imported by module (it includes the main package)
 	// TODO: currently only fetches subdirectories in module, not external dependencies
-	fmt.Printf("Analyzing the dependencies for module: %s", modulePath)
+	fmt.Printf("Analyzing module: %s", modulePath)
 	dependencies, err := analysis.GetDependencies(modulePath)
 	if err != nil {
 		fmt.Printf("Error getting dependencies: %v\n", err)
