@@ -188,11 +188,7 @@ func (p UnsafeParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 		fmt.Printf("Error parsing file %s: %v\n", path, err)
 		return
 	}
-	occurs := false
 	ast.Inspect(node, func(n ast.Node) bool {
-		if occurs { // only count one unsafe per file
-			return false
-		}
 		switch x := n.(type) {
 		case *ast.CallExpr:
 			if sel, ok := x.Fun.(*ast.SelectorExpr); ok {
@@ -202,7 +198,6 @@ func (p UnsafeParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 						FilePath:   path,
 						LineNumber: fset.Position(x.Pos()).Line,
 					})
-					occurs = true
 				}
 			}
 		}
