@@ -1,2 +1,0 @@
-https://github.com/omaidf/go-malware
-https://github.com/tanktacle/VeryGoodWare
