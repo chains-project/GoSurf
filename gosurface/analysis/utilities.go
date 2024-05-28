@@ -29,6 +29,7 @@ var (
 	PluginOccurrences     []*Occurrence
 	GoGenerateOccurrences []*Occurrence
 	UnsafeOccurrences     []*Occurrence
+	CgoOccurrences        []*Occurrence
 )
 
 type OccurrenceParser interface {
@@ -142,13 +143,14 @@ func GetLineColumn(content []byte, index int) (line, col int) {
 	return line, col
 }
 
-func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, execCount, pluginCount, goGenerateCount, unsafeCount int) {
+func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, execCount, pluginCount, goGenerateCount, unsafeCount, cgoCount int) {
 	initOccurrences := make(map[string]struct{})
 	anonymOccurrences := make(map[string]struct{})
 	execOccurrences := make(map[string]struct{})
 	pluginOccurrences := make(map[string]struct{})
 	goGenerateOccurrences := make(map[string]struct{})
 	unsafeOccurrences := make(map[string]struct{})
+	cgoOccurrences := make(map[string]struct{})
 
 	for _, occ := range occurrences {
 		switch occ.Type {
@@ -170,10 +172,13 @@ func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, 
 		case "unsafe":
 			key := fmt.Sprintf("%s:%s:%d", occ.Function, occ.FilePath, occ.LineNumber) // TODO: which info to include here
 			unsafeOccurrences[key] = struct{}{}
+		case "cgo":
+			key := fmt.Sprintf("%s:%s:%d", occ.Function, occ.FilePath, occ.LineNumber) // TODO: which info to include here
+			cgoOccurrences[key] = struct{}{}
 		}
 	}
 
-	return len(initOccurrences), len(anonymOccurrences), len(execOccurrences), len(pluginOccurrences), len(goGenerateOccurrences), len(unsafeOccurrences)
+	return len(initOccurrences), len(anonymOccurrences), len(execOccurrences), len(pluginOccurrences), len(goGenerateOccurrences), len(unsafeOccurrences), len(cgoOccurrences)
 }
 
 func AnalyzeModule(path string, occurrences *[]*Occurrence, parser OccurrenceParser) {

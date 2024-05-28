@@ -16,6 +16,7 @@ type ExecParser struct{}
 type PluginParser struct{}
 type GoGenerateParser struct{}
 type UnsafeParser struct{}
+type CgoParser struct{}
 
 // Parser for Anonym Function analysis
 func (p InitFuncParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
@@ -195,6 +196,7 @@ func (p UnsafeParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 				if pkg, ok := sel.X.(*ast.Ident); ok && pkg.Name == "unsafe" && sel.Sel.Name == "Pointer" {
 					*occurrences = append(*occurrences, &Occurrence{
 						Type:       "unsafe",
+						Function:   "unsafe.Pointer",
 						FilePath:   path,
 						LineNumber: fset.Position(x.Pos()).Line,
 					})
@@ -203,5 +205,35 @@ func (p UnsafeParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 		}
 		return true
 	})
+}
 
+// Parser for Cgo usage
+func (p CgoParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
+	fset := token.NewFileSet()
+	node, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
+	if err != nil {
+		fmt.Printf("Error parsing file %s: %v\n", path, err)
+		return
+	}
+
+	ast.Inspect(node, func(n ast.Node) bool {
+		switch x := n.(type) {
+		case *ast.CallExpr:
+			sel, ok := x.Fun.(*ast.SelectorExpr)
+
+			if !ok {
+				return true
+			}
+			
+			if pkg, ok := sel.X.(*ast.Ident); ok && pkg.Name == "C" {
+				*occurrences = append(*occurrences, &Occurrence{
+					Type:       "cgo",
+					Function:   "C",
+					FilePath:   path,
+					LineNumber: fset.Position(x.Pos()).Line,
+				})
+			}
+		}
+		return true
+	})
 }
