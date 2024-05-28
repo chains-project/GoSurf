@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"example.com/gosurface/analysis"
+	"github.com/chains-project/capslock-analysis/gosurface/analysis"
 )
 
 func main() {
