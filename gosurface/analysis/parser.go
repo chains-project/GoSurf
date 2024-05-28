@@ -16,6 +16,7 @@ type ExecParser struct{}
 type PluginParser struct{}
 type GoGenerateParser struct{}
 type UnsafeParser struct{}
+type CgoParser struct{}
 
 // Parser for Anonym Function analysis
 func (p InitFuncParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
@@ -203,5 +204,10 @@ func (p UnsafeParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 		}
 		return true
 	})
+}
 
+func (p CgoParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
+
+	// todo
+	fmt.Println("do something")
 }
