@@ -1,6 +1,7 @@
 package analysis
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -9,12 +10,13 @@ import (
 )
 
 type Occurrence struct {
-	Type         string // "init" or "anonym"
-	VariableName string // for anonymous functions
-	Command      string // for go:generate directive
-	Function     string // for os/exec functions
-	FilePath     string
-	LineNumber   int
+	AttackVector  string
+	FilePath      string
+	LineNumber    int
+	VariableName  string // for anonymous functions
+	Command       string // for go:generate directive
+	MethodInvoked string // for indirect, exec, plugin, cgo
+	TypePassed    string // for indirect
 }
 
 type Dependency struct {
@@ -30,6 +32,7 @@ var (
 	GoGenerateOccurrences []*Occurrence
 	UnsafeOccurrences     []*Occurrence
 	CgoOccurrences        []*Occurrence
+	IndirectOccurrences   []*Occurrence
 )
 
 type OccurrenceParser interface {
@@ -143,44 +146,6 @@ func GetLineColumn(content []byte, index int) (line, col int) {
 	return line, col
 }
 
-func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, execCount, pluginCount, goGenerateCount, unsafeCount, cgoCount int) {
-	initOccurrences := make(map[string]struct{})
-	anonymOccurrences := make(map[string]struct{})
-	execOccurrences := make(map[string]struct{})
-	pluginOccurrences := make(map[string]struct{})
-	goGenerateOccurrences := make(map[string]struct{})
-	unsafeOccurrences := make(map[string]struct{})
-	cgoOccurrences := make(map[string]struct{})
-
-	for _, occ := range occurrences {
-		switch occ.Type {
-		case "init":
-			key := fmt.Sprintf("%s:%d", occ.FilePath, occ.LineNumber)
-			initOccurrences[key] = struct{}{}
-		case "anonym":
-			key := fmt.Sprintf("%s:%s:%d", occ.VariableName, occ.FilePath, occ.LineNumber)
-			anonymOccurrences[key] = struct{}{}
-		case "exec":
-			key := fmt.Sprintf("%s:%s:%d", occ.Function, occ.FilePath, occ.LineNumber)
-			execOccurrences[key] = struct{}{}
-		case "plugin":
-			key := fmt.Sprintf("%s:%s:%d", occ.FilePath, occ.Function, occ.LineNumber)
-			pluginOccurrences[key] = struct{}{}
-		case "go:generate":
-			key := fmt.Sprintf("%s:%s:%d", occ.Command, occ.FilePath, occ.LineNumber)
-			goGenerateOccurrences[key] = struct{}{}
-		case "unsafe":
-			key := fmt.Sprintf("%s:%s:%d", occ.Function, occ.FilePath, occ.LineNumber) // TODO: which info to include here
-			unsafeOccurrences[key] = struct{}{}
-		case "cgo":
-			key := fmt.Sprintf("%s:%s:%d", occ.Function, occ.FilePath, occ.LineNumber) // TODO: which info to include here
-			cgoOccurrences[key] = struct{}{}
-		}
-	}
-
-	return len(initOccurrences), len(anonymOccurrences), len(execOccurrences), len(pluginOccurrences), len(goGenerateOccurrences), len(unsafeOccurrences), len(cgoOccurrences)
-}
-
 func AnalyzeModule(path string, occurrences *[]*Occurrence, parser OccurrenceParser) {
 	filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -193,6 +158,83 @@ func AnalyzeModule(path string, occurrences *[]*Occurrence, parser OccurrencePar
 		parser.FindOccurrences(path, occurrences)
 		return nil
 	})
+}
+
+func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, execCount, pluginCount, goGenerateCount, unsafeCount, cgoCount, indirectCount int) {
+	initOccurrences := make(map[string]struct{})
+	anonymOccurrences := make(map[string]struct{})
+	execOccurrences := make(map[string]struct{})
+	pluginOccurrences := make(map[string]struct{})
+	goGenerateOccurrences := make(map[string]struct{})
+	unsafeOccurrences := make(map[string]struct{})
+	cgoOccurrences := make(map[string]struct{})
+	indirectOccurrences := make(map[string]struct{})
+
+	for _, occ := range occurrences {
+		switch occ.AttackVector {
+		case "init":
+			key := fmt.Sprintf("%s:%d", occ.FilePath, occ.LineNumber)
+			initOccurrences[key] = struct{}{}
+		case "anonym":
+			key := fmt.Sprintf("%s:%s:%d", occ.VariableName, occ.FilePath, occ.LineNumber)
+			anonymOccurrences[key] = struct{}{}
+		case "exec":
+			key := fmt.Sprintf("%s:%s:%d", occ.MethodInvoked, occ.FilePath, occ.LineNumber)
+			execOccurrences[key] = struct{}{}
+		case "plugin":
+			key := fmt.Sprintf("%s:%s:%d", occ.FilePath, occ.MethodInvoked, occ.LineNumber)
+			pluginOccurrences[key] = struct{}{}
+		case "go:generate":
+			key := fmt.Sprintf("%s:%s:%d", occ.Command, occ.FilePath, occ.LineNumber)
+			goGenerateOccurrences[key] = struct{}{}
+		case "unsafe":
+			key := fmt.Sprintf("%s:%s:%d", occ.MethodInvoked, occ.FilePath, occ.LineNumber) // TODO: which info to include here
+			unsafeOccurrences[key] = struct{}{}
+		case "cgo":
+			key := fmt.Sprintf("%s:%s:%d", occ.MethodInvoked, occ.FilePath, occ.LineNumber) // TODO: which info to include here
+			cgoOccurrences[key] = struct{}{}
+		case "indirect":
+			key := fmt.Sprintf("%s:%s:%s:%d", occ.MethodInvoked, occ.TypePassed, occ.FilePath, occ.LineNumber)
+			indirectOccurrences[key] = struct{}{}
+		}
+	}
+
+	return len(initOccurrences), len(anonymOccurrences), len(execOccurrences), len(pluginOccurrences), len(goGenerateOccurrences), len(unsafeOccurrences), len(cgoOccurrences), len(IndirectOccurrences)
+}
+
+type OccurrenceJSON struct {
+	Type          string `json:"Type,omitempty"`
+	FilePath      string `json:"FilePath,omitempty"`
+	LineNumber    int    `json:"LineNumber,omitempty"`
+	MethodInvoked string `json:"MethodInvoked,omitempty"`
+	TypePassed    string `json:"TypePassed,omitempty"`
+	VariableName  string `json:"VariableName,omitempty"`
+	Command       string `json:"Command,omitempty"`
+}
+
+func PrintOccurrences(occurrences []*Occurrence) {
+	var result []OccurrenceJSON
+	for _, occ := range occurrences {
+		occJSON := OccurrenceJSON{
+			Type:          occ.AttackVector,
+			FilePath:      occ.FilePath,
+			LineNumber:    occ.LineNumber,
+			MethodInvoked: occ.MethodInvoked,
+			TypePassed:    occ.TypePassed,
+			VariableName:  occ.VariableName,
+			Command:       occ.Command,
+		}
+		result = append(result, occJSON)
+	}
+
+	jsonData, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		fmt.Println("Error marshaling JSON:", err)
+		return
+	}
+
+	fmt.Println("Vector Occurrences:")
+	fmt.Println(string(jsonData))
 }
 
 // Function to render a progress bar on the console

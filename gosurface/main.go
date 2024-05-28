@@ -41,44 +41,27 @@ func main() {
 		analysis.AnalyzeModule(dep.Path, &analysis.PluginOccurrences, analysis.PluginParser{})
 		analysis.AnalyzeModule(dep.Path, &analysis.GoGenerateOccurrences, analysis.GoGenerateParser{})
 		analysis.AnalyzeModule(dep.Path, &analysis.UnsafeOccurrences, analysis.UnsafeParser{})
-		analysis.AnalyzeModule(dep.Path, &analysis.UnsafeOccurrences, analysis.CgoParser{})
+		analysis.AnalyzeModule(dep.Path, &analysis.CgoOccurrences, analysis.CgoParser{})
+		analysis.AnalyzeModule(dep.Path, &analysis.IndirectOccurrences, analysis.IndirectParser{})
 	}
 
 	// Convert occurrences to JSON
-	occurrences := append(append(append(append(append(append(
+	occurrences := append(append(append(append(append(append(append(
 		analysis.InitOccurrences,
 		analysis.AnonymOccurrences...),
 		analysis.ExecOccurrences...),
 		analysis.PluginOccurrences...),
 		analysis.GoGenerateOccurrences...),
 		analysis.UnsafeOccurrences...),
-		analysis.CgoOccurrences...,
-	)
+		analysis.CgoOccurrences...),
+		analysis.IndirectOccurrences...)
 
-	// Print all the occurrences
-	/*
-		jsonData, err := json.MarshalIndent(occurrences, "", "  ")
-		if err != nil {
-			fmt.Println("Error marshaling JSON:", err)
-			return
-		}
-		fmt.Println("Occurrences:")
-		fmt.Println(string(jsonData))
-	*/
-
-	// Print all the occurrences of os/exec usage
-	
-		anonymJsonData, err := json.MarshalIndent(analysis.AnonymOccurrences, "", "  ")
-		if err != nil {
-			fmt.Println("Error marshaling JSON:", err)
-			return
-		}
-		fmt.Println("AnonymOccurrences:")
-		fmt.Println(string(anonymJsonData))
-	
+	// Print occurrences
+	// analysis.PrintOccurrences(analysis.IndirectOccurrences)
+	analysis.PrintOccurrences(occurrences)
 
 	// Count unique occurrences
-	initCount, anonymCount, osExecCount, pluginCount, goGenerateCount, unsafeCount, cgoCount := analysis.CountUniqueOccurrences(occurrences)
+	initCount, anonymCount, osExecCount, pluginCount, goGenerateCount, unsafeCount, cgoCount, indirectCount := analysis.CountUniqueOccurrences(occurrences)
 	fmt.Printf("Unique occurrences of init() function: %d\n", initCount)
 	fmt.Printf("Unique occurrences of initialization with anonymous function: %d\n", anonymCount)
 	fmt.Printf("Unique occurrences of invocation from the os/exec package: %d\n", osExecCount)
@@ -86,4 +69,5 @@ func main() {
 	fmt.Printf("Unique occurrences of go:generate directive: %d\n", goGenerateCount)
 	fmt.Printf("Unique occurrences of unsafe pointers: %d\n", unsafeCount)
 	fmt.Printf("Unique occurrences of CGO pointers: %d\n", cgoCount)
+	fmt.Printf("Unique occurrences of indirect method calls via interfaces: %d\n", indirectCount)
 }
