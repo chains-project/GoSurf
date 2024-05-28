@@ -196,6 +196,7 @@ func (p UnsafeParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 				if pkg, ok := sel.X.(*ast.Ident); ok && pkg.Name == "unsafe" && sel.Sel.Name == "Pointer" {
 					*occurrences = append(*occurrences, &Occurrence{
 						Type:       "unsafe",
+						Function:   "unsafe.Pointer",
 						FilePath:   path,
 						LineNumber: fset.Position(x.Pos()).Line,
 					})
