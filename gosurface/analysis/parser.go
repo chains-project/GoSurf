@@ -17,7 +17,7 @@ type PluginParser struct{}
 type GoGenerateParser struct{}
 type UnsafeParser struct{}
 
-// Parser for Anonym Function analysis
+// Parser for init() Function analysis
 func (p InitFuncParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
@@ -40,7 +40,7 @@ func (p InitFuncParser) FindOccurrences(path string, occurrences *[]*Occurrence)
 	}
 }
 
-// Parser for init() Function analysis
+// Parser for anonymous functions analysis
 func (p AnonymFuncParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 	fileContents, err := os.ReadFile(path)
 	if err != nil {
@@ -48,6 +48,7 @@ func (p AnonymFuncParser) FindOccurrences(path string, occurrences *[]*Occurrenc
 		return
 	}
 
+	//pattern := `var\s+(\w+)(?:\s+\w+)?\s*=\s*func\(\)(?:\s*\w+)?\s*{\s*[^}]*\s*}\(\)`
 	pattern := `var\s+(\w+)\s*(\w*)\s*=\s*func\(\)\s*(\w*)\s*{[^}]*}\(\)`
 	re := regexp.MustCompile(pattern)
 

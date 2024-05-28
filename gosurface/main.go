@@ -64,15 +64,15 @@ func main() {
 	*/
 
 	// Print all the occurrences of os/exec usage
-	/*
-		execJsonData, err := json.MarshalIndent(analysis.ExecOccurrences, "", "  ")
+	
+		anonymJsonData, err := json.MarshalIndent(analysis.AnonymOccurrences, "", "  ")
 		if err != nil {
 			fmt.Println("Error marshaling JSON:", err)
 			return
 		}
-		fmt.Println("ExecOccurrences:")
-		fmt.Println(string(execJsonData))
-	*/
+		fmt.Println("AnonymOccurrences:")
+		fmt.Println(string(anonymJsonData))
+	
 
 	// Count unique occurrences
 	initCount, anonymCount, osExecCount, pluginCount, goGenerateCount, unsafeCount := analysis.CountUniqueOccurrences(occurrences)
