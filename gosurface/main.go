@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"example.com/gosurface/analysis"
+	"github.com/chains-project/capslock-analysis/gosurface/analysis"
 )
 
 func main() {
@@ -19,9 +19,9 @@ func main() {
 	// Get paths of packages imported by module (it includes the main package)
 	// TODO: currently only fetches subdirectories in module, not external dependencies
 	fmt.Printf("Analyzing module: %s", modulePath)
-	dependencies, err := analysis.GetDependencies(modulePath)
+	dependencies, err := analysis.GetDependencies(modulePath) // TODO rename get module/packages
 	if err != nil {
-		fmt.Printf("Error getting dependencies: %v\n", err)
+		fmt.Printf("Error getting files in module: %v\n", err)
 		return
 	}
 
@@ -41,16 +41,19 @@ func main() {
 		analysis.AnalyzeModule(dep.Path, &analysis.PluginOccurrences, analysis.PluginParser{})
 		analysis.AnalyzeModule(dep.Path, &analysis.GoGenerateOccurrences, analysis.GoGenerateParser{})
 		analysis.AnalyzeModule(dep.Path, &analysis.UnsafeOccurrences, analysis.UnsafeParser{})
+		analysis.AnalyzeModule(dep.Path, &analysis.UnsafeOccurrences, analysis.CgoParser{})
 	}
 
 	// Convert occurrences to JSON
-	occurrences := append(append(append(append(append(
+	occurrences := append(append(append(append(append(append(
 		analysis.InitOccurrences,
 		analysis.AnonymOccurrences...),
 		analysis.ExecOccurrences...),
 		analysis.PluginOccurrences...),
 		analysis.GoGenerateOccurrences...),
-		analysis.UnsafeOccurrences...)
+		analysis.UnsafeOccurrences...),
+		analysis.CgoOccurrences...,
+	)
 
 	// Print all the occurrences
 	/*
@@ -75,11 +78,12 @@ func main() {
 	
 
 	// Count unique occurrences
-	initCount, anonymCount, osExecCount, pluginCount, goGenerateCount, unsafeCount := analysis.CountUniqueOccurrences(occurrences)
+	initCount, anonymCount, osExecCount, pluginCount, goGenerateCount, unsafeCount, cgoCount := analysis.CountUniqueOccurrences(occurrences)
 	fmt.Printf("Unique occurrences of init() function: %d\n", initCount)
 	fmt.Printf("Unique occurrences of initialization with anonymous function: %d\n", anonymCount)
 	fmt.Printf("Unique occurrences of invocation from the os/exec package: %d\n", osExecCount)
 	fmt.Printf("Unique occurrences of plugin dynamically loaded: %d\n", pluginCount)
 	fmt.Printf("Unique occurrences of go:generate directive: %d\n", goGenerateCount)
 	fmt.Printf("Unique occurrences of unsafe pointers: %d\n", unsafeCount)
+	fmt.Printf("Unique occurrences of CGO pointers: %d\n", cgoCount)
 }
