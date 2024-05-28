@@ -272,7 +272,39 @@ func main() {
 
 - **TODO**: Investigate the false positives.
 
-### [R5] Unsafe pointers [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/run_time/unsafe)
+### [R5] Assembly linked objects [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/run_time/assembly)
+Attackers can introduce malicious code into some functions defined in assembly files.
+
+Create an assembly file `asm.s` with a function definition:
+```asm
+// +build amd64
+
+#include "textflag.h"
+
+// func AsmFunction() int
+TEXT ·AsmFunction(SB), NOSPLIT, $0-8
+    MOVQ $42, AX
+    MOVQ AX, ret+0(FP)
+    // Malcious code here
+    RET
+```
+
+Create a Go file `main.go` that declare and use a function with the same name as the defined assembly function: 
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func AsmFunction() int
+
+func main() {
+	result := AsmFunction()
+	fmt.Println("Result from assembly function:", result)
+}
+```
+Build in module-aware mode executing `go mod init` and `go build` to compile and link the objects together.
 
 
 ### [R6] os/exec package [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/run_time/exec)
@@ -340,7 +372,11 @@ func main() {
 
 - **Details**: Detects only the `CAPABILITY_EXEC`, but cannot detect the actual capabilities. We can specialize the identified capability into `CAPABILITY_PLUGIN`
 
-### [R8] Dynamically generated code [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/run_time/dyngen_code)
+### [R8] Unsafe pointers [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/run_time/unsafe)
+
+TODO
+
+### [R9] Dynamically generated code [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/run_time/dyngen_code)
 Attackers can insert functions to dynamically generate and execute code at runtime, creating temporary files, building and executing them. This could make detecting malicious behaviors challenging. 
 
 ```golang
