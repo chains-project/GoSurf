@@ -237,6 +237,15 @@ func PrintOccurrences(occurrences []*Occurrence) {
 	fmt.Println(string(jsonData))
 }
 
+func PrintDependencies(dependencies []Dependency) {
+	jsonDependencies, err := json.MarshalIndent(dependencies, "", "  ")
+	if err != nil {
+		fmt.Println("Error marshaling JSON:", err)
+		return
+	}
+	fmt.Println(string(jsonDependencies))
+}
+
 // Function to render a progress bar on the console
 func updateProgressBar(current, total int) {
 	width := 50 // Width of the progress bar
