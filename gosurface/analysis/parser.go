@@ -18,6 +18,7 @@ type GoGenerateParser struct{}
 type UnsafeParser struct{}
 type CgoParser struct{}
 type IndirectParser struct{}
+type ReflectionParser struct{}
 
 // Parser for init() Function analysis
 func (p InitFuncParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
@@ -315,4 +316,9 @@ func (p IndirectParser) FindOccurrences(path string, occurrences *[]*Occurrence)
 		}
 		return true
 	})
+}
+
+func (p ReflectionParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
+
+	// todo
 }

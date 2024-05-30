@@ -57,10 +57,11 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 		analysis.AnalyzeModule(dep.Path, &analysis.UnsafeOccurrences, analysis.UnsafeParser{})
 		analysis.AnalyzeModule(dep.Path, &analysis.CgoOccurrences, analysis.CgoParser{})
 		analysis.AnalyzeModule(dep.Path, &analysis.IndirectOccurrences, analysis.IndirectParser{})
+		analysis.AnalyzeModule(dep.Path, &analysis.ReflectionOccurrences, analysis.ReflectionParser{})
 	}
 
 	// Convert occurrences to JSON
-	occurrences := append(append(append(append(append(append(append(
+	occurrences := append(append(append(append(append(append(append(append(
 		analysis.InitOccurrences,
 		analysis.AnonymOccurrences...),
 		analysis.ExecOccurrences...),
@@ -68,14 +69,14 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 		analysis.GoGenerateOccurrences...),
 		analysis.UnsafeOccurrences...),
 		analysis.CgoOccurrences...),
-		analysis.IndirectOccurrences...)
-
+		analysis.IndirectOccurrences...),
+		analysis.ReflectionOccurrences...)
 	// Print occurrences
 	// analysis.PrintOccurrences(analysis.IndirectOccurrences)
 	// analysis.PrintOccurrences(occurrences)
 
 	// Count unique occurrences
-	initCount, anonymCount, osExecCount, pluginCount, goGenerateCount, unsafeCount, cgoCount, indirectCount := analysis.CountUniqueOccurrences(occurrences)
+	initCount, anonymCount, osExecCount, pluginCount, goGenerateCount, unsafeCount, cgoCount, indirectCount, reflectionCount := analysis.CountUniqueOccurrences(occurrences)
 	fmt.Println()
 	fmt.Println()
 	fmt.Println("╔══════════════════════════════════════════════════════════════╗")
@@ -89,5 +90,6 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 	fmt.Printf("║ Unsafe pointers:                                  %10d ║\n", unsafeCount)
 	fmt.Printf("║ CGO pointers:                                     %10d ║\n", cgoCount)
 	fmt.Printf("║ Indirect method calls via interfaces:             %10d ║\n", indirectCount)
+	fmt.Printf("║ Uses of reflection:				                %10d ║\n", reflectionCount)
 	fmt.Println("╚══════════════════════════════════════════════════════════════╝")
 }
