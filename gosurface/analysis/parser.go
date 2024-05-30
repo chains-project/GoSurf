@@ -334,6 +334,7 @@ func (p ReflectParser) FindOccurrences(path string, occurrences *[]*Occurrence) 
 					AttackVector: "reflect",
 					FilePath:     path,
 					LineNumber:   fset.Position(x.Pos()).Line})
+				return false
 			}
 		}
 		return true
