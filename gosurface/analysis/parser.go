@@ -241,6 +241,7 @@ func (p CgoParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 }
 
 // Parser for indirect method calls through interface
+/*
 func (p IndirectParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 
 	fset := token.NewFileSet()
@@ -285,8 +286,8 @@ func (p IndirectParser) FindOccurrences(path string, occurrences *[]*Occurrence)
 			})
 		}
 	}
-	*/
-
+*/
+/*
 	// Find invocations of polymorphic methods
 	ast.Inspect(node, func(n ast.Node) bool {
 		switch x := n.(type) {
@@ -315,4 +316,75 @@ func (p IndirectParser) FindOccurrences(path string, occurrences *[]*Occurrence)
 		}
 		return true
 	})
+}
+*/
+
+func (p IndirectParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
+
+	fset := token.NewFileSet()
+	node, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
+	if err != nil {
+		fmt.Printf("Error parsing file %s: %v\n", path, err)
+		return
+	}
+
+	methods := make(map[string][]string)
+	interfaceMethods := make(map[string]struct{})
+
+	ast.Inspect(node, func(n ast.Node) bool {
+		switch x := n.(type) {
+		case *ast.FuncDecl:
+			if x.Recv != nil {
+				receiverType := fmt.Sprint(x.Recv.List[0].Type)
+				methods[x.Name.Name] = append(methods[x.Name.Name], receiverType)
+			} else if x.Type.Results != nil && len(x.Type.Results.List) > 0 {
+				// Check if the function is defined on an interface type
+				if _, ok := x.Type.Results.List[0].Type.(*ast.InterfaceType); ok {
+					interfaceMethods[x.Name.Name] = struct{}{}
+				}
+			}
+		}
+		return true
+	})
+
+	// Mark all interface methods as polymorphic
+	polymorphicMethods := make(map[string]struct{})
+	for name, receiverTypes := range methods {
+		receiverTypeSet := make(map[string]struct{})
+		for _, t := range receiverTypes {
+			receiverTypeSet[t] = struct{}{}
+		}
+
+		polymorphicMethods[name] = struct{}{}
+
+	}
+
+	ast.Inspect(node, func(n ast.Node) bool {
+		switch x := n.(type) {
+		case *ast.CallExpr:
+			fun, ok := x.Fun.(*ast.SelectorExpr)
+			if !ok {
+				return true
+			}
+
+			_, isPolymorphic := polymorphicMethods[fun.Sel.Name]
+			if isPolymorphic {
+				receiverType := ""
+				if expr, ok := x.Fun.(*ast.SelectorExpr); ok {
+					if ident, ok := expr.X.(*ast.Ident); ok {
+						receiverType = ident.Name
+					}
+				}
+				*occurrences = append(*occurrences, &Occurrence{
+					AttackVector:  "indirect",
+					FilePath:      path,
+					LineNumber:    fset.Position(x.Pos()).Line,
+					MethodInvoked: fun.Sel.Name,
+					TypePassed:    receiverType,
+				})
+			}
+		}
+		return true
+	})
+
 }

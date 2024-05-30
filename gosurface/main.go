@@ -71,7 +71,7 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 		analysis.IndirectOccurrences...)
 
 	// Print occurrences
-	// analysis.PrintOccurrences(analysis.IndirectOccurrences)
+	analysis.PrintOccurrences(analysis.IndirectOccurrences)
 	// analysis.PrintOccurrences(occurrences)
 
 	// Count unique occurrences
