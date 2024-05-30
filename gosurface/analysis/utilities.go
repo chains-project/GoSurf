@@ -2,7 +2,9 @@ package analysis
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
+	"go/ast"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -258,4 +260,27 @@ func updateProgressBar(current, total int) {
 	progress := float64(current) / float64(total)
 	hashes := int(progress * float64(width))
 	fmt.Printf("\r[%-*s] %.2f%%", width, strings.Repeat("#", hashes), progress*100)
+}
+
+// Returns a boolean indicating if a file imports package `pkg`.
+func importsPackage(astFile *ast.File, pkg string) (bool, error) {
+	pkg = fmt.Sprintf("\"%s\"", pkg) // Quote pkg name
+
+	if len(astFile.Decls) == 0 {
+		return false, nil
+	}
+
+	// Inspect only first declaration in a file
+	if gen, ok := astFile.Decls[0].(*ast.GenDecl); ok {
+		for _, spec := range gen.Specs {
+			importSpec, ok := spec.(*ast.ImportSpec)
+			if !ok {
+				return false, errors.New("Error. First declaration in file is not an import declaration.")
+			}
+			if importSpec.Path.Value == pkg {
+				return true, nil
+			}
+		}
+	}
+	return false, nil
 }

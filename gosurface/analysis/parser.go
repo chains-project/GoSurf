@@ -192,6 +192,14 @@ func (p UnsafeParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 		fmt.Printf("Error parsing file %s: %v\n", path, err)
 		return
 	}
+
+	// if imports, err := importsPackage(node, "unsafe"); !imports {
+	// 	if err != nil {
+	// 		fmt.Errorf("%s: %w", path, err)
+	// 	}
+	// 	return
+	// }
+
 	ast.Inspect(node, func(n ast.Node) bool {
 		switch x := n.(type) {
 		case *ast.CallExpr:
@@ -325,6 +333,13 @@ func (p ReflectParser) FindOccurrences(path string, occurrences *[]*Occurrence) 
 		fmt.Printf("Error parsing file %s: %v\n", path, err)
 		return
 	}
+
+	// if imports, err := importsPackage(node, "reflect"); !imports {
+	// 	if err != nil {
+	// 		fmt.Errorf("%s: %w", path, err)
+	// 	}
+	// 	return
+	// }
 
 	ast.Inspect(node, func(n ast.Node) bool {
 		switch x := n.(type) {
