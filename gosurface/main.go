@@ -57,7 +57,7 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 		analysis.AnalyzeModule(dep.Path, &analysis.UnsafeOccurrences, analysis.UnsafeParser{})
 		analysis.AnalyzeModule(dep.Path, &analysis.CgoOccurrences, analysis.CgoParser{})
 		analysis.AnalyzeModule(dep.Path, &analysis.IndirectOccurrences, analysis.IndirectParser{})
-		analysis.AnalyzeModule(dep.Path, &analysis.ReflectionOccurrences, analysis.ReflectionParser{})
+		analysis.AnalyzeModule(dep.Path, &analysis.ReflectOccurrences, analysis.ReflectParser{})
 	}
 
 	// Convert occurrences to JSON
@@ -70,17 +70,17 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 		analysis.UnsafeOccurrences...),
 		analysis.CgoOccurrences...),
 		analysis.IndirectOccurrences...),
-		analysis.ReflectionOccurrences...)
+		analysis.ReflectOccurrences...)
 	// Print occurrences
 	// analysis.PrintOccurrences(analysis.IndirectOccurrences)
 	// analysis.PrintOccurrences(occurrences)
 
 	// Count unique occurrences
-	initCount, anonymCount, osExecCount, pluginCount, goGenerateCount, unsafeCount, cgoCount, indirectCount, reflectionCount := analysis.CountUniqueOccurrences(occurrences)
+	initCount, anonymCount, osExecCount, pluginCount, goGenerateCount, unsafeCount, cgoCount, indirectCount, reflectCount := analysis.CountUniqueOccurrences(occurrences)
 	fmt.Println()
 	fmt.Println()
 	fmt.Println("╔══════════════════════════════════════════════════════════════╗")
-	fmt.Printf("║ Attack Surface Analysis: %s			║\n", filepath.Base(strings.TrimSuffix(modulePath, "/"+filepath.Base(modulePath))))
+	fmt.Printf("║ Attack Surface Analysis: %s			       ║\n", filepath.Base(strings.TrimSuffix(modulePath, "/"+filepath.Base(modulePath))))
 	fmt.Println("╠══════════════════════════════════════════════════════════════╣")
 	fmt.Printf("║ Unique occurrences of init() function:            %10d ║\n", initCount)
 	fmt.Printf("║ Initialization with anonymous function:           %10d ║\n", anonymCount)
@@ -90,6 +90,6 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 	fmt.Printf("║ Unsafe pointers:                                  %10d ║\n", unsafeCount)
 	fmt.Printf("║ CGO pointers:                                     %10d ║\n", cgoCount)
 	fmt.Printf("║ Indirect method calls via interfaces:             %10d ║\n", indirectCount)
-	fmt.Printf("║ Uses of reflection:				                %10d ║\n", reflectionCount)
+	fmt.Printf("║ Imports of reflection:			    %10d ║\n", reflectCount)
 	fmt.Println("╚══════════════════════════════════════════════════════════════╝")
 }

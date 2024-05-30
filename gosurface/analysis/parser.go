@@ -18,7 +18,7 @@ type GoGenerateParser struct{}
 type UnsafeParser struct{}
 type CgoParser struct{}
 type IndirectParser struct{}
-type ReflectionParser struct{}
+type ReflectParser struct{}
 
 // Parser for init() Function analysis
 func (p InitFuncParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
@@ -318,7 +318,24 @@ func (p IndirectParser) FindOccurrences(path string, occurrences *[]*Occurrence)
 	})
 }
 
-func (p ReflectionParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
+func (p ReflectParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
+	fset := token.NewFileSet()
+	node, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
+	if err != nil {
+		fmt.Printf("Error parsing file %s: %v\n", path, err)
+		return
+	}
 
-	// todo
+	ast.Inspect(node, func(n ast.Node) bool {
+		switch x := n.(type) {
+		case *ast.ImportSpec:
+			if pkg := x.Path.Value; pkg == `"reflect"` {
+				*occurrences = append(*occurrences, &Occurrence{
+					AttackVector: "reflect",
+					FilePath:     path,
+					LineNumber:   fset.Position(x.Pos()).Line})
+			}
+		}
+		return true
+	})
 }

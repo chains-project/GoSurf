@@ -33,7 +33,7 @@ var (
 	UnsafeOccurrences     []*Occurrence
 	CgoOccurrences        []*Occurrence
 	IndirectOccurrences   []*Occurrence
-	ReflectionOccurrences []*Occurrence
+	ReflectOccurrences    []*Occurrence
 )
 
 type OccurrenceParser interface {
@@ -162,7 +162,7 @@ func AnalyzeModule(path string, occurrences *[]*Occurrence, parser OccurrencePar
 	})
 }
 
-func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, execCount, pluginCount, goGenerateCount, unsafeCount, cgoCount, indirectCount, reflectionCount int) {
+func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, execCount, pluginCount, goGenerateCount, unsafeCount, cgoCount, indirectCount, reflectCount int) {
 	initOccurrences := make(map[string]struct{})
 	anonymOccurrences := make(map[string]struct{})
 	execOccurrences := make(map[string]struct{})
@@ -171,7 +171,7 @@ func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, 
 	unsafeOccurrences := make(map[string]struct{})
 	cgoOccurrences := make(map[string]struct{})
 	indirectOccurrences := make(map[string]struct{})
-	reflectionOccurrences := make(map[string]struct{})
+	reflectOccurrences := make(map[string]struct{})
 
 	for _, occ := range occurrences {
 		switch occ.AttackVector {
@@ -199,13 +199,13 @@ func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, 
 		case "indirect":
 			key := fmt.Sprintf("%s:%s:%s:%d", occ.MethodInvoked, occ.TypePassed, occ.FilePath, occ.LineNumber)
 			indirectOccurrences[key] = struct{}{}
-		case "reflection":
+		case "reflect":
 			key := fmt.Sprintf("%s:%s:%d", occ.MethodInvoked, occ.FilePath, occ.LineNumber)
-			reflectionOccurrences[key] = struct{}{}
+			reflectOccurrences[key] = struct{}{}
 		}
 	}
 
-	return len(initOccurrences), len(anonymOccurrences), len(execOccurrences), len(pluginOccurrences), len(goGenerateOccurrences), len(unsafeOccurrences), len(cgoOccurrences), len(indirectOccurrences), len(reflectionOccurrences)
+	return len(initOccurrences), len(anonymOccurrences), len(execOccurrences), len(pluginOccurrences), len(goGenerateOccurrences), len(unsafeOccurrences), len(cgoOccurrences), len(indirectOccurrences), len(reflectOccurrences)
 }
 
 type OccurrenceJSON struct {
