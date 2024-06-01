@@ -18,6 +18,7 @@ type GoGenerateParser struct{}
 type UnsafeParser struct{}
 type CgoParser struct{}
 type IndirectParser struct{}
+type ReflectParser struct{}
 
 // Parser for init() Function analysis
 func (p InitFuncParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
@@ -240,85 +241,7 @@ func (p CgoParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 	})
 }
 
-// Parser for indirect method calls through interface
-/*
-func (p IndirectParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
-
-	fset := token.NewFileSet()
-	node, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
-	if err != nil {
-		fmt.Printf("Error parsing file %s: %v\n", path, err)
-		return
-	}
-
-	methods := make(map[string][]string)
-
-	ast.Inspect(node, func(n ast.Node) bool {
-		switch x := n.(type) {
-		case *ast.FuncDecl:
-			if x.Recv != nil {
-				receiverType := fmt.Sprint(x.Recv.List[0].Type)
-				methods[x.Name.Name] = append(methods[x.Name.Name], receiverType)
-			}
-		}
-		return true
-	})
-
-	polymorphicMethods := make(map[string]struct{})
-	for name, receiverTypes := range methods {
-		receiverTypeSet := make(map[string]struct{})
-		for _, t := range receiverTypes {
-			receiverTypeSet[t] = struct{}{}
-		}
-		if len(receiverTypeSet) > 1 {
-			polymorphicMethods[name] = struct{}{}
-		}
-	}
-
-	/* To save polymorphic methods definitions
-	for method, receiverTypes := range polymorphicMethods {
-		for _, receiverType := range receiverTypes {
-			*occurrences = append(*occurrences, &Occurrence{
-				Type:            	"interface",
-				VariablesPassed:   	receiverType,
-				MethodInvoked: 		method,
-				FilePath:        	path,
-			})
-		}
-	}
-*/
-/*
-	// Find invocations of polymorphic methods
-	ast.Inspect(node, func(n ast.Node) bool {
-		switch x := n.(type) {
-		case *ast.CallExpr:
-			fun, ok := x.Fun.(*ast.SelectorExpr)
-			if !ok {
-				return true
-			}
-
-			_, isPolymorphic := polymorphicMethods[fun.Sel.Name]
-			if isPolymorphic {
-				receiverType := ""
-				if expr, ok := x.Fun.(*ast.SelectorExpr); ok {
-					if ident, ok := expr.X.(*ast.Ident); ok {
-						receiverType = ident.Name
-					}
-				}
-				*occurrences = append(*occurrences, &Occurrence{
-					AttackVector:  "indirect",
-					FilePath:      path,
-					LineNumber:    fset.Position(x.Pos()).Line,
-					MethodInvoked: fun.Sel.Name,
-					TypePassed:    receiverType,
-				})
-			}
-		}
-		return true
-	})
-}
-*/
-
+// Parser for indirect method invocations throguh Interfaces
 func (p IndirectParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 
 	fset := token.NewFileSet()
@@ -387,4 +310,27 @@ func (p IndirectParser) FindOccurrences(path string, occurrences *[]*Occurrence)
 		return true
 	})
 
+}
+
+func (p ReflectParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
+	fset := token.NewFileSet()
+	node, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
+	if err != nil {
+		fmt.Printf("Error parsing file %s: %v\n", path, err)
+		return
+	}
+
+	ast.Inspect(node, func(n ast.Node) bool {
+		switch x := n.(type) {
+		case *ast.ImportSpec:
+			if pkg := x.Path.Value; pkg == `"reflect"` {
+				*occurrences = append(*occurrences, &Occurrence{
+					AttackVector: "reflect",
+					FilePath:     path,
+					LineNumber:   fset.Position(x.Pos()).Line})
+				return false
+			}
+		}
+		return true
+	})
 }
