@@ -277,9 +277,7 @@ func (p IndirectParser) FindOccurrences(path string, occurrences *[]*Occurrence)
 		for _, t := range receiverTypes {
 			receiverTypeSet[t] = struct{}{}
 		}
-
 		polymorphicMethods[name] = struct{}{}
-
 	}
 
 	ast.Inspect(node, func(n ast.Node) bool {
