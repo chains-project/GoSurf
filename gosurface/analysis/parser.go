@@ -72,13 +72,13 @@ func (p AnonymFuncParser) FindOccurrences(path string, occurrences *[]*Occurrenc
 	}
 }
 
-type execFuncInfo struct {
+type funcInfo struct {
 	pkgName   string
 	funcNames []string
 }
 
 // Add here exec functions to check for exec analysis
-var execFuncs = []execFuncInfo{
+var execFuncs = []funcInfo{
 	{"syscall", []string{"Exec", "ForkExec", "StartProcess"}},
 	{"exec", []string{"Command", "CommandContext"}},
 	{"os", []string{"StartProcess"}},
@@ -233,8 +233,8 @@ func (p UnsafeParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 	ast.Inspect(node, func(n ast.Node) bool {
 		switch x := n.(type) {
 		case *ast.CallExpr:
-			if sel, ok := x.Fun.(*ast.SelectorExpr); ok {
-				if pkg, ok := sel.X.(*ast.Ident); ok && pkg.Name == "unsafe" && sel.Sel.Name == "Pointer" {
+			if fun, ok := x.Fun.(*ast.SelectorExpr); ok {
+				if pkg, ok := fun.X.(*ast.Ident); ok && pkg.Name == "unsafe" && fun.Sel.Name == "Pointer" {
 					*occurrences = append(*occurrences, &Occurrence{
 						AttackVector:  "unsafe",
 						FilePath:      path,
@@ -347,6 +347,12 @@ func (p IndirectParser) FindOccurrences(path string, occurrences *[]*Occurrence)
 
 }
 
+// Blacklisted reflect functions (horter than the whitelist)
+var reflectFuncs = []string{"New", "NewAt", "MakeChan", "MakeFunc", "MakeMap", "Copy", "Swapper", "Next", "Reset", "Value", "TypeFor", "Append", "AppendSlice", "MakeMapWithSize", "MakeSlice",
+	"Select", "Zero", "Call", "CallSlice", "Clear", "Close", "Convert", "Equal", "FieldByNameFunc", "Grow", "Interface", "InterfaceData", "MapIndex", "MapKeys", "MapRange", "Recv",
+	"Send", "Set", "SetCap", "SetIterKey", "SetIterValue", "SetLen", "SetMapIndex", "SetPointer", "SetZero", "Slice", "Slice3", "TryRecv", "TrySend"}
+
+// Parser for method invocations of Reflect
 func (p ReflectParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
@@ -357,13 +363,22 @@ func (p ReflectParser) FindOccurrences(path string, occurrences *[]*Occurrence) 
 
 	ast.Inspect(node, func(n ast.Node) bool {
 		switch x := n.(type) {
-		case *ast.ImportSpec:
-			if pkg := x.Path.Value; pkg == `"reflect"` {
-				*occurrences = append(*occurrences, &Occurrence{
-					AttackVector: "reflect",
-					FilePath:     path,
-					LineNumber:   fset.Position(x.Pos()).Line})
-				return false
+		case *ast.CallExpr:
+			fun, ok := x.Fun.(*ast.SelectorExpr)
+			if ok {
+				if pkg, ok := fun.X.(*ast.Ident); ok && pkg.Name == "reflect" {
+					method := fun.Sel.Name
+					for _, f := range reflectFuncs {
+						if f == method { // potentially bad use of reflection
+							*occurrences = append(*occurrences, &Occurrence{
+								AttackVector:  "reflect",
+								FilePath:      path,
+								LineNumber:    fset.Position(x.Pos()).Line,
+								MethodInvoked: method})
+							return true
+						}
+					}
+				}
 			}
 		}
 		return true
