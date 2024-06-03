@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Package Details</title>
+    <style>
+        /* Add some basic styling */
+        .package-details {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        .occurrence {
+            margin-left: 20px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    {{ range . }}
+    <div class="package-details">
+        <h2>Package: {{ .PackagePath }} ({{ .Version }})</h2>
+        <ul>
+            <li>
+                <span>init() function definitions</span>
+                <ul>
+                    {{ if .InitOccurrences }}
+                        {{ range .InitOccurrences }}
+                        <li class="occurrence">
+                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
+                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
+                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
+                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
+                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
+                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
+                        </li>
+                        {{ end }}
+                    {{ else }}
+                        <li class="occurrence">No occurrences found.</li>
+                    {{ end }}
+                </ul>
+            </li>
+            <li>
+                <span>Global var initialization with anonymous functions</span>
+                <ul>
+                    {{ if .AnonymOccurrences }}
+                        {{ range .AnonymOccurrences }}
+                        <li class="occurrence">
+                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
+                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
+                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
+                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
+                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
+                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
+                        </li>
+                        {{ end }}
+                    {{ else }}
+                        <li class="occurrence">No occurrences found.</li>
+                    {{ end }}
+                </ul>
+            </li>
+            <li>
+                <span>exec.Command() calls</span>
+                <ul>
+                    {{ if .ExecOccurrences }}
+                        {{ range .ExecOccurrences }}
+                        <li class="occurrence">
+                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
+                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
+                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
+                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
+                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
+                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
+                        </li>
+                        {{ end }}
+                    {{ else }}
+                        <li class="occurrence">No occurrences found.</li>
+                    {{ end }}
+                </ul>
+            </li>
+            <li>
+                <span>plugin.Open() calls</span>
+                <ul>
+                    {{ if .PluginOccurrences }}
+                        {{ range .PluginOccurrences }}
+                        <li class="occurrence">
+                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
+                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
+                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
+                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
+                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
+                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
+                        </li>
+                        {{ end }}
+                    {{ else }}
+                        <li class="occurrence">No occurrences found.</li>
+                    {{ end }}
+                </ul>
+            </li>
+            <li>
+                <span>go:generate comments</span>
+                <ul>
+                    {{ if .GoGenerateOccurrences }}
+                        {{ range .GoGenerateOccurrences }}
+                        <li class="occurrence">
+                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
+                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
+                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
+                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
+                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
+                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
+                        </li>
+                        {{ end }}
+                    {{ else }}
+                        <li class="occurrence">No occurrences found.</li>
+                    {{ end }}
+                </ul>
+            </li>
+            <li>
+                <span>go test -run=^$ comments</span>
+                <ul>
+                    {{ if .GoTestOccurrences }}
+                        {{ range .GoTestOccurrences }}
+                        <li class="occurrence">
+                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
+                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
+                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
+                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
+                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
+                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
+                        </li>
+                        {{ end }}
+                    {{ else }}
+                        <li class="occurrence">No occurrences found.</li>
+                    {{ end }}
+                </ul>
+            </li>
+            <li>
+                <span>unsafe package usage</span>
+                <ul>
+                    {{ if .UnsafeOccurrences }}
+                        {{ range .UnsafeOccurrences }}
+                        <li class="occurrence">
+                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
+                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
+                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
+                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
+                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
+                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
+                        </li>
+                        {{ end }}
+                    {{ else }}
+                        <li class="occurrence">No occurrences found.</li>
+                    {{ end }}
+                </ul>
+            </li>
+            <li>
+                <span>cgo usage</span>
+                <ul>
+                    {{ if .CgoOccurrences }}
+                        {{ range .CgoOccurrences }}
+                        <li class="occurrence">
+                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
+                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
+                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
+                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
+                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
+                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
+                        </li>
+                        {{ end }}
+                    {{ else }}
+                        <li class="occurrence">No occurrences found.</li>
+                    {{ end }}
+                </ul>
+            </li>
+            <li>
+                <span>indirect package usage</span>
+                <ul>
+                    {{ if .IndirectOccurrences }}
+                        {{ range .IndirectOccurrences }}
+                        <li class="occurrence">
+                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
+                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
+                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
+                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
+                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
+                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
+                        </li>
+                        {{ end }}
+                    {{ else }}
+                        <li class="occurrence">No occurrences found.</li>
+                    {{ end }}
+                </ul>
+            </li>
+            <li>
+                <span>reflect package usage</span>
+                <ul>
+                    {{ if .ReflectOccurrences }}
+                        {{ range .ReflectOccurrences }}
+                        <li class="occurrence">
+                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
+                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
+                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
+                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
+                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
+                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
+                        </li>
+                        {{ end }}
+                    {{ else }}
+                        <li class="occurrence">No occurrences found.</li>
+                    {{ end }}
+                </ul>
+            </li>
+            <li>
+                <span>Constructor calls</span>
+                <ul>
+                    {{ if .ConstructorOccurrences }}
+                        {{ range .ConstructorOccurrences }}
+                        <li class="occurrence">
+                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
+                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
+                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
+                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
+                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
+                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
+                        </li>
+                        {{ end }}
+                    {{ else }}
+                        <li class="occurrence">No occurrences found.</li>
+                    {{ end }}
+                </ul>
+            </li>
+        </ul>
+    </div>
+    {{ end }}
+</body>
+</html>
