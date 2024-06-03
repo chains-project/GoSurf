@@ -89,6 +89,6 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 	fmt.Printf("║ Unsafe pointers:                                  %10d ║\n", unsafeCount)
 	fmt.Printf("║ CGO pointers:                                     %10d ║\n", cgoCount)
 	fmt.Printf("║ Indirect method calls via interfaces:             %10d ║\n", indirectCount)
-	fmt.Printf("║ Imports of reflection:			    %10d ║\n", reflectCount)
+	fmt.Printf("║ Invocation of reflection:			    %10d ║\n", reflectCount)
 	fmt.Println("╚══════════════════════════════════════════════════════════════╝")
 }
