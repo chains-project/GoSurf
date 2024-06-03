@@ -6,6 +6,7 @@ import (
 	"go/parser"
 	"go/token"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
 )
@@ -15,6 +16,7 @@ type AnonymFuncParser struct{}
 type ExecParser struct{}
 type PluginParser struct{}
 type GoGenerateParser struct{}
+type GoTestParser struct{}
 type UnsafeParser struct{}
 type CgoParser struct{}
 type IndirectParser struct{}
@@ -23,7 +25,7 @@ type ReflectParser struct{}
 // Parser for init() Function analysis
 func (p InitFuncParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
-	node, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
+	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
 	if err != nil {
 		fmt.Printf("Error parsing file %s: %v\n", path, err)
 		return
@@ -85,7 +87,7 @@ var execFuncs = []execFuncInfo{
 // Parser for exec function analysis
 func (p ExecParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
-	node, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
+	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
 	if err != nil {
 		fmt.Printf("Error parsing file %s: %v\n", path, err)
 		return
@@ -128,7 +130,7 @@ func (p ExecParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 // Parser for Go plugin usage
 func (p PluginParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
-	node, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
+	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
 	if err != nil {
 		fmt.Printf("Error parsing file %s: %v\n", path, err)
 		return
@@ -164,7 +166,7 @@ func (p PluginParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 // Parser for go:generate directive analysis
 func (p GoGenerateParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
-	node, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
+	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
 	if err != nil {
 		fmt.Printf("Error parsing file %s: %v\n", path, err)
 		return
@@ -184,14 +186,50 @@ func (p GoGenerateParser) FindOccurrences(path string, occurrences *[]*Occurrenc
 	}
 }
 
+// Parser for Test functions (prefix: Test, Benchmark, Example) analysis
+func (p GoTestParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
+
+	if strings.HasSuffix(path, "_test.go") {
+		fset := token.NewFileSet()
+		node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
+		if err != nil {
+			fmt.Printf("Error parsing file %s: %v\n", path, err)
+			return
+		}
+
+		ast.Inspect(node, func(n ast.Node) bool {
+			fn, ok := n.(*ast.FuncDecl)
+			if !ok {
+				return true
+			}
+
+			funcName := fn.Name.Name
+			if strings.HasPrefix(funcName, "Test") || strings.HasPrefix(funcName, "Benchmark") || strings.HasPrefix(funcName, "Example") || strings.HasPrefix(funcName, "Fuzz") {
+
+				filePath := filepath.Join(path, node.Name.Name)
+				*occurrences = append(*occurrences, &Occurrence{
+					AttackVector:  "test",
+					FilePath:      filePath,
+					LineNumber:    fset.Position(fn.Pos()).Line,
+					MethodInvoked: funcName,
+				})
+			}
+
+			return true
+		})
+	}
+
+}
+
 // Parser for unsafe pointer usage
 func (p UnsafeParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
-	node, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
+	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
 	if err != nil {
 		fmt.Printf("Error parsing file %s: %v\n", path, err)
 		return
 	}
+
 	ast.Inspect(node, func(n ast.Node) bool {
 		switch x := n.(type) {
 		case *ast.CallExpr:
@@ -213,7 +251,7 @@ func (p UnsafeParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 // Parser for Cgo usage
 func (p CgoParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
-	node, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
+	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
 	if err != nil {
 		fmt.Printf("Error parsing file %s: %v\n", path, err)
 		return
@@ -243,9 +281,8 @@ func (p CgoParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 
 // Parser for indirect method invocations throguh Interfaces
 func (p IndirectParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
-
 	fset := token.NewFileSet()
-	node, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
+	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
 	if err != nil {
 		fmt.Printf("Error parsing file %s: %v\n", path, err)
 		return
@@ -312,7 +349,7 @@ func (p IndirectParser) FindOccurrences(path string, occurrences *[]*Occurrence)
 
 func (p ReflectParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
-	node, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
+	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
 	if err != nil {
 		fmt.Printf("Error parsing file %s: %v\n", path, err)
 		return

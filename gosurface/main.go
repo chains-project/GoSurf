@@ -42,6 +42,7 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 	analysis.AnalyzeModule(modulePath, &analysis.ExecOccurrences, analysis.ExecParser{})
 	analysis.AnalyzeModule(modulePath, &analysis.PluginOccurrences, analysis.PluginParser{})
 	analysis.AnalyzeModule(modulePath, &analysis.GoGenerateOccurrences, analysis.GoGenerateParser{})
+	analysis.AnalyzeModule(modulePath, &analysis.GoTestOccurrences, analysis.GoTestParser{})
 	analysis.AnalyzeModule(modulePath, &analysis.UnsafeOccurrences, analysis.UnsafeParser{})
 	analysis.AnalyzeModule(modulePath, &analysis.CgoOccurrences, analysis.CgoParser{})
 	analysis.AnalyzeModule(modulePath, &analysis.IndirectOccurrences, analysis.IndirectParser{})
@@ -60,22 +61,24 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 	// TODO: currently only fetches subdirectories in module, not external dependencies
 
 	// Convert occurrences to JSON
-	occurrences := append(append(append(append(append(append(append(append(
+	occurrences := append(append(append(append(append(append(append(append(append(
 		analysis.InitOccurrences,
 		analysis.AnonymOccurrences...),
 		analysis.ExecOccurrences...),
 		analysis.PluginOccurrences...),
 		analysis.GoGenerateOccurrences...),
+		analysis.GoTestOccurrences...),
 		analysis.UnsafeOccurrences...),
 		analysis.CgoOccurrences...),
 		analysis.IndirectOccurrences...),
 		analysis.ReflectOccurrences...)
+
 	// Print occurrences
-	analysis.PrintOccurrences(analysis.IndirectOccurrences)
+	analysis.PrintOccurrences(analysis.GoTestOccurrences)
 	// analysis.PrintOccurrences(occurrences)
 
 	// Count unique occurrences
-	initCount, anonymCount, osExecCount, pluginCount, goGenerateCount, unsafeCount, cgoCount, indirectCount, reflectCount := analysis.CountUniqueOccurrences(occurrences)
+	initCount, anonymCount, osExecCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, indirectCount, reflectCount := analysis.CountUniqueOccurrences(occurrences)
 	fmt.Println()
 	fmt.Println()
 	fmt.Println("╔══════════════════════════════════════════════════════════════╗")
@@ -86,8 +89,9 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 	fmt.Printf("║ Invocation from the os/exec package:              %10d ║\n", osExecCount)
 	fmt.Printf("║ Plugin dynamically loaded:                        %10d ║\n", pluginCount)
 	fmt.Printf("║ go:generate directive:                            %10d ║\n", goGenerateCount)
+	fmt.Printf("║ go test:                                          %10d ║\n", goTestCount)
 	fmt.Printf("║ Unsafe pointers:                                  %10d ║\n", unsafeCount)
-	fmt.Printf("║ CGO pointers:                                     %10d ║\n", cgoCount)
+	fmt.Printf("║ CGO usage (C function invocations):               %10d ║\n", cgoCount)
 	fmt.Printf("║ Indirect method calls via interfaces:             %10d ║\n", indirectCount)
 	fmt.Printf("║ Imports of reflection:			    %10d ║\n", reflectCount)
 	fmt.Println("╚══════════════════════════════════════════════════════════════╝")
