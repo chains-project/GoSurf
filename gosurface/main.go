@@ -6,7 +6,21 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/chains-project/capslock-analysis/gosurface/analysis"
+	analysis "github.com/chains-project/capslock-analysis/gosurface/libs"
+)
+
+var (
+	initOccurrences        []*analysis.Occurrence
+	anonymOccurrences      []*analysis.Occurrence
+	execOccurrences        []*analysis.Occurrence
+	pluginOccurrences      []*analysis.Occurrence
+	goGenerateOccurrences  []*analysis.Occurrence
+	goTestOccurrences      []*analysis.Occurrence
+	unsafeOccurrences      []*analysis.Occurrence
+	cgoOccurrences         []*analysis.Occurrence
+	indirectOccurrences    []*analysis.Occurrence
+	reflectOccurrences     []*analysis.Occurrence
+	constructorOccurrences []*analysis.Occurrence
 )
 
 func main() {
@@ -37,17 +51,17 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 	fmt.Println()
 
 	// Analyze the module and its direct dependencies
-	analysis.AnalyzeModule(modulePath, &analysis.InitOccurrences, analysis.InitFuncParser{})
-	analysis.AnalyzeModule(modulePath, &analysis.AnonymOccurrences, analysis.AnonymFuncParser{})
-	analysis.AnalyzeModule(modulePath, &analysis.ExecOccurrences, analysis.ExecParser{})
-	analysis.AnalyzeModule(modulePath, &analysis.PluginOccurrences, analysis.PluginParser{})
-	analysis.AnalyzeModule(modulePath, &analysis.GoGenerateOccurrences, analysis.GoGenerateParser{})
-	analysis.AnalyzeModule(modulePath, &analysis.GoTestOccurrences, analysis.GoTestParser{})
-	analysis.AnalyzeModule(modulePath, &analysis.UnsafeOccurrences, analysis.UnsafeParser{})
-	analysis.AnalyzeModule(modulePath, &analysis.CgoOccurrences, analysis.CgoParser{})
-	analysis.AnalyzeModule(modulePath, &analysis.IndirectOccurrences, analysis.IndirectParser{})
-	analysis.AnalyzeModule(modulePath, &analysis.ReflectOccurrences, analysis.ReflectParser{})
-	analysis.AnalyzeModule(modulePath, &analysis.ConstructorOccurrences, analysis.ConstructorParser{})
+	analysis.AnalyzeModule(modulePath, &initOccurrences, analysis.InitFuncParser{})
+	analysis.AnalyzeModule(modulePath, &anonymOccurrences, analysis.AnonymFuncParser{})
+	analysis.AnalyzeModule(modulePath, &execOccurrences, analysis.ExecParser{})
+	analysis.AnalyzeModule(modulePath, &pluginOccurrences, analysis.PluginParser{})
+	analysis.AnalyzeModule(modulePath, &goGenerateOccurrences, analysis.GoGenerateParser{})
+	analysis.AnalyzeModule(modulePath, &goTestOccurrences, analysis.GoTestParser{})
+	analysis.AnalyzeModule(modulePath, &unsafeOccurrences, analysis.UnsafeParser{})
+	analysis.AnalyzeModule(modulePath, &cgoOccurrences, analysis.CgoParser{})
+	analysis.AnalyzeModule(modulePath, &indirectOccurrences, analysis.IndirectParser{})
+	analysis.AnalyzeModule(modulePath, &reflectOccurrences, analysis.ReflectParser{})
+	//analysis.AnalyzeModule(modulePath, &constructorOccurrences, analysis.ConstructorParser{})
 
 	// Get paths for direct dependencies
 	/*
@@ -63,20 +77,20 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 
 	// Convert occurrences to JSON
 	occurrences := append(append(append(append(append(append(append(append(append(append(
-		analysis.InitOccurrences,
-		analysis.AnonymOccurrences...),
-		analysis.ExecOccurrences...),
-		analysis.PluginOccurrences...),
-		analysis.GoGenerateOccurrences...),
-		analysis.GoTestOccurrences...),
-		analysis.UnsafeOccurrences...),
-		analysis.CgoOccurrences...),
-		analysis.IndirectOccurrences...),
-		analysis.ReflectOccurrences...),
-		analysis.ConstructorOccurrences...)
+		initOccurrences,
+		anonymOccurrences...),
+		execOccurrences...),
+		pluginOccurrences...),
+		goGenerateOccurrences...),
+		goTestOccurrences...),
+		unsafeOccurrences...),
+		cgoOccurrences...),
+		indirectOccurrences...),
+		reflectOccurrences...),
+		constructorOccurrences...)
 
 	// Print occurrences
-	analysis.PrintOccurrences(analysis.ConstructorOccurrences)
+	analysis.PrintOccurrences(constructorOccurrences)
 	// analysis.PrintOccurrences(occurrences)
 
 	// Count unique occurrences

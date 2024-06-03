@@ -25,20 +25,6 @@ type Dependency struct {
 	Path string
 }
 
-var (
-	InitOccurrences        []*Occurrence
-	AnonymOccurrences      []*Occurrence
-	ExecOccurrences        []*Occurrence
-	PluginOccurrences      []*Occurrence
-	GoGenerateOccurrences  []*Occurrence
-	GoTestOccurrences      []*Occurrence
-	UnsafeOccurrences      []*Occurrence
-	CgoOccurrences         []*Occurrence
-	IndirectOccurrences    []*Occurrence
-	ReflectOccurrences     []*Occurrence
-	ConstructorOccurrences []*Occurrence
-)
-
 type OccurrenceParser interface {
 	FindOccurrences(path string, occurrences *[]*Occurrence)
 }
@@ -176,7 +162,7 @@ func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, 
 	cgoOccurrences := make(map[string]struct{})
 	indirectOccurrences := make(map[string]struct{})
 	reflectOccurrences := make(map[string]struct{})
-	ConstructorOccurrences := make(map[string]struct{})
+	constructorOccurrences := make(map[string]struct{})
 
 	for _, occ := range occurrences {
 		switch occ.AttackVector {
@@ -212,11 +198,11 @@ func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, 
 			reflectOccurrences[key] = struct{}{}
 		case "constructor":
 			key := fmt.Sprintf("%s:%s:%d", occ.FilePath, occ.Pattern, occ.LineNumber)
-			ConstructorOccurrences[key] = struct{}{}
+			constructorOccurrences[key] = struct{}{}
 		}
 	}
 
-	return len(initOccurrences), len(anonymOccurrences), len(execOccurrences), len(pluginOccurrences), len(goGenerateOccurrences), len(GoTestOccurrences), len(unsafeOccurrences), len(cgoOccurrences), len(indirectOccurrences), len(reflectOccurrences), len(ConstructorOccurrences)
+	return len(initOccurrences), len(anonymOccurrences), len(execOccurrences), len(pluginOccurrences), len(goGenerateOccurrences), len(goTestOccurrences), len(unsafeOccurrences), len(cgoOccurrences), len(indirectOccurrences), len(reflectOccurrences), len(constructorOccurrences)
 }
 
 type OccurrenceJSON struct {
