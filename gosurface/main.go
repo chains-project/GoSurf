@@ -47,6 +47,7 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 	analysis.AnalyzeModule(modulePath, &analysis.CgoOccurrences, analysis.CgoParser{})
 	analysis.AnalyzeModule(modulePath, &analysis.IndirectOccurrences, analysis.IndirectParser{})
 	analysis.AnalyzeModule(modulePath, &analysis.ReflectOccurrences, analysis.ReflectParser{})
+	analysis.AnalyzeModule(modulePath, &analysis.ConstructorOccurrences, analysis.ConstructorParser{})
 
 	// Get paths for direct dependencies
 	/*
@@ -61,7 +62,7 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 	// TODO: currently only fetches subdirectories in module, not external dependencies
 
 	// Convert occurrences to JSON
-	occurrences := append(append(append(append(append(append(append(append(append(
+	occurrences := append(append(append(append(append(append(append(append(append(append(
 		analysis.InitOccurrences,
 		analysis.AnonymOccurrences...),
 		analysis.ExecOccurrences...),
@@ -71,28 +72,30 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 		analysis.UnsafeOccurrences...),
 		analysis.CgoOccurrences...),
 		analysis.IndirectOccurrences...),
-		analysis.ReflectOccurrences...)
+		analysis.ReflectOccurrences...),
+		analysis.ConstructorOccurrences...)
 
 	// Print occurrences
-	analysis.PrintOccurrences(analysis.GoTestOccurrences)
+	analysis.PrintOccurrences(analysis.ConstructorOccurrences)
 	// analysis.PrintOccurrences(occurrences)
 
 	// Count unique occurrences
-	initCount, anonymCount, osExecCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, indirectCount, reflectCount := analysis.CountUniqueOccurrences(occurrences)
+	initCount, anonymCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, indirectCount, reflectCount, constructorCount := analysis.CountUniqueOccurrences(occurrences)
 	fmt.Println()
 	fmt.Println()
-	fmt.Println("╔══════════════════════════════════════════════════════════════╗")
-	fmt.Printf("║ Attack Surface Analysis: %s			       ║\n", filepath.Base(strings.TrimSuffix(modulePath, "/"+filepath.Base(modulePath))))
-	fmt.Println("╠══════════════════════════════════════════════════════════════╣")
-	fmt.Printf("║ Unique occurrences of init() function:            %10d ║\n", initCount)
-	fmt.Printf("║ Initialization with anonymous function:           %10d ║\n", anonymCount)
-	fmt.Printf("║ Invocation from the os/exec package:              %10d ║\n", osExecCount)
-	fmt.Printf("║ Plugin dynamically loaded:                        %10d ║\n", pluginCount)
-	fmt.Printf("║ go:generate directive:                            %10d ║\n", goGenerateCount)
-	fmt.Printf("║ go test:                                          %10d ║\n", goTestCount)
-	fmt.Printf("║ Unsafe pointers:                                  %10d ║\n", unsafeCount)
-	fmt.Printf("║ CGO usage (C function invocations):               %10d ║\n", cgoCount)
-	fmt.Printf("║ Indirect method calls via interfaces:             %10d ║\n", indirectCount)
-	fmt.Printf("║ Imports of reflection:			    %10d ║\n", reflectCount)
-	fmt.Println("╚══════════════════════════════════════════════════════════════╝")
+	fmt.Println("╔═════════════════════════════════════════════════════════════════════════╗")
+	fmt.Printf("║ Attack Surface Analysis: %s	     		         ║\n", filepath.Base(strings.TrimSuffix(modulePath, "/"+filepath.Base(modulePath))))
+	fmt.Println("╠═════════════════════════════════════════════════════════════════════════╣")
+	fmt.Printf("║ init() function definitions:                                 %10d ║\n", initCount)
+	fmt.Printf("║ global var initialization with anonymous functions:          %10d ║\n", anonymCount)
+	fmt.Printf("║ exec function invocations:                                   %10d ║\n", execCount)
+	fmt.Printf("║ plugin dynamically loaded:                                   %10d ║\n", pluginCount)
+	fmt.Printf("║ 'go:generate' directive usage:                               %10d ║\n", goGenerateCount)
+	fmt.Printf("║ testing function definitions:                                %10d ║\n", goTestCount)
+	fmt.Printf("║ Unsafe pointers:                                             %10d ║\n", unsafeCount) // TODO: define better
+	fmt.Printf("║ C function invocations via CGO:                              %10d ║\n", cgoCount)
+	fmt.Printf("║ Indirect method calls via interfaces:                        %10d ║\n", indirectCount)
+	fmt.Printf("║ Usage of reflection:                                         %10d ║\n", reflectCount) // TODO: define better
+	fmt.Printf("║ Invocation of constructors:                                  %10d ║\n", constructorCount)
+	fmt.Println("╚═════════════════════════════════════════════════════════════════════════╝")
 }

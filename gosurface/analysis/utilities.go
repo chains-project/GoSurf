@@ -17,6 +17,7 @@ type Occurrence struct {
 	Command       string // for go:generate directive
 	MethodInvoked string // for indirect, exec, plugin, cgo
 	TypePassed    string // for indirect
+	Pattern       string // for constructors
 }
 
 type Dependency struct {
@@ -25,16 +26,17 @@ type Dependency struct {
 }
 
 var (
-	InitOccurrences       []*Occurrence
-	AnonymOccurrences     []*Occurrence
-	ExecOccurrences       []*Occurrence
-	PluginOccurrences     []*Occurrence
-	GoGenerateOccurrences []*Occurrence
-	GoTestOccurrences     []*Occurrence
-	UnsafeOccurrences     []*Occurrence
-	CgoOccurrences        []*Occurrence
-	IndirectOccurrences   []*Occurrence
-	ReflectOccurrences    []*Occurrence
+	InitOccurrences        []*Occurrence
+	AnonymOccurrences      []*Occurrence
+	ExecOccurrences        []*Occurrence
+	PluginOccurrences      []*Occurrence
+	GoGenerateOccurrences  []*Occurrence
+	GoTestOccurrences      []*Occurrence
+	UnsafeOccurrences      []*Occurrence
+	CgoOccurrences         []*Occurrence
+	IndirectOccurrences    []*Occurrence
+	ReflectOccurrences     []*Occurrence
+	ConstructorOccurrences []*Occurrence
 )
 
 type OccurrenceParser interface {
@@ -163,7 +165,7 @@ func AnalyzeModule(path string, occurrences *[]*Occurrence, parser OccurrencePar
 	})
 }
 
-func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, indirectCount, reflectCount int) {
+func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, indirectCount, reflectCount, constructorCount int) {
 	initOccurrences := make(map[string]struct{})
 	anonymOccurrences := make(map[string]struct{})
 	execOccurrences := make(map[string]struct{})
@@ -174,6 +176,7 @@ func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, 
 	cgoOccurrences := make(map[string]struct{})
 	indirectOccurrences := make(map[string]struct{})
 	reflectOccurrences := make(map[string]struct{})
+	ConstructorOccurrences := make(map[string]struct{})
 
 	for _, occ := range occurrences {
 		switch occ.AttackVector {
@@ -193,7 +196,7 @@ func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, 
 			key := fmt.Sprintf("%s:%s:%d", occ.Command, occ.FilePath, occ.LineNumber)
 			goGenerateOccurrences[key] = struct{}{}
 		case "test":
-			key := fmt.Sprintf("%s:%s:%d", occ.Command, occ.FilePath, occ.LineNumber)
+			key := fmt.Sprintf("%s:%s:%s:%d", occ.Command, occ.FilePath, occ.MethodInvoked, occ.LineNumber)
 			goTestOccurrences[key] = struct{}{}
 		case "unsafe":
 			key := fmt.Sprintf("%s:%s:%d", occ.MethodInvoked, occ.FilePath, occ.LineNumber) // TODO: which info to include here
@@ -207,10 +210,13 @@ func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, 
 		case "reflect":
 			key := fmt.Sprintf("%s:%s:%d", occ.MethodInvoked, occ.FilePath, occ.LineNumber)
 			reflectOccurrences[key] = struct{}{}
+		case "constructor":
+			key := fmt.Sprintf("%s:%s:%d", occ.FilePath, occ.Pattern, occ.LineNumber)
+			ConstructorOccurrences[key] = struct{}{}
 		}
 	}
 
-	return len(initOccurrences), len(anonymOccurrences), len(execOccurrences), len(pluginOccurrences), len(goGenerateOccurrences), len(GoTestOccurrences), len(unsafeOccurrences), len(cgoOccurrences), len(indirectOccurrences), len(reflectOccurrences)
+	return len(initOccurrences), len(anonymOccurrences), len(execOccurrences), len(pluginOccurrences), len(goGenerateOccurrences), len(GoTestOccurrences), len(unsafeOccurrences), len(cgoOccurrences), len(indirectOccurrences), len(reflectOccurrences), len(ConstructorOccurrences)
 }
 
 type OccurrenceJSON struct {
@@ -221,6 +227,7 @@ type OccurrenceJSON struct {
 	TypePassed    string `json:"TypePassed,omitempty"`
 	VariableName  string `json:"VariableName,omitempty"`
 	Command       string `json:"Command,omitempty"`
+	Pattern       string `json:"Pattern,omitempty"`
 }
 
 func PrintOccurrences(occurrences []*Occurrence) {
@@ -234,6 +241,7 @@ func PrintOccurrences(occurrences []*Occurrence) {
 			TypePassed:    occ.TypePassed,
 			VariableName:  occ.VariableName,
 			Command:       occ.Command,
+			Pattern:       occ.Pattern,
 		}
 		result = append(result, occJSON)
 	}

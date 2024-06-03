@@ -21,6 +21,7 @@ type UnsafeParser struct{}
 type CgoParser struct{}
 type IndirectParser struct{}
 type ReflectParser struct{}
+type ConstructorParser struct{}
 
 // Parser for init() Function analysis
 func (p InitFuncParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
@@ -365,6 +366,47 @@ func (p ReflectParser) FindOccurrences(path string, occurrences *[]*Occurrence) 
 					LineNumber:   fset.Position(x.Pos()).Line})
 				return false
 			}
+		}
+		return true
+	})
+}
+
+func (p ConstructorParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
+	fset := token.NewFileSet()
+	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
+	if err != nil {
+		fmt.Printf("Error parsing file %s: %v\n", path, err)
+		return
+	}
+
+	ast.Inspect(node, func(n ast.Node) bool {
+		switch x := n.(type) {
+		case *ast.CallExpr:
+
+			// Check for factory function invocations
+			if fun, ok := x.Fun.(*ast.SelectorExpr); ok {
+				if strings.HasPrefix(fun.Sel.Name, "New") {
+					*occurrences = append(*occurrences, &Occurrence{
+						AttackVector:  "constructor",
+						FilePath:      path,
+						LineNumber:    fset.Position(x.Pos()).Line,
+						MethodInvoked: fun.X.(*ast.Ident).Name + "." + fun.Sel.Name,
+						Pattern:       "factory function",
+					})
+				}
+			}
+
+			// Check for `New` function invocations
+			if fun, ok := x.Fun.(*ast.Ident); ok && fun.Name == "New" {
+				*occurrences = append(*occurrences, &Occurrence{
+					AttackVector:  "constructor",
+					FilePath:      path,
+					LineNumber:    fset.Position(x.Pos()).Line,
+					MethodInvoked: "New",
+					Pattern:       "New() function",
+				})
+			}
+
 		}
 		return true
 	})
