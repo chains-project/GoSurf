@@ -12,25 +12,20 @@ import (
 	analysis "github.com/chains-project/capslock-analysis/gosurface/libs"
 )
 
-type PackageAnalysis struct {
-	PackagePath      string
-	Version          string
-	InitCount        int
-	AnonymCount      int
-	ExecCount        int
-	PluginCount      int
-	GoGenerateCount  int
-	GoTestCount      int
-	UnsafeCount      int
-	CgoCount         int
-	IndirectCount    int
-	ReflectCount     int
-	ConstructorCount int
-}
-
 type PackageDetails struct {
 	PackagePath            string
 	Version                string
+	InitCount              int
+	AnonymCount            int
+	ExecCount              int
+	PluginCount            int
+	GoGenerateCount        int
+	GoTestCount            int
+	UnsafeCount            int
+	CgoCount               int
+	IndirectCount          int
+	ReflectCount           int
+	ConstructorCount       int
 	InitOccurrences        []*analysis.Occurrence
 	AnonymOccurrences      []*analysis.Occurrence
 	ExecOccurrences        []*analysis.Occurrence
@@ -152,7 +147,6 @@ func main() {
 	defer detailsFile.Close()
 
 	// Slices to hold PackageAnalysis and PackageDetails instances
-	var packageAnalyses []PackageAnalysis
 	var packageDetails []PackageDetails
 
 	// Get and analyze each package
@@ -209,28 +203,21 @@ func main() {
 		// Count unique occurrences
 		initCount, anonymCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, indirectCount, reflectCount, constructorCount := analysis.CountUniqueOccurrences(occurrences)
 
-		// Create a PackageAnalysis instance and append it to the slice
-		packageAnalysis := PackageAnalysis{
-			PackagePath:      packagePath,
-			Version:          latestReleaseNumber,
-			InitCount:        initCount,
-			AnonymCount:      anonymCount,
-			ExecCount:        execCount,
-			PluginCount:      pluginCount,
-			GoGenerateCount:  goGenerateCount,
-			GoTestCount:      goTestCount,
-			UnsafeCount:      unsafeCount,
-			CgoCount:         cgoCount,
-			IndirectCount:    indirectCount,
-			ReflectCount:     reflectCount,
-			ConstructorCount: constructorCount,
-		}
-		packageAnalyses = append(packageAnalyses, packageAnalysis)
-
 		// Create a PackageDetails instance and append it to the slice
 		packageDetail := PackageDetails{
 			PackagePath:            packagePath,
 			Version:                latestReleaseNumber,
+			InitCount:              initCount,
+			AnonymCount:            anonymCount,
+			ExecCount:              execCount,
+			PluginCount:            pluginCount,
+			GoGenerateCount:        goGenerateCount,
+			GoTestCount:            goTestCount,
+			UnsafeCount:            unsafeCount,
+			CgoCount:               cgoCount,
+			IndirectCount:          indirectCount,
+			ReflectCount:           reflectCount,
+			ConstructorCount:       constructorCount,
 			InitOccurrences:        initOccurrences,
 			AnonymOccurrences:      anonymOccurrences,
 			ExecOccurrences:        execOccurrences,
@@ -247,7 +234,7 @@ func main() {
 	}
 
 	// Execute the overview template with the PackageAnalysis instances
-	err = overviewTmpl.Execute(overviewFile, packageAnalyses)
+	err = overviewTmpl.Execute(overviewFile, packageDetails)
 	if err != nil {
 		fmt.Println("Error executing overview template:", err)
 		return
