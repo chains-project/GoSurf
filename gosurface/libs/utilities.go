@@ -178,7 +178,7 @@ func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, 
 		case "plugin":
 			key := fmt.Sprintf("%s:%s:%d", occ.FilePath, occ.MethodInvoked, occ.LineNumber)
 			pluginOccurrences[key] = struct{}{}
-		case "go:generate":
+		case "generate":
 			key := fmt.Sprintf("%s:%s:%d", occ.Command, occ.FilePath, occ.LineNumber)
 			goGenerateOccurrences[key] = struct{}{}
 		case "test":

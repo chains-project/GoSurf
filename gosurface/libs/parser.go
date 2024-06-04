@@ -167,7 +167,7 @@ func (p PluginParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 // Parser for go:generate directive analysis
 func (p GoGenerateParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
-	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
+	node, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
 	if err != nil {
 		fmt.Printf("Error parsing file %s: %v\n", path, err)
 		return
@@ -177,7 +177,7 @@ func (p GoGenerateParser) FindOccurrences(path string, occurrences *[]*Occurrenc
 		for _, c := range cg.List {
 			if strings.HasPrefix(c.Text, "//go:generate") {
 				*occurrences = append(*occurrences, &Occurrence{
-					AttackVector: "go:generate",
+					AttackVector: "generate",
 					FilePath:     path,
 					LineNumber:   fset.Position(c.Pos()).Line,
 					Command:      strings.TrimPrefix(c.Text, "//go:generate "),
