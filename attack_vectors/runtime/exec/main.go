@@ -13,7 +13,7 @@ func main() {
 	cmd := exec.Command(binaryPath)
 
 	// Run the command
-	output, err := cmd.Output()    // cmd.Run()
+	output, err := cmd.Output() // cmd.Run()
 	if err != nil {
 		fmt.Println("Error executing binary:", err)
 		return
