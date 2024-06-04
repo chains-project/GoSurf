@@ -20,6 +20,17 @@ type Occurrence struct {
 	Pattern       string // for constructors
 }
 
+type OccurrenceJSON struct {
+	Type          string `json:"Type,omitempty"`
+	FilePath      string `json:"FilePath,omitempty"`
+	LineNumber    int    `json:"LineNumber,omitempty"`
+	MethodInvoked string `json:"MethodInvoked,omitempty"`
+	TypePassed    string `json:"TypePassed,omitempty"`
+	VariableName  string `json:"VariableName,omitempty"`
+	Command       string `json:"Command,omitempty"`
+	Pattern       string `json:"Pattern,omitempty"`
+}
+
 type Dependency struct {
 	Name string
 	Path string
@@ -153,7 +164,7 @@ func AnalyzeModule(path string, occurrences *[]*Occurrence, parser OccurrencePar
 
 func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, indirectCount, reflectCount, constructorCount int) {
 	initOccurrences := make(map[string]struct{})
-	anonymOccurrences := make(map[string]struct{})
+	globalVarOccurrences := make(map[string]struct{})
 	execOccurrences := make(map[string]struct{})
 	pluginOccurrences := make(map[string]struct{})
 	goGenerateOccurrences := make(map[string]struct{})
@@ -169,9 +180,9 @@ func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, 
 		case "init":
 			key := fmt.Sprintf("%s:%d", occ.FilePath, occ.LineNumber)
 			initOccurrences[key] = struct{}{}
-		case "anonym":
+		case "global":
 			key := fmt.Sprintf("%s:%s:%d", occ.VariableName, occ.FilePath, occ.LineNumber)
-			anonymOccurrences[key] = struct{}{}
+			globalVarOccurrences[key] = struct{}{}
 		case "exec":
 			key := fmt.Sprintf("%s:%s:%d", occ.MethodInvoked, occ.FilePath, occ.LineNumber)
 			execOccurrences[key] = struct{}{}
@@ -202,18 +213,7 @@ func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, 
 		}
 	}
 
-	return len(initOccurrences), len(anonymOccurrences), len(execOccurrences), len(pluginOccurrences), len(goGenerateOccurrences), len(goTestOccurrences), len(unsafeOccurrences), len(cgoOccurrences), len(indirectOccurrences), len(reflectOccurrences), len(constructorOccurrences)
-}
-
-type OccurrenceJSON struct {
-	Type          string `json:"Type,omitempty"`
-	FilePath      string `json:"FilePath,omitempty"`
-	LineNumber    int    `json:"LineNumber,omitempty"`
-	MethodInvoked string `json:"MethodInvoked,omitempty"`
-	TypePassed    string `json:"TypePassed,omitempty"`
-	VariableName  string `json:"VariableName,omitempty"`
-	Command       string `json:"Command,omitempty"`
-	Pattern       string `json:"Pattern,omitempty"`
+	return len(initOccurrences), len(globalVarOccurrences), len(execOccurrences), len(pluginOccurrences), len(goGenerateOccurrences), len(goTestOccurrences), len(unsafeOccurrences), len(cgoOccurrences), len(indirectOccurrences), len(reflectOccurrences), len(constructorOccurrences)
 }
 
 func PrintOccurrences(occurrences []*Occurrence) {

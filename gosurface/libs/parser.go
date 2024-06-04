@@ -12,7 +12,7 @@ import (
 )
 
 type InitFuncParser struct{}
-type AnonymFuncParser struct{}
+type GlobalVarParser struct{}
 type ExecParser struct{}
 type PluginParser struct{}
 type GoGenerateParser struct{}
@@ -46,31 +46,58 @@ func (p InitFuncParser) FindOccurrences(path string, occurrences *[]*Occurrence)
 	}
 }
 
-// Parser for anonymous functions analysis
-func (p AnonymFuncParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
+// Parser for global var initialization with functions
+func (p GlobalVarParser) FindOccurrences(path string, occurrences *[]*Occurrence) {
+
 	fileContents, err := os.ReadFile(path)
 	if err != nil {
 		fmt.Printf("Error reading file %s: %v\n", path, err)
 		return
 	}
 
-	//pattern := `var\s+(\w+)(?:\s+\w+)?\s*=\s*func\(\)(?:\s*\w+)?\s*{\s*[^}]*\s*}\(\)`
-	pattern := `var\s+(\w+)\s*(\w*)\s*=\s*func\(\)\s*(\w*)\s*{[^}]*}\(\)`
-	re := regexp.MustCompile(pattern)
-
-	matches := re.FindAllStringSubmatchIndex(string(fileContents), -1)
-	if len(matches) > 0 {
-		for _, match := range matches {
+	// Global variable initialization with normal functions
+	normal_pattern := `var\s+(\w+)\s*(\w*)\s*=\s*(\w+)\(\)`
+	normal_re := regexp.MustCompile(normal_pattern)
+	normal_matches := normal_re.FindAllStringSubmatchIndex(string(fileContents), -1)
+	if len(normal_matches) > 0 {
+		for _, match := range normal_matches {
 			startLine, _ := GetLineColumn(fileContents, match[0])
 			variableName := strings.TrimSpace(string(fileContents[match[2]:match[3]]))
+			funcName := strings.TrimSpace(string(fileContents[match[6]:match[7]]))
+
+			// Skip if the function name is "func"
+			if funcName == "func" {
+				continue
+			}
+
 			*occurrences = append(*occurrences, &Occurrence{
-				AttackVector: "anonym",
-				FilePath:     path,
-				LineNumber:   startLine,
-				VariableName: variableName,
+				AttackVector:  "global",
+				FilePath:      path,
+				LineNumber:    startLine,
+				VariableName:  variableName,
+				MethodInvoked: funcName + "()",
 			})
 		}
 	}
+
+	// Global variable initialization with anonymous functions
+	anonym_pattern := `var\s+(\w+)\s*(\w*)\s*=\s*func\(\)\s*(\w*)\s*{[^}]*}\(\)`
+	anonym_re := regexp.MustCompile(anonym_pattern)
+	anonym_matches := anonym_re.FindAllStringSubmatchIndex(string(fileContents), -1)
+	if len(anonym_matches) > 0 {
+		for _, match := range anonym_matches {
+			startLine, _ := GetLineColumn(fileContents, match[0])
+			variableName := strings.TrimSpace(string(fileContents[match[2]:match[3]]))
+			*occurrences = append(*occurrences, &Occurrence{
+				AttackVector:  "global",
+				FilePath:      path,
+				LineNumber:    startLine,
+				VariableName:  variableName,
+				MethodInvoked: "anonym func",
+			})
+		}
+	}
+
 }
 
 type execFuncInfo struct {

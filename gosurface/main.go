@@ -11,7 +11,7 @@ import (
 
 var (
 	initOccurrences        []*analysis.Occurrence
-	anonymOccurrences      []*analysis.Occurrence
+	globalVarOccurrences   []*analysis.Occurrence
 	execOccurrences        []*analysis.Occurrence
 	pluginOccurrences      []*analysis.Occurrence
 	goGenerateOccurrences  []*analysis.Occurrence
@@ -52,7 +52,7 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 
 	// Analyze the module and its direct dependencies
 	analysis.AnalyzeModule(modulePath, &initOccurrences, analysis.InitFuncParser{})
-	analysis.AnalyzeModule(modulePath, &anonymOccurrences, analysis.AnonymFuncParser{})
+	analysis.AnalyzeModule(modulePath, &globalVarOccurrences, analysis.GlobalVarParser{})
 	analysis.AnalyzeModule(modulePath, &execOccurrences, analysis.ExecParser{})
 	analysis.AnalyzeModule(modulePath, &pluginOccurrences, analysis.PluginParser{})
 	analysis.AnalyzeModule(modulePath, &goGenerateOccurrences, analysis.GoGenerateParser{})
@@ -78,7 +78,7 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 	// Convert occurrences to JSON
 	occurrences := append(append(append(append(append(append(append(append(append(append(
 		initOccurrences,
-		anonymOccurrences...),
+		globalVarOccurrences...),
 		execOccurrences...),
 		pluginOccurrences...),
 		goGenerateOccurrences...),
@@ -90,18 +90,18 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 		constructorOccurrences...)
 
 	// Print occurrences
-	analysis.PrintOccurrences(constructorOccurrences)
+	analysis.PrintOccurrences(globalVarOccurrences)
 	// analysis.PrintOccurrences(occurrences)
 
 	// Count unique occurrences
-	initCount, anonymCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, indirectCount, reflectCount, constructorCount := analysis.CountUniqueOccurrences(occurrences)
+	initCount, globalVarCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, indirectCount, reflectCount, constructorCount := analysis.CountUniqueOccurrences(occurrences)
 	fmt.Println()
 	fmt.Println()
 	fmt.Println("╔═════════════════════════════════════════════════════════════════════════╗")
 	fmt.Printf("║ Attack Surface Analysis: %s	     		         ║\n", filepath.Base(strings.TrimSuffix(modulePath, "/"+filepath.Base(modulePath))))
 	fmt.Println("╠═════════════════════════════════════════════════════════════════════════╣")
 	fmt.Printf("║ init() function definitions:                                 %10d ║\n", initCount)
-	fmt.Printf("║ global var initialization with anonymous functions:          %10d ║\n", anonymCount)
+	fmt.Printf("║ global var initialization with functions:                    %10d ║\n", globalVarCount)
 	fmt.Printf("║ exec function invocations:                                   %10d ║\n", execCount)
 	fmt.Printf("║ plugin dynamically loaded:                                   %10d ║\n", pluginCount)
 	fmt.Printf("║ 'go:generate' directive usage:                               %10d ║\n", goGenerateCount)
