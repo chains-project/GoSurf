@@ -3,12 +3,6 @@ package main
 import (
 	"fmt"
 	"reflect"
-	// "os"
-	// "os/exec"
-	// "encoding/json"
-	// "net/http"
-	// "bytes"
-	// "io/ioutil"
 )
 
 type Foo struct{}
@@ -20,6 +14,7 @@ func (f Foo) Method() {
 func main() {
 	var f Foo
 	v := reflect.ValueOf(f)
+	v.Call(nil)
 	m := v.MethodByName("Method")
 	m.Call(nil)
 }
