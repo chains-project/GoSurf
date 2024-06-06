@@ -48,7 +48,7 @@ func main() {
 	}
 	filePath := filepath.Join(currentDir, "results.json")
 
-	/*
+	/* // Gather packages from libraries.io
 		var allPackages []map[string]interface{}
 
 		// Retrieve TOP x packages from libraries.io API
@@ -100,8 +100,7 @@ func main() {
 
 	*/
 
-	/* Start Testing code*/
-
+	/* Read package paths from file*/
 	file, err := os.Open(filePath)
 	if err != nil {
 		fmt.Println("Error opening file:", err)
@@ -116,7 +115,7 @@ func main() {
 		return
 	}
 	itemCount := len(allPackages)
-	/* End Testing code*/
+	/* **********************/
 
 	// Parse the HTML templates
 	overviewTmpl, err := template.ParseFiles("tmpl_overview.html")
