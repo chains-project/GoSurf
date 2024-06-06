@@ -10,6 +10,7 @@ import (
 )
 
 type Occurrence struct {
+	PackageName   string
 	AttackVector  string
 	FilePath      string
 	LineNumber    int
@@ -21,6 +22,7 @@ type Occurrence struct {
 }
 
 type OccurrenceJSON struct {
+	PackageName   string `json:"PackageName,omitempty"`
 	Type          string `json:"Type,omitempty"`
 	FilePath      string `json:"FilePath,omitempty"`
 	LineNumber    int    `json:"LineNumber,omitempty"`
@@ -37,10 +39,11 @@ type Dependency struct {
 }
 
 type OccurrenceParser interface {
-	FindOccurrences(path string, occurrences *[]*Occurrence)
+	FindOccurrences(path string, packageName string, occurrences *[]*Occurrence)
 }
 
 // Gets all go files in given path.
+
 func GetDependencies(modulePath string) ([]Dependency, error) { // TODO should rename this one. If getting dependencies, we look at the go.mod file.
 
 	var dependencies []Dependency
@@ -148,8 +151,8 @@ func GetLineColumn(content []byte, index int) (line, col int) {
 	return line, col
 }
 
-func AnalyzeModule(path string, occurrences *[]*Occurrence, parser OccurrenceParser) {
-	filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
+func AnalyzePackage(dep Dependency, occurrences *[]*Occurrence, parser OccurrenceParser) {
+	filepath.Walk(dep.Path, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			fmt.Printf("Error accessing file %s: %v\n", path, err)
 			return nil
@@ -157,7 +160,7 @@ func AnalyzeModule(path string, occurrences *[]*Occurrence, parser OccurrencePar
 		if info.IsDir() || !strings.HasSuffix(path, ".go") {
 			return nil
 		}
-		parser.FindOccurrences(path, occurrences)
+		parser.FindOccurrences(path, dep.Name, occurrences)
 		return nil
 	})
 }
@@ -220,6 +223,7 @@ func PrintOccurrences(occurrences []*Occurrence) {
 	var result []OccurrenceJSON
 	for _, occ := range occurrences {
 		occJSON := OccurrenceJSON{
+			PackageName:   occ.PackageName,
 			Type:          occ.AttackVector,
 			FilePath:      occ.FilePath,
 			LineNumber:    occ.LineNumber,
@@ -243,12 +247,17 @@ func PrintOccurrences(occurrences []*Occurrence) {
 }
 
 func PrintDependencies(dependencies []Dependency) {
-	jsonDependencies, err := json.MarshalIndent(dependencies, "", "  ")
-	if err != nil {
-		fmt.Println("Error marshaling JSON:", err)
-		return
+	/*
+		jsonDependencies, err := json.MarshalIndent(dependencies, "", "  ")
+		if err != nil {
+			fmt.Println("Error marshaling JSON:", err)
+			return
+		}
+		fmt.Println(string(jsonDependencies))
+	*/
+	for _, dep := range dependencies {
+		fmt.Println(dep.Path)
 	}
-	fmt.Println(string(jsonDependencies))
 }
 
 // Function to render a progress bar on the console

@@ -50,30 +50,30 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 	fmt.Println("It looks for occurrences of various features and constructs that could potentially introduce security risks.")
 	fmt.Println()
 
-	// Analyze the module and its direct dependencies
-	analysis.AnalyzeModule(modulePath, &initOccurrences, analysis.InitFuncParser{})
-	analysis.AnalyzeModule(modulePath, &globalVarOccurrences, analysis.GlobalVarParser{})
-	analysis.AnalyzeModule(modulePath, &execOccurrences, analysis.ExecParser{})
-	analysis.AnalyzeModule(modulePath, &pluginOccurrences, analysis.PluginParser{})
-	analysis.AnalyzeModule(modulePath, &goGenerateOccurrences, analysis.GoGenerateParser{})
-	analysis.AnalyzeModule(modulePath, &goTestOccurrences, analysis.GoTestParser{})
-	analysis.AnalyzeModule(modulePath, &unsafeOccurrences, analysis.UnsafeParser{})
-	analysis.AnalyzeModule(modulePath, &cgoOccurrences, analysis.CgoParser{})
-	analysis.AnalyzeModule(modulePath, &indirectOccurrences, analysis.IndirectParser{})
-	analysis.AnalyzeModule(modulePath, &reflectOccurrences, analysis.ReflectParser{})
-	//analysis.AnalyzeModule(modulePath, &constructorOccurrences, analysis.ConstructorParser{})
+	// TODO: currently only fetches direct dependencies in the module, not external dependencies
 
-	// Get paths for direct dependencies
-	/*
-		dependencies, err := analysis.GetDependencies(modulePath) // TODO rename get module/packages
-		if err != nil {
-			fmt.Printf("Error getting files in module: %v\n", err)
-			return
-		}
-		analysis.PrintDependencies(dependencies)
-	*/
+	// Get direct dependencies
+	direct_dependencies, err := analysis.GetDependencies(modulePath)
+	if err != nil {
+		fmt.Printf("Error getting files in module: %v\n", err)
+		return
+	}
+	analysis.PrintDependencies(direct_dependencies)
 
-	// TODO: currently only fetches subdirectories in module, not external dependencies
+	// Analyze all the module direct dependencies
+	for _, dep := range direct_dependencies {
+		analysis.AnalyzePackage(dep, &initOccurrences, analysis.InitFuncParser{})
+		analysis.AnalyzePackage(dep, &globalVarOccurrences, analysis.GlobalVarParser{})
+		analysis.AnalyzePackage(dep, &execOccurrences, analysis.ExecParser{})
+		analysis.AnalyzePackage(dep, &pluginOccurrences, analysis.PluginParser{})
+		analysis.AnalyzePackage(dep, &goGenerateOccurrences, analysis.GoGenerateParser{})
+		analysis.AnalyzePackage(dep, &goTestOccurrences, analysis.GoTestParser{})
+		analysis.AnalyzePackage(dep, &unsafeOccurrences, analysis.UnsafeParser{})
+		analysis.AnalyzePackage(dep, &cgoOccurrences, analysis.CgoParser{})
+		analysis.AnalyzePackage(dep, &indirectOccurrences, analysis.IndirectParser{})
+		analysis.AnalyzePackage(dep, &reflectOccurrences, analysis.ReflectParser{})
+		//analysis.AnalyzePackage(dep, &constructorOccurrences, analysis.ConstructorParser{})
+	}
 
 	// Convert occurrences to JSON
 	occurrences := append(append(append(append(append(append(append(append(append(append(
@@ -90,7 +90,7 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 		constructorOccurrences...)
 
 	// Print occurrences
-	analysis.PrintOccurrences(execOccurrences)
+	// analysis.PrintOccurrences(execOccurrences)
 	// analysis.PrintOccurrences(occurrences)
 
 	// Count unique occurrences
