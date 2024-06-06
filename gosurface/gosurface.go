@@ -21,6 +21,7 @@ var (
 	indirectOccurrences    []*analysis.Occurrence
 	reflectOccurrences     []*analysis.Occurrence
 	constructorOccurrences []*analysis.Occurrence
+	assemblyOccurrences    []*analysis.Occurrence
 )
 
 func main() {
@@ -73,10 +74,11 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 		analysis.AnalyzePackage(dep, &indirectOccurrences, analysis.IndirectParser{})
 		analysis.AnalyzePackage(dep, &reflectOccurrences, analysis.ReflectParser{})
 		//analysis.AnalyzePackage(dep, &constructorOccurrences, analysis.ConstructorParser{})
+		analysis.AnalyzePackage(dep, &assemblyOccurrences, analysis.AssemblyParser{})
 	}
 
 	// Convert occurrences to JSON
-	occurrences := append(append(append(append(append(append(append(append(append(append(
+	occurrences := append(append(append(append(append(append(append(append(append(append(append(
 		initOccurrences,
 		globalVarOccurrences...),
 		execOccurrences...),
@@ -87,14 +89,15 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 		cgoOccurrences...),
 		indirectOccurrences...),
 		reflectOccurrences...),
-		constructorOccurrences...)
+		constructorOccurrences...),
+		assemblyOccurrences...)
 
 	// Print occurrences
 	// analysis.PrintOccurrences(execOccurrences)
 	// analysis.PrintOccurrences(occurrences)
 
 	// Count unique occurrences
-	initCount, globalVarCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, indirectCount, reflectCount, constructorCount := analysis.CountUniqueOccurrences(occurrences)
+	initCount, globalVarCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, indirectCount, reflectCount, constructorCount, assemblyCount := analysis.CountUniqueOccurrences(occurrences)
 	fmt.Println()
 	fmt.Println()
 	fmt.Println("╔═════════════════════════════════════════════════════════════════════════╗")
@@ -111,5 +114,6 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 	fmt.Printf("║ Indirect method calls via interfaces:                        %10d ║\n", indirectCount)
 	fmt.Printf("║ Usage of reflection:                                         %10d ║\n", reflectCount) // TODO: define better
 	fmt.Printf("║ Invocation of constructors:                                  %10d ║\n", constructorCount)
+	fmt.Printf("║ Invocation of assembly functions:            	               %10d ║\n", assemblyCount)
 	fmt.Println("╚═════════════════════════════════════════════════════════════════════════╝")
 }

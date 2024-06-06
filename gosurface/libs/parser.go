@@ -22,6 +22,7 @@ type CgoParser struct{}
 type IndirectParser struct{}
 type ReflectParser struct{}
 type ConstructorParser struct{}
+type AssemblyParser struct{}
 
 // Parser for init() Function analysis
 func (p InitFuncParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
@@ -449,4 +450,29 @@ func (p ConstructorParser) FindOccurrences(path string, packageName string, occu
 		}
 		return true
 	})
+}
+
+// Parser for Assembly use
+func (p AssemblyParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
+	fset := token.NewFileSet()
+	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
+	if err != nil {
+		fmt.Printf("Error parsing file %s: %v\n", path, err)
+		return
+	}
+
+	ast.Inspect(node, func(n ast.Node) bool {
+		switch x := n.(type) {
+		case *ast.FuncDecl:
+			if blk := x.Body; blk == nil {
+				// todo check if assembly file with x.Name.Name
+
+				// fmt.Printf("\nFuncdecl at: %d is %s", fset.Position(x.Pos()).Line, x.Name.Name)
+				// fmt.Printf("\nBlockStmt:%v", x.Body)
+
+			}
+		}
+		return true
+	})
+
 }

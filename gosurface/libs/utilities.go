@@ -165,7 +165,7 @@ func AnalyzePackage(dep Dependency, occurrences *[]*Occurrence, parser Occurrenc
 	})
 }
 
-func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, indirectCount, reflectCount, constructorCount int) {
+func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, indirectCount, reflectCount, constructorCount, assemblyCount int) {
 	initOccurrences := make(map[string]struct{})
 	globalVarOccurrences := make(map[string]struct{})
 	execOccurrences := make(map[string]struct{})
@@ -177,6 +177,7 @@ func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, 
 	indirectOccurrences := make(map[string]struct{})
 	reflectOccurrences := make(map[string]struct{})
 	constructorOccurrences := make(map[string]struct{})
+	assemblyOccurrences := make(map[string]struct{})
 
 	for _, occ := range occurrences {
 		switch occ.AttackVector {
@@ -213,10 +214,13 @@ func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, 
 		case "constructor":
 			key := fmt.Sprintf("%s:%s:%d", occ.FilePath, occ.Pattern, occ.LineNumber)
 			constructorOccurrences[key] = struct{}{}
+		case "assembly":
+			key := fmt.Sprintf("%s:%s:%d", occ.MethodInvoked, occ.FilePath, occ.LineNumber)
+			assemblyOccurrences[key] = struct{}{}
 		}
 	}
 
-	return len(initOccurrences), len(globalVarOccurrences), len(execOccurrences), len(pluginOccurrences), len(goGenerateOccurrences), len(goTestOccurrences), len(unsafeOccurrences), len(cgoOccurrences), len(indirectOccurrences), len(reflectOccurrences), len(constructorOccurrences)
+	return len(initOccurrences), len(globalVarOccurrences), len(execOccurrences), len(pluginOccurrences), len(goGenerateOccurrences), len(goTestOccurrences), len(unsafeOccurrences), len(cgoOccurrences), len(indirectOccurrences), len(reflectOccurrences), len(constructorOccurrences), len(assemblyOccurrences)
 }
 
 func PrintOccurrences(occurrences []*Occurrence) {
