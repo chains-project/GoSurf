@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
 	"regexp"
 	"strings"
 )
@@ -41,6 +42,8 @@ type Dependency struct {
 type OccurrenceParser interface {
 	FindOccurrences(path string, packageName string, occurrences *[]*Occurrence)
 }
+
+var pkgAsmFunctions []string
 
 // Gets all go files in given path.
 func GetDependencies(modulePath string) ([]Dependency, error) { // TODO should rename this one. If getting dependencies, we look at the go.mod file.
@@ -132,7 +135,7 @@ func findFiles(suffix string, dirPath string) []string {
 	return files
 }
 
-func getAsmSignatures(dirPath string) (bool, []string) {
+func pkgContainsAsm(dirPath string) (bool, []string) {
 	var asmSuffixes = []string{".s", ".S", ".sx"}
 	var files []string
 
@@ -140,9 +143,11 @@ func getAsmSignatures(dirPath string) (bool, []string) {
 		files = append(files, findFiles(suffix, dirPath)...)
 	}
 	if len(files) == 0 {
+		// No assembly files in package
 		return false, nil
 	}
 
+	// Find all assembly function signatures in pkg ('TEXT ·' pattern) 
 	var signatureRegex = regexp.MustCompile(`TEXT\s+·[A-Za-z1-9]+\w*`)
 	var signatures []string
 
@@ -154,7 +159,8 @@ func getAsmSignatures(dirPath string) (bool, []string) {
 		}
 		match := signatureRegex.FindString(string(content))
 		if match != "" {
-			signatures = append(signatures, strings.Split(match, "·")[1])
+			funSig := strings.Split(match, "·")[1]
+			signatures = append(signatures, funSig)
 		}
 	}
 	return true, signatures
@@ -185,11 +191,23 @@ func AnalyzePackage(dep Dependency, occurrences *[]*Occurrence, parser Occurrenc
 		return
 	}
 
+	// If assembly parser, get set the assembly function definitions in the package
+	currentParser := reflect.TypeOf(parser)
+	asmParser := reflect.TypeOf(AssemblyParser{})
+	
+	if currentParser == asmParser {
+		ok, funSigs := pkgContainsAsm(dep.Path)
+		pkgAsmFunctions = funSigs
+		if !ok {
+			// Avoid running assembly parser in package without assembly
+			return
+		}
+	}
+
 	for _, file := range files {
 		if file.IsDir() || !strings.HasSuffix(file.Name(), ".go") {
 			continue
 		}
-
 		path := filepath.Join(dep.Path, file.Name())
 		parser.FindOccurrences(path, dep.Name, occurrences)
 	}
