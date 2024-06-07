@@ -133,14 +133,20 @@ func findFiles(suffix string, dirPath string) []string {
 	return files
 }
 
-func isAsmSignature(signature string, dirPath string) bool {
+func getAsmSignatures(dirPath string) (bool, []string) {
 	var asmSuffixes = []string{".s", ".S", ".sx"}
 	var files []string
-	var signatureRegex = regexp.MustCompile(fmt.Sprintf(`\bTEXT ·%s\b`, signature))
 
 	for _, suffix := range asmSuffixes {
 		files = append(files, findFiles(suffix, dirPath)...)
 	}
+	if len(files) == 0 {
+		return false, nil
+	}
+
+	var signatureRegex = regexp.MustCompile(`TEXT\s+·[A-Za-z1-9]+\w*`)
+	var signatures []string
+
 	for _, file := range files {
 		filePath := filepath.Join(dirPath, file)
 		content, err := os.ReadFile(filePath)
@@ -149,11 +155,12 @@ func isAsmSignature(signature string, dirPath string) bool {
 		}
 		match := signatureRegex.FindString(string(content))
 		if match != "" {
-			return true
+			signatures = append(signatures, strings.Split(match, "·")[1])
 		}
 	}
-	return false
+	return true, signatures
 }
+
 
 var packageRegex = regexp.MustCompile(`\bpackage\s+(\w+)\b`)
 

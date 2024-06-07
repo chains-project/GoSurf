@@ -454,29 +454,47 @@ func (p ConstructorParser) FindOccurrences(path string, packageName string, occu
 
 // Parser for Assembly use
 func (p AssemblyParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
-	fset := token.NewFileSet()
-	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
-	if err != nil {
-		fmt.Printf("Error parsing file %s: %v\n", path, err)
-		return
-	}
+	packageContainsAsm, asmSigs := getAsmSignatures(filepath.Dir(path))
+	//var goAsmSigs []string
 
-	ast.Inspect(node, func(n ast.Node) bool {
-		switch x := n.(type) {
-		case *ast.FuncDecl:
-			if x.Body == nil {
-				// function signature has empty body
-				if isAsmSignature(x.Name.Name, filepath.Dir(path)) {
-					*occurrences = append(*occurrences, &Occurrence{
-						PackageName:  packageName,
-						AttackVector: "assembly",
-						FilePath:     path,
-						LineNumber:   fset.Position(x.Pos()).Line,
-						VariableName: x.Name.Name,
-					})
+	if packageContainsAsm {
+		fset := token.NewFileSet()
+		node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
+		if err != nil {
+			fmt.Printf("Error parsing file %s: %v\n", path, err)
+			return
+		}
+
+		ast.Inspect(node, func(n ast.Node) bool {
+			switch x := n.(type) {
+			// case *ast.FuncDecl:
+			// 	if x.Body == nil {
+			// 		// function signature has empty body
+			// 		for _, asmSig := range asmSigs {
+			// 			if x.Name.Name == asmSig {
+			// 				goAsmSigs = append(goAsmSigs, x.Name.Name)
+			//
+			// 			}
+			// 		}
+			// 	}
+			case *ast.CallExpr:
+				if fun, ok := x.Fun.(*ast.Ident); ok {
+					for _, asmSig := range asmSigs {
+						if fun.Name == asmSig {
+							*occurrences = append(*occurrences, &Occurrence{
+								PackageName:  packageName,
+								AttackVector: "assembly",
+								FilePath:     path,
+								LineNumber:   fset.Position(x.Pos()).Line,
+								VariableName: fun.Name,
+							})
+							break
+						}
+					}
 				}
 			}
-		}
-		return true
-	})
+
+			return true
+		})
+	}
 }
