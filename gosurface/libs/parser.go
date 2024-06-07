@@ -482,11 +482,11 @@ func (p AssemblyParser) FindOccurrences(path string, packageName string, occurre
 					for _, asmSig := range asmSigs {
 						if fun.Name == asmSig {
 							*occurrences = append(*occurrences, &Occurrence{
-								PackageName:  packageName,
-								AttackVector: "assembly",
-								FilePath:     path,
-								LineNumber:   fset.Position(x.Pos()).Line,
-								VariableName: fun.Name,
+								PackageName:   packageName,
+								AttackVector:  "assembly",
+								FilePath:      path,
+								LineNumber:    fset.Position(x.Pos()).Line,
+								MethodInvoked: fun.Name,
 							})
 							break
 						}
