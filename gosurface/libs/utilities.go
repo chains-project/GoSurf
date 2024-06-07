@@ -243,7 +243,7 @@ func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, 
 			key := fmt.Sprintf("%s:%s:%d", occ.FilePath, occ.Pattern, occ.LineNumber)
 			constructorOccurrences[key] = struct{}{}
 		case "assembly":
-			key := fmt.Sprintf("%s:%s:%s:%d", occ.MethodInvoked, occ.PackageName, occ.FilePath, occ.LineNumber)
+			key := fmt.Sprintf("%s:%s:%d", occ.MethodInvoked, occ.FilePath, occ.LineNumber)
 			assemblyOccurrences[key] = struct{}{}
 		}
 	}
