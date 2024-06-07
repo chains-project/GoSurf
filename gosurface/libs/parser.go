@@ -464,15 +464,19 @@ func (p AssemblyParser) FindOccurrences(path string, packageName string, occurre
 	ast.Inspect(node, func(n ast.Node) bool {
 		switch x := n.(type) {
 		case *ast.FuncDecl:
-			if blk := x.Body; blk == nil {
-				// todo check if assembly file with x.Name.Name
-
-				// fmt.Printf("\nFuncdecl at: %d is %s", fset.Position(x.Pos()).Line, x.Name.Name)
-				// fmt.Printf("\nBlockStmt:%v", x.Body)
-
+			if x.Body == nil {
+				// function signature has empty body
+				if isAsmSignature(x.Name.Name, filepath.Dir(path)) {
+					*occurrences = append(*occurrences, &Occurrence{
+						PackageName:  packageName,
+						AttackVector: "assembly",
+						FilePath:     path,
+						LineNumber:   fset.Position(x.Pos()).Line,
+						VariableName: x.Name.Name,
+					})
+				}
 			}
 		}
 		return true
 	})
-
 }

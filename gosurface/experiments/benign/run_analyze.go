@@ -26,6 +26,7 @@ type ModuleDetails struct {
 	IndirectCount          int
 	ReflectCount           int
 	ConstructorCount       int
+	AssemblyCount          int
 	InitOccurrences        []*analysis.Occurrence
 	GlobalVarOccurrences   []*analysis.Occurrence
 	ExecOccurrences        []*analysis.Occurrence
@@ -37,6 +38,7 @@ type ModuleDetails struct {
 	IndirectOccurrences    []*analysis.Occurrence
 	ReflectOccurrences     []*analysis.Occurrence
 	ConstructorOccurrences []*analysis.Occurrence
+	AssemblyOccurrences    []*analysis.Occurrence
 }
 
 func main() {
@@ -168,7 +170,7 @@ func main() {
 		}
 
 		// Analyze the module
-		var initOccurrences, globalVarOccurrences, execOccurrences, pluginOccurrences, goGenerateOccurrences, goTestOccurrences, unsafeOccurrences, cgoOccurrences, indirectOccurrences, reflectOccurrences, constructorOccurrences []*analysis.Occurrence
+		var initOccurrences, globalVarOccurrences, execOccurrences, pluginOccurrences, goGenerateOccurrences, goTestOccurrences, unsafeOccurrences, cgoOccurrences, indirectOccurrences, reflectOccurrences, constructorOccurrences, assemblyOccurrences []*analysis.Occurrence
 		modulePath := filepath.Join(os.Getenv("GOPATH"), "pkg/mod", importPath+"@"+latestReleaseNumber)
 
 		// Analyze the module and its direct dependencies
@@ -208,7 +210,7 @@ func main() {
 			constructorOccurrences...)
 
 		// Count unique occurrences
-		initCount, globalVarCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, indirectCount, reflectCount, constructorCount := analysis.CountUniqueOccurrences(occurrences)
+		initCount, globalVarCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, indirectCount, reflectCount, constructorCount, assemblyCount := analysis.CountUniqueOccurrences(occurrences)
 
 		// Create a ModuleDetails instance and append it to the slice
 		moduleDetail := ModuleDetails{
@@ -225,6 +227,7 @@ func main() {
 			IndirectCount:          indirectCount,
 			ReflectCount:           reflectCount,
 			ConstructorCount:       constructorCount,
+			AssemblyCount:          assemblyCount,
 			InitOccurrences:        initOccurrences,
 			GlobalVarOccurrences:   globalVarOccurrences,
 			ExecOccurrences:        execOccurrences,
@@ -236,6 +239,7 @@ func main() {
 			IndirectOccurrences:    indirectOccurrences,
 			ReflectOccurrences:     reflectOccurrences,
 			ConstructorOccurrences: constructorOccurrences,
+			AssemblyOccurrences:    assemblyOccurrences,
 		}
 		moduleDetails = append(moduleDetails, moduleDetail)
 	}

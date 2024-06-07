@@ -94,7 +94,7 @@ func GetDependencies(modulePath string) ([]Dependency, error) { // TODO should r
 }
 
 func isGoPackage(dirPath string) (bool, string, string) {
-	goFiles := findGoFiles(dirPath)
+	goFiles := findFiles(".go", dirPath)
 	for _, goFile := range goFiles {
 		filePath := filepath.Join(dirPath, goFile)
 		content, err := os.ReadFile(filePath)
@@ -122,15 +122,37 @@ func canBuildGoPackage(dirPath string) (bool, string) {
 }
 */
 
-func findGoFiles(dirPath string) []string {
-	var goFiles []string
-	files, _ := os.ReadDir(dirPath)
-	for _, file := range files {
-		if !file.IsDir() && strings.HasSuffix(file.Name(), ".go") {
-			goFiles = append(goFiles, file.Name())
+func findFiles(suffix string, dirPath string) []string {
+	var files []string
+	dirFiles, _ := os.ReadDir(dirPath)
+	for _, file := range dirFiles {
+		if !file.IsDir() && strings.HasSuffix(file.Name(), suffix) {
+			files = append(files, file.Name())
 		}
 	}
-	return goFiles
+	return files
+}
+
+func isAsmSignature(signature string, dirPath string) bool {
+	var asmSuffixes = []string{".s", ".S", ".sx"}
+	var files []string
+	var signatureRegex = regexp.MustCompile(fmt.Sprintf(`\bTEXT ·%s\b`, signature))
+
+	for _, suffix := range asmSuffixes {
+		files = append(files, findFiles(suffix, dirPath)...)
+	}
+	for _, file := range files {
+		filePath := filepath.Join(dirPath, file)
+		content, err := os.ReadFile(filePath)
+		if err != nil {
+			continue
+		}
+		match := signatureRegex.FindString(string(content))
+		if match != "" {
+			return true
+		}
+	}
+	return false
 }
 
 var packageRegex = regexp.MustCompile(`\bpackage\s+(\w+)\b`)
