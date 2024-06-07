@@ -43,7 +43,6 @@ type OccurrenceParser interface {
 }
 
 // Gets all go files in given path.
-
 func GetDependencies(modulePath string) ([]Dependency, error) { // TODO should rename this one. If getting dependencies, we look at the go.mod file.
 
 	var dependencies []Dependency
@@ -180,17 +179,20 @@ func GetLineColumn(content []byte, index int) (line, col int) {
 }
 
 func AnalyzePackage(dep Dependency, occurrences *[]*Occurrence, parser OccurrenceParser) {
-	filepath.Walk(dep.Path, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			fmt.Printf("Error accessing file %s: %v\n", path, err)
-			return nil
+	files, err := os.ReadDir(dep.Path)
+	if err != nil {
+		fmt.Printf("Error accessing directory %s: %v\n", dep.Path, err)
+		return
+	}
+
+	for _, file := range files {
+		if file.IsDir() || !strings.HasSuffix(file.Name(), ".go") {
+			continue
 		}
-		if info.IsDir() || !strings.HasSuffix(path, ".go") {
-			return nil
-		}
+
+		path := filepath.Join(dep.Path, file.Name())
 		parser.FindOccurrences(path, dep.Name, occurrences)
-		return nil
-	})
+	}
 }
 
 func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, indirectCount, reflectCount, constructorCount, assemblyCount int) {
