@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
 	"regexp"
 	"strings"
 )
@@ -42,8 +43,9 @@ type OccurrenceParser interface {
 	FindOccurrences(path string, packageName string, occurrences *[]*Occurrence)
 }
 
-// Gets all go files in given path.
+var pkgAsmFunctions []string
 
+// Gets all go files in given path.
 func GetDependencies(modulePath string) ([]Dependency, error) { // TODO should rename this one. If getting dependencies, we look at the go.mod file.
 
 	var dependencies []Dependency
@@ -93,8 +95,10 @@ func GetDependencies(modulePath string) ([]Dependency, error) { // TODO should r
 	return dependencies, nil
 }
 
+var packageRegex = regexp.MustCompile(`\bpackage\s+(\w+)\b`)
+
 func isGoPackage(dirPath string) (bool, string, string) {
-	goFiles := findGoFiles(dirPath)
+	goFiles := findFiles(".go", dirPath)
 	for _, goFile := range goFiles {
 		filePath := filepath.Join(dirPath, goFile)
 		content, err := os.ReadFile(filePath)
@@ -122,18 +126,47 @@ func canBuildGoPackage(dirPath string) (bool, string) {
 }
 */
 
-func findGoFiles(dirPath string) []string {
-	var goFiles []string
-	files, _ := os.ReadDir(dirPath)
-	for _, file := range files {
-		if !file.IsDir() && strings.HasSuffix(file.Name(), ".go") {
-			goFiles = append(goFiles, file.Name())
+func findFiles(suffix string, dirPath string) []string {
+	var files []string
+	dirFiles, _ := os.ReadDir(dirPath)
+	for _, file := range dirFiles {
+		if !file.IsDir() && strings.HasSuffix(file.Name(), suffix) {
+			files = append(files, file.Name())
 		}
 	}
-	return goFiles
+	return files
 }
 
-var packageRegex = regexp.MustCompile(`\bpackage\s+(\w+)\b`)
+func pkgContainsAsm(dirPath string) (bool, []string) {
+	var asmSuffixes = []string{".s", ".S", ".sx"}
+	var files []string
+
+	for _, suffix := range asmSuffixes {
+		files = append(files, findFiles(suffix, dirPath)...)
+	}
+	if len(files) == 0 {
+		// No assembly files in package
+		return false, nil
+	}
+
+	// Find all assembly function signatures in pkg ('TEXT ·' pattern)
+	var signatureRegex = regexp.MustCompile(`TEXT\s+·[A-Za-z1-9]+\w*`)
+	var signatures []string
+
+	for _, file := range files {
+		filePath := filepath.Join(dirPath, file)
+		content, err := os.ReadFile(filePath)
+		if err != nil {
+			continue
+		}
+		match := signatureRegex.FindString(string(content))
+		if match != "" {
+			funSig := strings.Split(match, "·")[1]
+			signatures = append(signatures, funSig)
+		}
+	}
+	return true, signatures
+}
 
 func GetLineColumn(content []byte, index int) (line, col int) {
 	line = 1
@@ -152,20 +185,35 @@ func GetLineColumn(content []byte, index int) (line, col int) {
 }
 
 func AnalyzePackage(dep Dependency, occurrences *[]*Occurrence, parser OccurrenceParser) {
-	filepath.Walk(dep.Path, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			fmt.Printf("Error accessing file %s: %v\n", path, err)
-			return nil
+	files, err := os.ReadDir(dep.Path)
+	if err != nil {
+		fmt.Printf("Error accessing directory %s: %v\n", dep.Path, err)
+		return
+	}
+
+	// If assembly parser, get set the assembly function definitions in the package
+	currentParser := reflect.TypeOf(parser)
+	asmParser := reflect.TypeOf(AssemblyParser{})
+
+	if currentParser == asmParser {
+		ok, funSigs := pkgContainsAsm(dep.Path)
+		pkgAsmFunctions = funSigs
+		if !ok {
+			// Avoid running assembly parser in package without assembly
+			return
 		}
-		if info.IsDir() || !strings.HasSuffix(path, ".go") {
-			return nil
+	}
+
+	for _, file := range files {
+		if file.IsDir() || !strings.HasSuffix(file.Name(), ".go") {
+			continue
 		}
+		path := filepath.Join(dep.Path, file.Name())
 		parser.FindOccurrences(path, dep.Name, occurrences)
-		return nil
-	})
+	}
 }
 
-func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, indirectCount, reflectCount, constructorCount int) {
+func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, indirectCount, reflectCount, constructorCount, assemblyCount int) {
 	initOccurrences := make(map[string]struct{})
 	globalVarOccurrences := make(map[string]struct{})
 	execOccurrences := make(map[string]struct{})
@@ -177,6 +225,7 @@ func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, 
 	indirectOccurrences := make(map[string]struct{})
 	reflectOccurrences := make(map[string]struct{})
 	constructorOccurrences := make(map[string]struct{})
+	assemblyOccurrences := make(map[string]struct{})
 
 	for _, occ := range occurrences {
 		switch occ.AttackVector {
@@ -213,10 +262,13 @@ func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, 
 		case "constructor":
 			key := fmt.Sprintf("%s:%s:%d", occ.FilePath, occ.Pattern, occ.LineNumber)
 			constructorOccurrences[key] = struct{}{}
+		case "assembly":
+			key := fmt.Sprintf("%s:%s:%d", occ.MethodInvoked, occ.FilePath, occ.LineNumber)
+			assemblyOccurrences[key] = struct{}{}
 		}
 	}
 
-	return len(initOccurrences), len(globalVarOccurrences), len(execOccurrences), len(pluginOccurrences), len(goGenerateOccurrences), len(goTestOccurrences), len(unsafeOccurrences), len(cgoOccurrences), len(indirectOccurrences), len(reflectOccurrences), len(constructorOccurrences)
+	return len(initOccurrences), len(globalVarOccurrences), len(execOccurrences), len(pluginOccurrences), len(goGenerateOccurrences), len(goTestOccurrences), len(unsafeOccurrences), len(cgoOccurrences), len(indirectOccurrences), len(reflectOccurrences), len(constructorOccurrences), len(assemblyOccurrences)
 }
 
 func PrintOccurrences(occurrences []*Occurrence) {
@@ -247,14 +299,6 @@ func PrintOccurrences(occurrences []*Occurrence) {
 }
 
 func PrintDependencies(dependencies []Dependency) {
-	/*
-		jsonDependencies, err := json.MarshalIndent(dependencies, "", "  ")
-		if err != nil {
-			fmt.Println("Error marshaling JSON:", err)
-			return
-		}
-		fmt.Println(string(jsonDependencies))
-	*/
 	for _, dep := range dependencies {
 		fmt.Println(dep.Path)
 	}

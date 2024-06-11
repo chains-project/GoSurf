@@ -22,6 +22,7 @@ type CgoParser struct{}
 type IndirectParser struct{}
 type ReflectParser struct{}
 type ConstructorParser struct{}
+type AssemblyParser struct{}
 
 // Parser for init() Function analysis
 func (p InitFuncParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
@@ -446,6 +447,37 @@ func (p ConstructorParser) FindOccurrences(path string, packageName string, occu
 				})
 			}
 
+		}
+		return true
+	})
+}
+
+// Parser for Assembly function use
+func (p AssemblyParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
+	fset := token.NewFileSet()
+	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
+	if err != nil {
+		fmt.Printf("Error parsing file %s: %v\n", path, err)
+		return
+	}
+
+	ast.Inspect(node, func(n ast.Node) bool {
+		switch x := n.(type) {
+		case *ast.CallExpr:
+			if fun, ok := x.Fun.(*ast.Ident); ok {
+				for _, funSig := range pkgAsmFunctions {
+					if fun.Name == funSig {
+						*occurrences = append(*occurrences, &Occurrence{
+							PackageName:   packageName,
+							AttackVector:  "assembly",
+							FilePath:      path,
+							LineNumber:    fset.Position(x.Pos()).Line,
+							MethodInvoked: fun.Name,
+						})
+						break
+					}
+				}
+			}
 		}
 		return true
 	})
