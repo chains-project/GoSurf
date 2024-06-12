@@ -59,7 +59,7 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 		fmt.Printf("Error getting files in module: %v\n", err)
 		return
 	}
-	analysis.PrintDependencies(direct_dependencies)
+	// analysis.PrintDependencies(direct_dependencies)
 
 	// Analyze all the module direct dependencies
 	for _, dep := range direct_dependencies {
@@ -93,7 +93,7 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 		assemblyOccurrences...)
 
 	// Print occurrences
-	analysis.PrintOccurrences(constructorOccurrences)
+	// analysis.PrintOccurrences(constructorOccurrences)
 	// analysis.PrintOccurrences(occurrences)
 
 	// Count unique occurrences
@@ -103,17 +103,17 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 	fmt.Println("╔═════════════════════════════════════════════════════════════════════════╗")
 	fmt.Printf("║ Attack Surface Analysis: %s	     		         ║\n", filepath.Base(strings.TrimSuffix(modulePath, "/"+filepath.Base(modulePath))))
 	fmt.Println("╠═════════════════════════════════════════════════════════════════════════╣")
-	fmt.Printf("║ init() function definitions:                                 %10d ║\n", initCount)
-	fmt.Printf("║ global var initialization with functions:                    %10d ║\n", globalVarCount)
-	fmt.Printf("║ exec function invocations:                                   %10d ║\n", execCount)
-	fmt.Printf("║ plugin dynamically loaded:                                   %10d ║\n", pluginCount)
-	fmt.Printf("║ 'go:generate' directive usage:                               %10d ║\n", goGenerateCount)
-	fmt.Printf("║ testing function definitions:                                %10d ║\n", goTestCount)
-	fmt.Printf("║ Unsafe pointers:                                             %10d ║\n", unsafeCount) // TODO: define better
-	fmt.Printf("║ C function invocations via CGO:                              %10d ║\n", cgoCount)
-	fmt.Printf("║ Indirect method calls via interfaces:                        %10d ║\n", interfaceCount)
-	fmt.Printf("║ Usage of reflection:                                         %10d ║\n", reflectCount) // TODO: define better
-	fmt.Printf("║ Invocation of constructors:                                  %10d ║\n", constructorCount)
-	fmt.Printf("║ Invocation of assembly functions:                            %10d ║\n", assemblyCount)
+	fmt.Printf("║ [P1] Static Code Generation:                                 %10d ║\n", goGenerateCount)
+	fmt.Printf("║ [P2] Testing Functions:                                      %10d ║\n", goTestCount)
+	fmt.Printf("║ [I1] Global Variable Initialization:                         %10d ║\n", globalVarCount)
+	fmt.Printf("║ [I2] init() Functions:                                       %10d ║\n", initCount)
+	fmt.Printf("║ [E1] Constructor Methods:                                    %10d ║\n", constructorCount)
+	fmt.Printf("║ [E2] Reflection:                                             %10d ║\n", reflectCount)
+	fmt.Printf("║ [E3] Interfaces:                                             %10d ║\n", interfaceCount) // TODO: define better
+	fmt.Printf("║ [E4] Unsafe Pointers:                                        %10d ║\n", unsafeCount)
+	fmt.Printf("║ [E5] CGO Functions:                                          %10d ║\n", cgoCount)
+	fmt.Printf("║ [E6] Assembly Functions:                                     %10d ║\n", assemblyCount) // TODO: define better
+	fmt.Printf("║ [E7] Dynamic Plugins:                                        %10d ║\n", pluginCount)
+	fmt.Printf("║ [E8] External Execution:                                     %10d ║\n", execCount)
 	fmt.Println("╚═════════════════════════════════════════════════════════════════════════╝")
 }

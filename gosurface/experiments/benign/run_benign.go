@@ -172,7 +172,7 @@ func main() {
 			analysis.AnalyzePackage(dep, &cgoOccurrences, analysis.CgoParser{})
 			analysis.AnalyzePackage(dep, &interfaceOccurrences, analysis.InterfaceParser{})
 			analysis.AnalyzePackage(dep, &reflectOccurrences, analysis.ReflectParser{})
-			//analysis.AnalyzePackage(dep, &constructorOccurrences, analysis.ConstructorParser{})
+			analysis.AnalyzePackage(dep, &constructorOccurrences, analysis.ConstructorParser{})
 			analysis.AnalyzePackage(dep, &assemblyOccurrences, analysis.AssemblyParser{})
 		}
 
