@@ -243,6 +243,26 @@
                 </ul>
             </li>
             <li>
+                Assembly function invocations [{{ .AssemblyCount }}]
+                <span class="toggle-button" onclick="toggleOccurrences(this)">+</span>
+                <ul class="occurrences-list">
+                    {{ if .AssemblyOccurrences }}
+                        {{ range .AssemblyOccurrences }}
+                        <li class="occurrence">
+                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
+                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
+                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
+                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
+                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
+                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
+                        </li>
+                        {{ end }}
+                    {{ else }}
+                        <li class="occurrence">No occurrences found.</li>
+                    {{ end }}
+                </ul>
+            </li>
+            <li>
                 C functions invocations (cgo) [{{ .CgoCount }}]
                 <span class="toggle-button" onclick="toggleOccurrences(this)">+</span>
                 <ul class="occurrences-list">
@@ -263,11 +283,11 @@
                 </ul>
             </li>
             <li>
-                Indirect method invocations [{{ .IndirectCount }}]
+                Indirect method invocations through interfaces [{{ .InterfaceCount }}]
                 <span class="toggle-button" onclick="toggleOccurrences(this)">+</span>
                 <ul class="occurrences-list">
-                    {{ if .IndirectOccurrences }}
-                        {{ range .IndirectOccurrences }}
+                    {{ if .InterfaceOccurrences }}
+                        {{ range .InterfaceOccurrences }}
                         <li class="occurrence">
                             <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
                             {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}

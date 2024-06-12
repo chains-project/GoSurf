@@ -24,33 +24,37 @@
         <tr>
             <th>Module</th>
             <th>Version</th>
-            <th>init() function definitions</th>
-            <th>Global var initialization with functions</th>
-            <th>exec function invocations</th>
-            <th>Plugin dynamically loaded</th>
-            <th>'go:generate' directive usage</th>
-            <th>Testing function definitions</th>
-            <th>Unsafe pointers</th>
-            <th>C function invocations via CGO</th>
-            <th>Indirect method calls via interfaces</th>
-            <th>Usage of reflection</th>
-            <th>Invocation of constructors</th>
+            <th>LOC</th>
+            <th>[P1] Static Code Generation</th>
+            <th>[P2] Testing Functions</th>
+            <th>[I1] Global Variable Initialization</th>
+            <th>[I2] Initialization Hooks</th>
+            <th>[E1] Constructor Methods</th>
+            <th>[E2] Reflection</th>
+            <th>[E3] Interfaces</th>
+            <th>[E4] Unsafe Pointers</th>
+            <th>[E5] CGO Functions</th>
+            <th>[E6] Assembly Functions</th>
+            <th>[E7] Dynamic Plugins</th>
+            <th>[E8] External Execution</th>                  
         </tr>
         {{ range . }}
         <tr>
             <td>{{ .ModulePath }}</td>
             <td>{{ .Version }}</td>
-            <td>{{ .InitCount }}</td>
-            <td>{{ .GlobalVarCount }}</td>
-            <td>{{ .ExecCount }}</td>
-            <td>{{ .PluginCount }}</td>
-            <td>{{ .GoGenerateCount }}</td>
-            <td>{{ .GoTestCount }}</td>
-            <td>{{ .UnsafeCount }}</td>
-            <td>{{ .CgoCount }}</td>
-            <td>{{ .IndirectCount }}</td>
-            <td>{{ .ReflectCount }}</td>
-            <td>{{ .ConstructorCount }}</td>
+            <td>{{ .LOC}}</td>
+            <td>{{ index .GoGenerateCount 0 }} / {{ index .GoGenerateCount 1 }}</td>
+            <td>{{ index .GoTestCount 0 }} / {{ index .GoTestCount 1 }}</td>
+            <td>{{ index .GlobalVarCount 0 }} / {{ index .GlobalVarCount 1 }}</td>
+            <td>{{ index .InitCount 0 }} / {{ index .InitCount 1 }}</td>
+            <td>{{ index .ConstructorCount 0 }} / {{ index .ConstructorCount 1 }}</td>
+            <td>{{ index .ReflectCount 0 }} / {{ index .ReflectCount 1 }}</td>
+            <td>{{ index .InterfaceCount 0 }} / {{ index .InterfaceCount 1 }}</td>
+            <td>{{ index .UnsafeCount 0 }} / {{ index .UnsafeCount 1 }}</td>
+            <td>{{ index .CgoCount 0 }} / {{ index .CgoCount 1 }}</td>
+            <td>{{ index .AssemblyCount 0 }} / {{ index .AssemblyCount 1 }}</td>
+            <td>{{ index .PluginCount 0 }} / {{ index .PluginCount 1 }}</td>            
+            <td>{{ index .ExecCount 0 }} / {{ index .ExecCount 1 }}</td>
         </tr>
         {{ end }}
     </table>

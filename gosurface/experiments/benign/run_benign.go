@@ -36,17 +36,19 @@ type Repository struct {
 type ModuleDetails struct {
 	ModulePath             string
 	Version                string
-	InitCount              int
-	GlobalVarCount         int
-	ExecCount              int
-	PluginCount            int
-	GoGenerateCount        int
-	GoTestCount            int
-	UnsafeCount            int
-	CgoCount               int
-	IndirectCount          int
-	ReflectCount           int
-	ConstructorCount       int
+	LOC                    int
+	InitCount              []float64
+	GlobalVarCount         []float64
+	ExecCount              []float64
+	PluginCount            []float64
+	GoGenerateCount        []float64
+	GoTestCount            []float64
+	UnsafeCount            []float64
+	CgoCount               []float64
+	InterfaceCount         []float64
+	ReflectCount           []float64
+	ConstructorCount       []float64
+	AssemblyCount          []float64
 	InitOccurrences        []*analysis.Occurrence
 	GlobalVarOccurrences   []*analysis.Occurrence
 	ExecOccurrences        []*analysis.Occurrence
@@ -55,9 +57,10 @@ type ModuleDetails struct {
 	GoTestOccurrences      []*analysis.Occurrence
 	UnsafeOccurrences      []*analysis.Occurrence
 	CgoOccurrences         []*analysis.Occurrence
-	IndirectOccurrences    []*analysis.Occurrence
+	InterfaceOccurrences   []*analysis.Occurrence
 	ReflectOccurrences     []*analysis.Occurrence
 	ConstructorOccurrences []*analysis.Occurrence
+	AssemblyOccurrences    []*analysis.Occurrence
 }
 
 func main() {
@@ -139,8 +142,16 @@ func main() {
 		fmt.Printf("\n[%d/%d] Analyzing module %s...\n", i+1, itemCount, importPath)
 
 		// Analyze the module
-		var initOccurrences, globalVarOccurrences, execOccurrences, pluginOccurrences, goGenerateOccurrences, goTestOccurrences, unsafeOccurrences, cgoOccurrences, indirectOccurrences, reflectOccurrences, constructorOccurrences []*analysis.Occurrence
+		var initOccurrences, globalVarOccurrences, execOccurrences, pluginOccurrences, goGenerateOccurrences, goTestOccurrences, unsafeOccurrences, cgoOccurrences, interfaceOccurrences, reflectOccurrences, constructorOccurrences, assemblyOccurrences []*analysis.Occurrence
 		modulePath := filepath.Join(os.Getenv("GOPATH"), "pkg/mod", importPath+"@"+latestReleaseNumber)
+
+		// TODO: use directly the API of this package
+		// Get the lines of code count
+		locCount, err := analysis.GetLineOfCodeCount(modulePath)
+		if err != nil {
+			fmt.Printf("Error getting line of code count for %s: %v\n", module.Name, err)
+			continue
+		}
 
 		// Analyze the module and its direct dependencies
 		direct_dependencies, err := analysis.GetDependencies(modulePath)
@@ -159,13 +170,14 @@ func main() {
 			analysis.AnalyzePackage(dep, &goTestOccurrences, analysis.GoTestParser{})
 			analysis.AnalyzePackage(dep, &unsafeOccurrences, analysis.UnsafeParser{})
 			analysis.AnalyzePackage(dep, &cgoOccurrences, analysis.CgoParser{})
-			analysis.AnalyzePackage(dep, &indirectOccurrences, analysis.IndirectParser{})
+			analysis.AnalyzePackage(dep, &interfaceOccurrences, analysis.InterfaceParser{})
 			analysis.AnalyzePackage(dep, &reflectOccurrences, analysis.ReflectParser{})
 			//analysis.AnalyzePackage(dep, &constructorOccurrences, analysis.ConstructorParser{})
+			analysis.AnalyzePackage(dep, &assemblyOccurrences, analysis.AssemblyParser{})
 		}
 
 		// Convert occurrences to JSON
-		occurrences := append(append(append(append(append(append(append(append(append(append(
+		occurrences := append(append(append(append(append(append(append(append(append(append(append(
 			initOccurrences,
 			globalVarOccurrences...),
 			execOccurrences...),
@@ -174,28 +186,31 @@ func main() {
 			goTestOccurrences...),
 			unsafeOccurrences...),
 			cgoOccurrences...),
-			indirectOccurrences...),
+			interfaceOccurrences...),
 			reflectOccurrences...),
-			constructorOccurrences...)
+			constructorOccurrences...),
+			assemblyOccurrences...)
 
 		// Count unique occurrences
-		initCount, globalVarCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, indirectCount, reflectCount, constructorCount := analysis.CountUniqueOccurrences(occurrences)
+		initCount, globalVarCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, interfaceCount, reflectCount, constructorCount, assemblyCount := analysis.CountUniqueOccurrences(occurrences)
 
 		// Create a ModuleDetails instance and append it to the slice
 		moduleDetails := ModuleDetails{
 			ModulePath:             modulePath,
 			Version:                latestReleaseNumber,
-			InitCount:              initCount,
-			GlobalVarCount:         globalVarCount,
-			ExecCount:              execCount,
-			PluginCount:            pluginCount,
-			GoGenerateCount:        goGenerateCount,
-			GoTestCount:            goTestCount,
-			UnsafeCount:            unsafeCount,
-			CgoCount:               cgoCount,
-			IndirectCount:          indirectCount,
-			ReflectCount:           reflectCount,
-			ConstructorCount:       constructorCount,
+			LOC:                    locCount,
+			InitCount:              []float64{float64(initCount), float64(initCount) / float64(locCount)},
+			GlobalVarCount:         []float64{float64(globalVarCount), float64(globalVarCount) / float64(locCount)},
+			ExecCount:              []float64{float64(execCount), float64(execCount) / float64(locCount)},
+			PluginCount:            []float64{float64(pluginCount), float64(pluginCount) / float64(locCount)},
+			GoGenerateCount:        []float64{float64(goGenerateCount), float64(goGenerateCount) / float64(locCount)},
+			GoTestCount:            []float64{float64(goTestCount), float64(goTestCount) / float64(locCount)},
+			UnsafeCount:            []float64{float64(unsafeCount), float64(unsafeCount) / float64(locCount)},
+			CgoCount:               []float64{float64(cgoCount), float64(cgoCount) / float64(locCount)},
+			InterfaceCount:         []float64{float64(interfaceCount), float64(interfaceCount) / float64(locCount)},
+			ReflectCount:           []float64{float64(reflectCount), float64(reflectCount) / float64(locCount)},
+			ConstructorCount:       []float64{float64(constructorCount), float64(constructorCount) / float64(locCount)},
+			AssemblyCount:          []float64{float64(assemblyCount), float64(assemblyCount) / float64(locCount)},
 			InitOccurrences:        initOccurrences,
 			GlobalVarOccurrences:   globalVarOccurrences,
 			ExecOccurrences:        execOccurrences,
@@ -204,9 +219,10 @@ func main() {
 			GoTestOccurrences:      goTestOccurrences,
 			UnsafeOccurrences:      unsafeOccurrences,
 			CgoOccurrences:         cgoOccurrences,
-			IndirectOccurrences:    indirectOccurrences,
+			InterfaceOccurrences:   interfaceOccurrences,
 			ReflectOccurrences:     reflectOccurrences,
 			ConstructorOccurrences: constructorOccurrences,
+			AssemblyOccurrences:    assemblyOccurrences,
 		}
 		moduleDetailsList = append(moduleDetailsList, moduleDetails)
 	}
