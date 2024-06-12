@@ -18,7 +18,7 @@ var (
 	goTestOccurrences      []*analysis.Occurrence
 	unsafeOccurrences      []*analysis.Occurrence
 	cgoOccurrences         []*analysis.Occurrence
-	indirectOccurrences    []*analysis.Occurrence
+	interfaceOccurrences   []*analysis.Occurrence
 	reflectOccurrences     []*analysis.Occurrence
 	constructorOccurrences []*analysis.Occurrence
 	assemblyOccurrences    []*analysis.Occurrence
@@ -71,9 +71,9 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 		analysis.AnalyzePackage(dep, &goTestOccurrences, analysis.GoTestParser{})
 		analysis.AnalyzePackage(dep, &unsafeOccurrences, analysis.UnsafeParser{})
 		analysis.AnalyzePackage(dep, &cgoOccurrences, analysis.CgoParser{})
-		analysis.AnalyzePackage(dep, &indirectOccurrences, analysis.IndirectParser{})
+		analysis.AnalyzePackage(dep, &interfaceOccurrences, analysis.InterfaceParser{})
 		analysis.AnalyzePackage(dep, &reflectOccurrences, analysis.ReflectParser{})
-		//analysis.AnalyzePackage(dep, &constructorOccurrences, analysis.ConstructorParser{})
+		analysis.AnalyzePackage(dep, &constructorOccurrences, analysis.ConstructorParser{})
 		analysis.AnalyzePackage(dep, &assemblyOccurrences, analysis.AssemblyParser{})
 	}
 
@@ -87,17 +87,17 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 		goTestOccurrences...),
 		unsafeOccurrences...),
 		cgoOccurrences...),
-		indirectOccurrences...),
+		interfaceOccurrences...),
 		reflectOccurrences...),
 		constructorOccurrences...),
 		assemblyOccurrences...)
 
 	// Print occurrences
-	analysis.PrintOccurrences(assemblyOccurrences)
+	analysis.PrintOccurrences(constructorOccurrences)
 	// analysis.PrintOccurrences(occurrences)
 
 	// Count unique occurrences
-	initCount, globalVarCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, indirectCount, reflectCount, constructorCount, assemblyCount := analysis.CountUniqueOccurrences(occurrences)
+	initCount, globalVarCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, interfaceCount, reflectCount, constructorCount, assemblyCount := analysis.CountUniqueOccurrences(occurrences)
 	fmt.Println()
 	fmt.Println()
 	fmt.Println("╔═════════════════════════════════════════════════════════════════════════╗")
@@ -111,7 +111,7 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 	fmt.Printf("║ testing function definitions:                                %10d ║\n", goTestCount)
 	fmt.Printf("║ Unsafe pointers:                                             %10d ║\n", unsafeCount) // TODO: define better
 	fmt.Printf("║ C function invocations via CGO:                              %10d ║\n", cgoCount)
-	fmt.Printf("║ Indirect method calls via interfaces:                        %10d ║\n", indirectCount)
+	fmt.Printf("║ Indirect method calls via interfaces:                        %10d ║\n", interfaceCount)
 	fmt.Printf("║ Usage of reflection:                                         %10d ║\n", reflectCount) // TODO: define better
 	fmt.Printf("║ Invocation of constructors:                                  %10d ║\n", constructorCount)
 	fmt.Printf("║ Invocation of assembly functions:                            %10d ║\n", assemblyCount)
