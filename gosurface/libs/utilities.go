@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"reflect"
 	"regexp"
@@ -17,8 +18,8 @@ type Occurrence struct {
 	LineNumber    int
 	VariableName  string // for anonymous functions
 	Command       string // for go:generate directive
-	MethodInvoked string // for indirect, exec, plugin, cgo
-	TypePassed    string // for indirect
+	MethodInvoked string // for interface, exec, plugin, cgo
+	TypePassed    string // for interface
 	Pattern       string // for constructors
 }
 
@@ -93,6 +94,33 @@ func GetDependencies(modulePath string) ([]Dependency, error) { // TODO should r
 	}
 
 	return dependencies, nil
+}
+
+func GetLineOfCodeCount(modulePath string) (int, error) {
+	cmd := exec.Command("gocloc", "--output-type=json", "--exclude-ext=txt,md", ".")
+	cmd.Dir = modulePath
+	output, err := cmd.Output()
+	if err != nil {
+		return 0, err
+	}
+
+	var locData map[string]interface{}
+	err = json.Unmarshal(output, &locData)
+	if err != nil {
+		return 0, err
+	}
+
+	totalData, ok := locData["total"].(map[string]interface{})
+	if !ok {
+		return 0, fmt.Errorf("invalid output format from gocloc")
+	}
+
+	codeLoc, ok := totalData["code"].(float64)
+	if !ok {
+		return 0, fmt.Errorf("invalid output format from gocloc")
+	}
+
+	return int(codeLoc), nil
 }
 
 var packageRegex = regexp.MustCompile(`\bpackage\s+(\w+)\b`)
@@ -213,7 +241,7 @@ func AnalyzePackage(dep Dependency, occurrences *[]*Occurrence, parser Occurrenc
 	}
 }
 
-func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, indirectCount, reflectCount, constructorCount, assemblyCount int) {
+func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, interfaceCount, reflectCount, constructorCount, assemblyCount int) {
 	initOccurrences := make(map[string]struct{})
 	globalVarOccurrences := make(map[string]struct{})
 	execOccurrences := make(map[string]struct{})
@@ -222,7 +250,7 @@ func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, 
 	goTestOccurrences := make(map[string]struct{})
 	unsafeOccurrences := make(map[string]struct{})
 	cgoOccurrences := make(map[string]struct{})
-	indirectOccurrences := make(map[string]struct{})
+	interfaceOccurrences := make(map[string]struct{})
 	reflectOccurrences := make(map[string]struct{})
 	constructorOccurrences := make(map[string]struct{})
 	assemblyOccurrences := make(map[string]struct{})
@@ -253,9 +281,9 @@ func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, 
 		case "cgo":
 			key := fmt.Sprintf("%s:%s:%d", occ.MethodInvoked, occ.FilePath, occ.LineNumber) // TODO: which info to include here
 			cgoOccurrences[key] = struct{}{}
-		case "indirect":
+		case "interface":
 			key := fmt.Sprintf("%s:%s:%s:%d", occ.MethodInvoked, occ.TypePassed, occ.FilePath, occ.LineNumber)
-			indirectOccurrences[key] = struct{}{}
+			interfaceOccurrences[key] = struct{}{}
 		case "reflect":
 			key := fmt.Sprintf("%s:%s:%d", occ.MethodInvoked, occ.FilePath, occ.LineNumber)
 			reflectOccurrences[key] = struct{}{}
@@ -268,7 +296,7 @@ func CountUniqueOccurrences(occurrences []*Occurrence) (initCount, anonymCount, 
 		}
 	}
 
-	return len(initOccurrences), len(globalVarOccurrences), len(execOccurrences), len(pluginOccurrences), len(goGenerateOccurrences), len(goTestOccurrences), len(unsafeOccurrences), len(cgoOccurrences), len(indirectOccurrences), len(reflectOccurrences), len(constructorOccurrences), len(assemblyOccurrences)
+	return len(initOccurrences), len(globalVarOccurrences), len(execOccurrences), len(pluginOccurrences), len(goGenerateOccurrences), len(goTestOccurrences), len(unsafeOccurrences), len(cgoOccurrences), len(interfaceOccurrences), len(reflectOccurrences), len(constructorOccurrences), len(assemblyOccurrences)
 }
 
 func PrintOccurrences(occurrences []*Occurrence) {

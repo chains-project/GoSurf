@@ -19,7 +19,7 @@ type GoGenerateParser struct{}
 type GoTestParser struct{}
 type UnsafeParser struct{}
 type CgoParser struct{}
-type IndirectParser struct{}
+type InterfaceParser struct{}
 type ReflectParser struct{}
 type ConstructorParser struct{}
 type AssemblyParser struct{}
@@ -317,7 +317,7 @@ func (p CgoParser) FindOccurrences(path string, packageName string, occurrences 
 }
 
 // Parser for indirect method invocations throguh Interfaces
-func (p IndirectParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
+func (p InterfaceParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
 	if err != nil {
@@ -372,7 +372,7 @@ func (p IndirectParser) FindOccurrences(path string, packageName string, occurre
 				}
 				*occurrences = append(*occurrences, &Occurrence{
 					PackageName:   packageName,
-					AttackVector:  "indirect",
+					AttackVector:  "interface",
 					FilePath:      path,
 					LineNumber:    fset.Position(x.Pos()).Line,
 					MethodInvoked: fun.Sel.Name,
@@ -410,6 +410,7 @@ func (p ReflectParser) FindOccurrences(path string, packageName string, occurren
 }
 
 func (p ConstructorParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
+
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
 	if err != nil {
@@ -421,30 +422,33 @@ func (p ConstructorParser) FindOccurrences(path string, packageName string, occu
 		switch x := n.(type) {
 		case *ast.CallExpr:
 
+			switch fun := x.Fun.(type) {
+
 			// Check for factory function invocations
-			if fun, ok := x.Fun.(*ast.SelectorExpr); ok {
+			case *ast.SelectorExpr:
 				if strings.HasPrefix(fun.Sel.Name, "New") {
 					*occurrences = append(*occurrences, &Occurrence{
 						PackageName:   packageName,
 						AttackVector:  "constructor",
 						FilePath:      path,
 						LineNumber:    fset.Position(x.Pos()).Line,
-						MethodInvoked: fun.X.(*ast.Ident).Name + "." + fun.Sel.Name,
+						MethodInvoked: fun.Sel.Name,
 						Pattern:       "factory function",
 					})
 				}
-			}
 
 			// Check for `New` function invocations
-			if fun, ok := x.Fun.(*ast.Ident); ok && fun.Name == "New" {
-				*occurrences = append(*occurrences, &Occurrence{
-					PackageName:   packageName,
-					AttackVector:  "constructor",
-					FilePath:      path,
-					LineNumber:    fset.Position(x.Pos()).Line,
-					MethodInvoked: "New",
-					Pattern:       "New() function",
-				})
+			case *ast.Ident:
+				if fun.Name == "New" {
+					*occurrences = append(*occurrences, &Occurrence{
+						PackageName:   packageName,
+						AttackVector:  "constructor",
+						FilePath:      path,
+						LineNumber:    fset.Position(x.Pos()).Line,
+						MethodInvoked: "New",
+						Pattern:       "New() function",
+					})
+				}
 			}
 
 		}
