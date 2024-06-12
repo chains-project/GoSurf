@@ -13,13 +13,13 @@ func main() {
 	lengthPtr := (*int)(unsafe.Pointer(uintptr(unsafe.Pointer(&slice)) + uintptr(8)))
 
 	// Manipulate the length field directly to a very large value.
-	*lengthPtr = 1000000
+	*lengthPtr = 1000000000
 
 	// Attempt to append to the manipulated slice.
 	// This will cause Go's runtime to attempt to allocate a huge amount of memory.
 	// Depending on system resources, this could lead to a denial-of-service condition.
 	// The program might crash or become unresponsive due to excessive memory usage.
-	slice = append(slice, 1)
+	slice = append(slice, *lengthPtr)
 
 	fmt.Println("Append operation completed successfully.")
 }
