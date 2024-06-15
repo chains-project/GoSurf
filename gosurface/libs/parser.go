@@ -3,8 +3,10 @@ package analysis
 import (
 	"fmt"
 	"go/ast"
+	"go/importer"
 	"go/parser"
 	"go/token"
+	"go/types"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -385,24 +387,61 @@ func (p InterfaceParser) FindOccurrences(path string, packageName string, occurr
 
 }
 
+// Blacklisted reflect functions (shorter than the whitelist)
+var blacklistReflect = []string{"New", "NewAt", "MakeChan", "MakeFunc", "MakeMap", "Copy", "Swapper", "Next", "Reset", "Value", "TypeFor", "Append", "AppendSlice", "MakeMapWithSize", "MakeSlice",
+	"Select", "Zero", "Call", "CallSlice", "Clear", "Close", "Convert", "Equal", "FieldByNameFunc", "Grow", "Interface", "InterfaceData", "MapIndex", "MapKeys", "MapRange", "Recv",
+	"Send", "Set", "SetCap", "SetIterKey", "SetIterValue", "SetLen", "SetMapIndex", "SetPointer", "SetZero", "Slice", "Slice3", "TryRecv", "TrySend"}
+
+// Parser for method invocations of Reflect.
 func (p ReflectParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
-	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
+	node, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
 	if err != nil {
 		fmt.Printf("Error parsing file %s: %v\n", path, err)
 		return
 	}
 
+	// Type check file to populate use & def table
+	conf := types.Config{Importer: importer.Default()}
+	info := &types.Info{
+		Types: make(map[ast.Expr]types.TypeAndValue),
+	}
+	_, err = conf.Check(path, fset, []*ast.File{node}, info)
+	if err != nil { // LIMITATION/TODO: not all files can be type checked due to import issues
+		//fmt.Printf("Error type-checking file %s: %v\n", path, err)
+	}
+
 	ast.Inspect(node, func(n ast.Node) bool {
 		switch x := n.(type) {
-		case *ast.ImportSpec:
-			if pkg := x.Path.Value; pkg == `"reflect"` {
-				*occurrences = append(*occurrences, &Occurrence{
-					PackageName:  packageName,
-					AttackVector: "reflect",
-					FilePath:     path,
-					LineNumber:   fset.Position(x.Pos()).Line})
-				return false
+
+		case *ast.CallExpr:
+			if fun, ok := x.Fun.(*ast.SelectorExpr); ok {
+				if id, ok := fun.X.(*ast.Ident); ok {
+					isReflectCall := false
+					// case 1: direct reflect.Method() call
+					if id.Name == "reflect" {
+						isReflectCall = true
+					}
+					// case 2 identifier of type reflect
+					// strings.hasPrefix("reflect") is not suitable here
+					if typ, ok := info.Types[id]; ok && strings.Split(typ.Type.String(), ".")[0] == "reflect" {
+						isReflectCall = true
+					}
+
+					if isReflectCall {
+						method := fun.Sel.Name
+						for _, f := range blacklistReflect {
+							if method == f {
+								*occurrences = append(*occurrences, &Occurrence{
+									AttackVector:  "reflect",
+									FilePath:      path,
+									LineNumber:    fset.Position(x.Pos()).Line,
+									MethodInvoked: method})
+								break
+							}
+						}
+					}
+				}
 			}
 		}
 		return true

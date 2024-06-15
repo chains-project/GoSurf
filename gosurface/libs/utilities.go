@@ -332,6 +332,8 @@ func PrintDependencies(dependencies []Dependency) {
 	}
 }
 
+
+
 // Function to render a progress bar on the console
 func updateProgressBar(current, total int) {
 	width := 50 // Width of the progress bar
