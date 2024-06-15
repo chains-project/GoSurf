@@ -48,7 +48,7 @@ func (p InitFuncParser) FindOccurrences(path string, packageName string, occurre
 	}
 }
 
-// Parser for global var initialization with functions
+// Parser for global var initialization with functions.
 func (p GlobalVarParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 
 	fileContents, err := os.ReadFile(path)
@@ -83,7 +83,7 @@ func (p GlobalVarParser) FindOccurrences(path string, packageName string, occurr
 		}
 	}
 
-	// Global variable initialization with anonymous functions
+	// Global variable initialization with anonymous functions.
 	anonym_pattern := `var\s+(\w+)\s*(\w*)\s*=\s*func\(\)\s*(\w*)\s*{[^}]*}\(\)`
 	anonym_re := regexp.MustCompile(anonym_pattern)
 	anonym_matches := anonym_re.FindAllStringSubmatchIndex(string(fileContents), -1)
@@ -115,7 +115,7 @@ var execFuncs = []execFuncInfo{
 	{"os", []string{"StartProcess"}},
 }
 
-// Parser for exec function analysis
+// Parser for exec function analysis.
 func (p ExecParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
@@ -220,7 +220,7 @@ func (p GoGenerateParser) FindOccurrences(path string, packageName string, occur
 	}
 }
 
-// Parser for Test functions (prefix: Test, Benchmark, Example) analysis
+// Parser for Test functions. Locates function declarations (ast.FunDecl) with prefixes "Test", "Benchmark", "Example" or "Fuzz".
 func (p GoTestParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 
 	if strings.HasSuffix(path, "_test.go") {
@@ -256,7 +256,7 @@ func (p GoTestParser) FindOccurrences(path string, packageName string, occurrenc
 
 }
 
-// Parser for unsafe pointer usage
+// Parser for unsafe pointer creation. Locates calls to unsafe.Pointer(). 
 func (p UnsafeParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
@@ -284,8 +284,9 @@ func (p UnsafeParser) FindOccurrences(path string, packageName string, occurrenc
 	})
 }
 
-// Parser for Cgo usage
+// Parser for Cgo usage. Locates calls using package "C". 
 func (p CgoParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
+	// todo, only inspect if importing C.
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
 	if err != nil {
@@ -316,7 +317,7 @@ func (p CgoParser) FindOccurrences(path string, packageName string, occurrences 
 	})
 }
 
-// Parser for indirect method invocations throguh Interfaces
+// Parser for indirect method invocations throguh Interfaces.
 func (p InterfaceParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
@@ -385,6 +386,7 @@ func (p InterfaceParser) FindOccurrences(path string, packageName string, occurr
 
 }
 
+// Parer for reflection. Locates imports of reflection in a file.
 func (p ReflectParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
@@ -409,6 +411,7 @@ func (p ReflectParser) FindOccurrences(path string, packageName string, occurren
 	})
 }
 
+// Parser for constructors. 
 func (p ConstructorParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 
 	fset := token.NewFileSet()
@@ -456,7 +459,7 @@ func (p ConstructorParser) FindOccurrences(path string, packageName string, occu
 	})
 }
 
-// Parser for Assembly function use
+// Parser for Assembly function use. 
 func (p AssemblyParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
