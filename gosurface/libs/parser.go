@@ -319,6 +319,7 @@ func (p CgoParser) FindOccurrences(path string, packageName string, occurrences 
 // Parser for indirect method invocations throguh Interfaces
 func (p InterfaceParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
+
 	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
 	if err != nil {
 		fmt.Printf("Error parsing file %s: %v\n", path, err)
@@ -331,7 +332,8 @@ func (p InterfaceParser) FindOccurrences(path string, packageName string, occurr
 	ast.Inspect(node, func(n ast.Node) bool {
 		switch x := n.(type) {
 		case *ast.FuncDecl:
-			if x.Recv != nil {
+
+			if x.Recv != nil && len(x.Recv.List) != 0 {
 				receiverType := fmt.Sprint(x.Recv.List[0].Type)
 				methods[x.Name.Name] = append(methods[x.Name.Name], receiverType)
 			} else if x.Type.Results != nil && len(x.Type.Results.List) > 0 {
@@ -340,6 +342,7 @@ func (p InterfaceParser) FindOccurrences(path string, packageName string, occurr
 					interfaceMethods[x.Name.Name] = struct{}{}
 				}
 			}
+
 		}
 		return true
 	})
