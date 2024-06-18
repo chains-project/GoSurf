@@ -36,6 +36,7 @@ type Repository struct {
 type ModuleDetails struct {
 	ModulePath             string
 	Version                string
+	Dependants             int
 	LOC                    int
 	InitCount              []float64
 	GlobalVarCount         []float64
@@ -136,6 +137,7 @@ func main() {
 
 		packageManagerURL := module.PackageManagerURL
 		latestReleaseNumber := module.LatestReleaseNumber
+		dependants := module.DependentsCount
 
 		// Construct the module import path and version
 		importPath := strings.TrimPrefix(packageManagerURL, "https://pkg.go.dev/")
@@ -198,6 +200,7 @@ func main() {
 		moduleDetails := ModuleDetails{
 			ModulePath:             modulePath,
 			Version:                latestReleaseNumber,
+			Dependants:             dependants,
 			LOC:                    locCount,
 			InitCount:              []float64{float64(initCount), float64(initCount) / float64(locCount)},
 			GlobalVarCount:         []float64{float64(globalVarCount), float64(globalVarCount) / float64(locCount)},
@@ -259,8 +262,8 @@ func retrieveModulesFromLibrariesIO(moduleInfoFile string) {
 	var allModules []Repository
 
 	// Retrieve TOP x packages from libraries.io API
-	for page := 1; page <= 1; page++ {
-		url := fmt.Sprintf("https://libraries.io/api/search?order=desc&platforms=Go&sort=dependents_count&per_page=5&page=%d&api_key=ff76aa15a1d65e44843fb94dab1ead62", page)
+	for page := 1; page <= 6; page++ {
+		url := fmt.Sprintf("https://libraries.io/api/search?order=desc&platforms=Go&sort=dependents_count&per_page=100&page=%d&api_key=ff76aa15a1d65e44843fb94dab1ead62", page)
 		resp, err := http.Get(url)
 		if err != nil {
 			fmt.Println("Error making HTTP request:", err)

@@ -1,0 +1,10 @@
+https://github.com/hashicorp/terraform
+https://github.com/kubernetes/kubernetes
+https://github.com/ethereum/go-ethereum
+https://github.com/coredns/coredns
+https://github.com/onsi/ginkgo
+https://github.com/stretchr/testify
+https://github.com/hashicorp/vault
+https://github.com/sirupsen/logrus
+https://github.com/prometheus/prometheus
+https://github.com/spf13/cobra

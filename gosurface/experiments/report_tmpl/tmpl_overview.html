@@ -24,38 +24,65 @@
         <tr>
             <th>Module</th>
             <th>Version</th>
+            <th>Dependants</th>
             <th>LOC</th>
             <th>[P1] Static Code Generation</th>
+            <th>[P1]</th>
             <th>[P2] Testing Functions</th>
+            <th>[P2]</th>
             <th>[I1] Global Variable Initialization</th>
+            <th>[I1]</th>
             <th>[I2] Initialization Hooks</th>
+            <th>[I2]</th>
             <th>[E1] Constructor Methods</th>
+            <th>[E1]</th>
             <th>[E2] Reflection</th>
+            <th>[E2]</th>
             <th>[E3] Interfaces</th>
+            <th>[E3]</th>
             <th>[E4] Unsafe Pointers</th>
+            <th>[E4]</th>
             <th>[E5] CGO Functions</th>
+            <th>[E5]</th>
             <th>[E6] Assembly Functions</th>
+            <th>[E6]</th>
             <th>[E7] Dynamic Plugins</th>
+            <th>[E7]</th>
             <th>[E8] External Execution</th>                  
+            <th>[E8]</th>
         </tr>
         {{ range . }}
         <tr>
             <td>{{ .ModulePath }}</td>
             <td>{{ .Version }}</td>
+            <td>{{ .Dependants}}</td>
             <td>{{ .LOC}}</td>
-            <td>{{ index .GoGenerateCount 0 }} / {{ index .GoGenerateCount 1 }}</td>
-            <td>{{ index .GoTestCount 0 }} / {{ index .GoTestCount 1 }}</td>
-            <td>{{ index .GlobalVarCount 0 }} / {{ index .GlobalVarCount 1 }}</td>
-            <td>{{ index .InitCount 0 }} / {{ index .InitCount 1 }}</td>
-            <td>{{ index .ConstructorCount 0 }} / {{ index .ConstructorCount 1 }}</td>
-            <td>{{ index .ReflectCount 0 }} / {{ index .ReflectCount 1 }}</td>
-            <td>{{ index .InterfaceCount 0 }} / {{ index .InterfaceCount 1 }}</td>
-            <td>{{ index .UnsafeCount 0 }} / {{ index .UnsafeCount 1 }}</td>
-            <td>{{ index .CgoCount 0 }} / {{ index .CgoCount 1 }}</td>
-            <td>{{ index .AssemblyCount 0 }} / {{ index .AssemblyCount 1 }}</td>
-            <td>{{ index .PluginCount 0 }} / {{ index .PluginCount 1 }}</td>            
-            <td>{{ index .ExecCount 0 }} / {{ index .ExecCount 1 }}</td>
+            <td> {{ index .GoGenerateCount 0 }}</td>
+            <td> {{ index .GoGenerateCount 1 }}</td>
+            <td> {{ index .GoTestCount 0 }}</td>
+            <td> {{ index .GoTestCount 1 }}</td>
+            <td> {{ index .GlobalVarCount 0 }}</td>
+            <td> {{ index .GlobalVarCount 1 }}</td>
+            <td> {{ index .InitCount 0 }}</td>
+            <td> {{ index .InitCount 1 }}</td>
+            <td> {{ index .ConstructorCount 0 }}</td>
+            <td> {{ index .ConstructorCount 1 }}</td>
+            <td> {{ index .ReflectCount 0 }}</td>
+            <td> {{ index .ReflectCount 1 }}</td>
+            <td> {{ index .InterfaceCount 0 }}</td>
+            <td> {{ index .InterfaceCount 1 }}</td>
+            <td> {{ index .UnsafeCount 0 }}</td>
+            <td> {{ index .UnsafeCount 1 }}</td>
+            <td> {{ index .CgoCount 0 }}</td>
+            <td> {{ index .CgoCount 1 }}</td>
+            <td> {{ index .AssemblyCount 0 }}</td>
+            <td> {{ index .AssemblyCount 1 }}</td>
+            <td> {{ index .PluginCount 0 }}</td>
+            <td> {{ index .PluginCount 1 }}</td>            
+            <td> {{ index .ExecCount 0 }}</td>
+            <td> {{ index .ExecCount 1 }}</td>
         </tr>
+
         {{ end }}
     </table>
 </body>
