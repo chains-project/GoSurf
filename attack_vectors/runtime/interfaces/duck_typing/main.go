@@ -16,6 +16,11 @@ type Operation interface {
 	InvokeOperation()
 }
 
+// Function that accepts the interface and calls the method
+func invokeOperation(op Operation) {
+	op.InvokeOperation()
+}
+
 // Implement the InvokeOperation method for TypeA
 func (typeA TypeA) InvokeOperation() {
 	fmt.Println("Invoked Method on Type A: CAPABILITY_EXEC")
@@ -50,9 +55,4 @@ func main() {
 	// Invoke the same method with different types
 	invokeOperation(typeA)
 	invokeOperation(typeB)
-}
-
-// Function that accepts the interface and calls the method
-func invokeOperation(op Operation) {
-	op.InvokeOperation()
 }
