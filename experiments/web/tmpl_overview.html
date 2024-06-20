@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attack Surface Analysis</title>
+    <style>
+        /* Add some basic styling */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Attack Surface Analysis: occurrences</h1>
+    <table>
+        <tr>
+            <th>Module</th>
+            <th>Version</th>
+            <th>Dependants</th>
+            <th>LOC</th>
+            <th>[P1] Static Code Generation</th>
+            <th>[P2] Testing Functions</th>
+            <th>[I1] Global Variable Initialization</th>
+            <th>[I2] Initialization Hooks</th>
+            <th>[E1] Constructor Methods</th>
+            <th>[E2] Reflection</th>
+            <th>[E3] Interfaces</th>
+            <th>[E4] Unsafe Pointers</th>
+            <th>[E5] CGO Functions</th>
+            <th>[E6] Assembly Functions</th>
+            <th>[E7] Dynamic Plugins</th>
+            <th>[E8] External Execution</th>                  
+        </tr>
+        {{ range . }}
+        <tr>
+            <td>{{ .ModulePath }}</td>
+            <td>{{ .Version }}</td>
+            <td>{{ .Dependants}}</td>
+            <td>{{ .LOC}}</td>
+            <td> {{ index .GoGenerateCount 0 }}</td>
+            <td> {{ index .GoTestCount 0 }}</td>
+            <td> {{ index .GlobalVarCount 0 }}</td>
+            <td> {{ index .InitCount 0 }}</td>
+            <td> {{ index .ConstructorCount 0 }}</td>
+            <td> {{ index .ReflectCount 0 }}</td>
+            <td> {{ index .InterfaceCount 0 }}</td>
+            <td> {{ index .UnsafeCount 0 }}</td>
+            <td> {{ index .CgoCount 0 }}</td>
+            <td> {{ index .AssemblyCount 0 }}</td>
+            <td> {{ index .PluginCount 0 }}</td>         
+            <td> {{ index .ExecCount 0 }}</td>
+        </tr>
+
+        {{ end }}
+    </table>
+
+    <h1>Attack Surface Analysis: attack density per LOC</h1>
+    <table>
+        <tr>
+            <th>Module</th>
+            <th>Version</th>
+            <th>Dependants</th>
+            <th>LOC</th>
+            <th>[P1] Static Code Generation</th>
+            <th>[P2] Testing Functions</th>
+            <th>[I1] Global Variable Initialization</th>
+            <th>[I2] Initialization Hooks</th>
+            <th>[E1] Constructor Methods</th>
+            <th>[E2] Reflection</th>
+            <th>[E3] Interfaces</th>
+            <th>[E4] Unsafe Pointers</th>
+            <th>[E5] CGO Functions</th>
+            <th>[E6] Assembly Functions</th>
+            <th>[E7] Dynamic Plugins</th>
+            <th>[E8] External Execution</th>                  
+        </tr>
+        {{ range . }}
+        <tr>
+            <td>{{ .ModulePath }}</td>
+            <td>{{ .Version }}</td>
+            <td>{{ .Dependants}}</td>
+            <td>{{ .LOC}}</td>
+            <td> {{ index .GoGenerateCount 1 }}</td>
+            <td> {{ index .GoTestCount 1 }}</td>
+            <td> {{ index .GlobalVarCount 1 }}</td>
+            <td> {{ index .InitCount 1 }}</td>
+            <td> {{ index .ConstructorCount 1 }}</td>
+            <td> {{ index .ReflectCount 1 }}</td>
+            <td> {{ index .InterfaceCount 1 }}</td>
+            <td> {{ index .UnsafeCount 1 }}</td>
+            <td> {{ index .CgoCount 1 }}</td>
+            <td> {{ index .AssemblyCount 1 }}</td>
+            <td> {{ index .PluginCount 1 }}</td>            
+            <td> {{ index .ExecCount 1 }}</td>
+        </tr>
+
+        {{ end }}
+    </table>
+</body>
+</html>
