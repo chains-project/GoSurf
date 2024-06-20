@@ -3,9 +3,6 @@ The Go language explicitly focuses on [addressing supply chain attacks](https://
 
 For each of these cases, we provided a simple proof-of-concept demonstrating how the attack vector could be exploited executing malicious actions. 
 
-In addition, we used the Capslock tool to analyze the capabilities invoked through the identified ACE strategies, and provided some insights into the obtained outcomes (specifically, whether Capslock could properly identify the capabilities or not).
-
-
 ## Execute Code at the Install-Time 
 Some techniques can be used to achieve ACE when downstream projects install a 3rd-party dependency using package managers, or installation scripts. 
 
@@ -110,11 +107,6 @@ var anonym_func string = func() string {
 }()
 ```
 
-- **Capslock Outcome**: <span style="color:green">*NO FALSE NEGATIVE*</span>
-
-- **Details**: Identifies the real capability within the method.
-
-
 
 ### [I2] Initialization Hooks [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/init_time/init_func)
  Any init functions declared within the package scope of the imported packages or the main package are executed. These functions are called in the order they are declared within their respective packages.
@@ -128,11 +120,6 @@ func init() {
 ```
 
 **N.B.** Importing a package with an underscore prefix prevents Go from automatically removing unused dependencies. This ensures that even if the package is not directly used in the code, its init() function or any anonymous functions assigned to global variables will still be executed.
-
-
-- **Capslock Outcome**: <span style="color:green">*NO FALSE NEGATIVE*</span>
-
-- **Details**: Identifies the real capability within the method.
 
 
 ## Execute Code at the Run-Time 
@@ -163,10 +150,6 @@ func NewPerson(name string, age int) *Person {
 
 ```
 
-- **Capslock Outcome**: <span style="color:green">*NO FALSE NEGATIVE*</span>
-
-- **Details**: Identifies the real capability within the method.
-
 
 ### [R2] Reflection [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/runtime/reflection)
 Reflection in Go enables dynamic inspection and manipulation of structures, functions, and variables at runtime, facilitating flexible and generic code. Attackers can insert malicious code by exploiting the reflection feature, making challenging to analyze the behavior and the intent of functions and code statically.
@@ -193,12 +176,6 @@ func main() {
 	m.Call(nil) 
 }
 ```
-
-- **Capslock Outcome**: <span style="color:orange">*WEAK FALSE NEGATIVE*</span>
-
-- **Details**: Detects only the `CAPABILITY_REFLECT`, but cannot detect the real capability
-
-- **TODO**: Try other real-world examples, because it might identify the real capability.
 
 
 ### [R3] Indirect method invocations via interfaces [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/runtime/interfaces)
@@ -233,13 +210,6 @@ func main() {
 func invokeMethod(method DynamicMethodInterface)
 ```
 
-- **Capslock Outcome**: <span style="color:green">*NO FALSE NEGATIVE*</span>
-
-- **Details**: Identifies the real capability within the method.
-
-- **TODO**: Investigate the false positives.
-
-
 ### [R4] CGO feature [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/runtime/cgo)
 CGO features enable executing C code in Go binaries. Attackers could exploit this capability to gain more control over the system, and also exploit memory safety concerns related to these low level languages.  
 
@@ -266,11 +236,7 @@ func main() {
     invoker.InvokeMethod()
 }
 ```
-- **Capslock Outcome**: <span style="color:orange">*WEAK FALSE NEGATIVE*</span>
 
-- **Details**: Detects only the `CAPABILITY_CGO`, but cannot detect the actual capability.
-
-- **TODO**: Investigate the false positives.
 
 ### [R5] Assembly linked objects [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/runtime/assembly)
 Attackers can introduce malicious code into some functions defined in assembly files.
@@ -325,10 +291,6 @@ func main() {
 }
 ```
 
-- **Outcomes**: <span style="color:orange">*WEAK FALSE NEGATIVE*</span>
-
-- **Details**: Detects only the `CAPABILITY_EXEC`, but cannot detect the actual capabilities.
-
 
 ### [R7] Plugin system  [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/runtime/plugins)
 Attackers can load pre-build externa binary as plugins using the Go plugin system.  
@@ -368,9 +330,6 @@ func main() {
 }
 ```
 
-- **Outcomes**: <span style="color:orange">*WEAK FALSE NEGATIVE*</span>
-
-- **Details**: Detects only the `CAPABILITY_EXEC`, but cannot detect the actual capabilities. We can specialize the identified capability into `CAPABILITY_PLUGIN`
 
 ### [R8] Unsafe pointers [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/runtime/unsafe)
 
@@ -427,7 +386,3 @@ func main() {
 }
 
 ```
-
-- **Capslock Outocome**: <span style="color:orange">*WEAK FALSE NEGATIVE*</span>
-
-- **Details**: Detects only the `CAPABILITY_EXEC`, but cannot detect the actual capabilities.
