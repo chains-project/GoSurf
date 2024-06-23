@@ -5,9 +5,7 @@ import (
 	"go/ast"
 	"go/parser"
 	"go/token"
-	"os"
 	"path/filepath"
-	"regexp"
 	"strings"
 )
 
@@ -28,6 +26,7 @@ type AssemblyParser struct{}
 func (p InitFuncParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
+
 	if err != nil {
 		fmt.Printf("Error parsing file %s: %v\n", path, err)
 		return
@@ -48,59 +47,55 @@ func (p InitFuncParser) FindOccurrences(path string, packageName string, occurre
 	}
 }
 
-// Parser for global var initialization with functions
+// Parser for global variable declarations.
 func (p GlobalVarParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
-
-	fileContents, err := os.ReadFile(path)
+	fset := token.NewFileSet()
+	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
 	if err != nil {
-		fmt.Printf("Error reading file %s: %v\n", path, err)
+		fmt.Printf("Error parsing file %s: %v\n", path, err)
 		return
 	}
 
-	// Global variable initialization with normal functions
-	normal_pattern := `var\s+(\w+)\s*(\w*)\s*=\s*(\w+)\(\)`
-	normal_re := regexp.MustCompile(normal_pattern)
-	normal_matches := normal_re.FindAllStringSubmatchIndex(string(fileContents), -1)
-	if len(normal_matches) > 0 {
-		for _, match := range normal_matches {
-			startLine, _ := GetLineColumn(fileContents, match[0])
-			variableName := strings.TrimSpace(string(fileContents[match[2]:match[3]]))
-			funcName := strings.TrimSpace(string(fileContents[match[6]:match[7]]))
+	// common pattern: *ast.GenDecl.Specs.*ast.ValueSpec.Values[0].CallExpr
+	for _, decl := range node.Decls {
+		gd, ok := decl.(*ast.GenDecl)
+		if !ok || len(gd.Specs) == 0 {
+			continue
+		}
 
-			// Skip if the function name is "func"
-			if funcName == "func" {
+		val, ok := gd.Specs[0].(*ast.ValueSpec) // constant or variable declaration
+		if !ok || len(val.Values) == 0 {
+			continue
+		}
+
+		if exp, ok := val.Values[0].(*ast.CallExpr); ok { // function call
+			name := val.Names[0].Name
+
+			if fun, ok := exp.Fun.(*ast.Ident); ok { // normal function call
+				*occurrences = append(*occurrences, &Occurrence{
+					PackageName:   packageName,
+					AttackVector:  "global",
+					FilePath:      path,
+					LineNumber:    fset.Position(decl.Pos()).Line,
+					VariableName:  name,
+					MethodInvoked: fun.Name + "()",
+				})
+				continue
+			}
+			if _, ok := exp.Fun.(*ast.FuncLit); ok { // anonymous function call
+				*occurrences = append(*occurrences, &Occurrence{
+					AttackVector:  "global",
+					FilePath:      path,
+					LineNumber:    fset.Position(decl.Pos()).Line,
+					VariableName:  name,
+					MethodInvoked: "anonym func",
+				})
 				continue
 			}
 
-			*occurrences = append(*occurrences, &Occurrence{
-				PackageName:   packageName,
-				AttackVector:  "global",
-				FilePath:      path,
-				LineNumber:    startLine,
-				VariableName:  variableName,
-				MethodInvoked: funcName + "()",
-			})
 		}
-	}
 
-	// Global variable initialization with anonymous functions
-	anonym_pattern := `var\s+(\w+)\s*(\w*)\s*=\s*func\(\)\s*(\w*)\s*{[^}]*}\(\)`
-	anonym_re := regexp.MustCompile(anonym_pattern)
-	anonym_matches := anonym_re.FindAllStringSubmatchIndex(string(fileContents), -1)
-	if len(anonym_matches) > 0 {
-		for _, match := range anonym_matches {
-			startLine, _ := GetLineColumn(fileContents, match[0])
-			variableName := strings.TrimSpace(string(fileContents[match[2]:match[3]]))
-			*occurrences = append(*occurrences, &Occurrence{
-				AttackVector:  "global",
-				FilePath:      path,
-				LineNumber:    startLine,
-				VariableName:  variableName,
-				MethodInvoked: "anonym func",
-			})
-		}
 	}
-
 }
 
 type execFuncInfo struct {
