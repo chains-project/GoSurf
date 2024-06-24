@@ -62,37 +62,54 @@ func (p GlobalVarParser) FindOccurrences(path string, packageName string, occurr
 		if !ok || len(gd.Specs) == 0 {
 			continue
 		}
+		//t
+		for _, spec := range gd.Specs {
+			val, ok := spec.(*ast.ValueSpec)
 
-		val, ok := gd.Specs[0].(*ast.ValueSpec) // constant or variable declaration
-		if !ok || len(val.Values) == 0 {
-			continue
-		}
-
-		if exp, ok := val.Values[0].(*ast.CallExpr); ok { // function call
-			name := val.Names[0].Name
-
-			if fun, ok := exp.Fun.(*ast.Ident); ok { // normal function call
-				*occurrences = append(*occurrences, &Occurrence{
-					PackageName:   packageName,
-					AttackVector:  "global",
-					FilePath:      path,
-					LineNumber:    fset.Position(decl.Pos()).Line,
-					VariableName:  name,
-					MethodInvoked: fun.Name + "()",
-				})
-				continue
-			}
-			if _, ok := exp.Fun.(*ast.FuncLit); ok { // anonymous function call
-				*occurrences = append(*occurrences, &Occurrence{
-					AttackVector:  "global",
-					FilePath:      path,
-					LineNumber:    fset.Position(decl.Pos()).Line,
-					VariableName:  name,
-					MethodInvoked: "anonym func",
-				})
+			//val, ok := gd.Specs[0].(*ast.ValueSpec) // constant or variable declaration
+			if !ok || len(val.Values) == 0 {
 				continue
 			}
 
+			if exp, ok := val.Values[0].(*ast.CallExpr); ok { // function call
+				name := val.Names[0].Name
+				switch x := exp.Fun.(type) {
+
+				case *ast.Ident:
+					*occurrences = append(*occurrences, &Occurrence{
+						PackageName:   packageName,
+						AttackVector:  "global",
+						FilePath:      path,
+						LineNumber:    fset.Position(x.Pos()).Line,
+						VariableName:  name,
+						MethodInvoked: x.Name + "()",
+					})
+					continue
+
+				case *ast.SelectorExpr:
+					*occurrences = append(*occurrences, &Occurrence{
+						PackageName:   packageName,
+						AttackVector:  "global",
+						FilePath:      path,
+						LineNumber:    fset.Position(x.Pos()).Line,
+						VariableName:  name,
+						MethodInvoked: x.Sel.Name + "()",
+					})
+					continue
+
+				case *ast.FuncLit:
+					*occurrences = append(*occurrences, &Occurrence{
+						AttackVector:  "global",
+						FilePath:      path,
+						LineNumber:    fset.Position(x.Pos()).Line,
+						VariableName:  name,
+						MethodInvoked: "anonym func",
+					})
+					continue
+
+				}
+
+			}
 		}
 
 	}
