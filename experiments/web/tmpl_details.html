@@ -103,87 +103,7 @@
         </div>
         <ul>
             <li>
-                init() function definitions [{{ .InitCount }}]
-                <span class="toggle-button" onclick="toggleOccurrences(this)"> +</span>
-                <ul class="occurrences-list">
-                    {{ if .InitOccurrences }}
-                        {{ range .InitOccurrences }}
-                        <li class="occurrence">
-                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
-                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
-                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
-                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
-                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
-                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
-                        </li>
-                        {{ end }}
-                    {{ else }}
-                        <li class="occurrence">No occurrences found.</li>
-                    {{ end }}
-                </ul>
-            </li>
-            <li>
-                global var. initialization with functions [{{ .GlobalVarCount }}]
-                <span class="toggle-button" onclick="toggleOccurrences(this)">+</span>
-                <ul class="occurrences-list">
-                    {{ if .GlobalVarOccurrences }}
-                        {{ range .GlobalVarOccurrences }}
-                        <li class="occurrence">
-                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
-                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
-                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
-                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
-                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
-                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
-                        </li>
-                        {{ end }}
-                    {{ else }}
-                        <li class="occurrence">No occurrences found.</li>
-                    {{ end }}
-                </ul>
-            </li>
-            <li>
-                Exec functions invocations [{{ .ExecCount }}]
-                <span class="toggle-button" onclick="toggleOccurrences(this)">+</span>
-                <ul class="occurrences-list">
-                    {{ if .ExecOccurrences }}
-                        {{ range .ExecOccurrences }}
-                        <li class="occurrence">
-                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
-                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
-                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
-                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
-                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
-                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
-                        </li>
-                        {{ end }}
-                    {{ else }}
-                        <li class="occurrence">No occurrences found.</li>
-                    {{ end }}
-                </ul>
-            </li>
-            <li>
-                plugin.Open() invocations [{{ .PluginCount }}]
-                <span class="toggle-button" onclick="toggleOccurrences(this)">+</span>
-                <ul class="occurrences-list">
-                    {{ if .PluginOccurrences }}
-                        {{ range .PluginOccurrences }}
-                        <li class="occurrence">
-                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
-                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
-                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
-                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
-                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
-                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
-                        </li>
-                        {{ end }}
-                    {{ else }}
-                        <li class="occurrence">No occurrences found.</li>
-                    {{ end }}
-                </ul>
-            </li>
-            <li>
-                go:generate directives [{{ .GoGenerateCount }}] 
+                [P1] Static Code Generation [{{ .GoGenerateCount }}] 
                 <span class="toggle-button" onclick="toggleOccurrences(this)">+</span>
                 <ul class="occurrences-list">
                     {{ if .GoGenerateOccurrences }}
@@ -203,7 +123,7 @@
                 </ul>
             </li>
             <li>
-                Testing function definitions [{{ .GoTestCount }}]
+                [P2] Testing Functions [{{ .GoTestCount }}]
                 <span class="toggle-button" onclick="toggleOccurrences(this)">+</span>
                 <ul class="occurrences-list">
                     {{ if .GoTestOccurrences }}
@@ -223,11 +143,11 @@
                 </ul>
             </li>
             <li>
-                unsafe package usage [{{ .UnsafeCount }}]
+                [I1] Global Variable Initialization [{{ .GlobalVarCount }}]
                 <span class="toggle-button" onclick="toggleOccurrences(this)">+</span>
                 <ul class="occurrences-list">
-                    {{ if .UnsafeOccurrences }}
-                        {{ range .UnsafeOccurrences }}
+                    {{ if .GlobalVarOccurrences }}
+                        {{ range .GlobalVarOccurrences }}
                         <li class="occurrence">
                             <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
                             {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
@@ -243,11 +163,11 @@
                 </ul>
             </li>
             <li>
-                Assembly function invocations [{{ .AssemblyCount }}]
-                <span class="toggle-button" onclick="toggleOccurrences(this)">+</span>
+                [I2] Initialization Hooks [{{ .InitCount }}]
+                <span class="toggle-button" onclick="toggleOccurrences(this)"> +</span>
                 <ul class="occurrences-list">
-                    {{ if .AssemblyOccurrences }}
-                        {{ range .AssemblyOccurrences }}
+                    {{ if .InitOccurrences }}
+                        {{ range .InitOccurrences }}
                         <li class="occurrence">
                             <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
                             {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
@@ -263,11 +183,11 @@
                 </ul>
             </li>
             <li>
-                C functions invocations (cgo) [{{ .CgoCount }}]
+                [E1] Constructor Methods [{{ .ConstructorCount }}]
                 <span class="toggle-button" onclick="toggleOccurrences(this)">+</span>
                 <ul class="occurrences-list">
-                    {{ if .CgoOccurrences }}
-                        {{ range .CgoOccurrences }}
+                    {{ if .ConstructorOccurrences }}
+                        {{ range .ConstructorOccurrences }}
                         <li class="occurrence">
                             <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
                             {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
@@ -283,27 +203,7 @@
                 </ul>
             </li>
             <li>
-                Indirect method invocations through interfaces [{{ .InterfaceCount }}]
-                <span class="toggle-button" onclick="toggleOccurrences(this)">+</span>
-                <ul class="occurrences-list">
-                    {{ if .InterfaceOccurrences }}
-                        {{ range .InterfaceOccurrences }}
-                        <li class="occurrence">
-                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
-                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
-                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
-                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
-                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
-                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
-                        </li>
-                        {{ end }}
-                    {{ else }}
-                        <li class="occurrence">No occurrences found.</li>
-                    {{ end }}
-                </ul>
-            </li>
-            <li>
-                Reflect package usage [{{ .ReflectCount }}] 
+                [E2] Reflection [{{ .ReflectCount }}] 
                 <span class="toggle-button" onclick="toggleOccurrences(this)">+</span>
                 <ul class="occurrences-list">
                     {{ if .ReflectOccurrences }}
@@ -323,11 +223,11 @@
                 </ul>
             </li>
             <li>
-                Constructor methods invocations [{{ .ConstructorCount }}]
+                [E3] Interfaces [{{ .InterfaceCount }}]
                 <span class="toggle-button" onclick="toggleOccurrences(this)">+</span>
                 <ul class="occurrences-list">
-                    {{ if .ConstructorOccurrences }}
-                        {{ range .ConstructorOccurrences }}
+                    {{ if .InterfaceOccurrences }}
+                        {{ range .InterfaceOccurrences }}
                         <li class="occurrence">
                             <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
                             {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
@@ -342,6 +242,107 @@
                     {{ end }}
                 </ul>
             </li>
+            <li>
+                [E4] Unsafe Pointers [{{ .UnsafeCount }}]
+                <span class="toggle-button" onclick="toggleOccurrences(this)">+</span>
+                <ul class="occurrences-list">
+                    {{ if .UnsafeOccurrences }}
+                        {{ range .UnsafeOccurrences }}
+                        <li class="occurrence">
+                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
+                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
+                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
+                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
+                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
+                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
+                        </li>
+                        {{ end }}
+                    {{ else }}
+                        <li class="occurrence">No occurrences found.</li>
+                    {{ end }}
+                </ul>
+            </li>
+            <li>
+                [E5] CGO Functions [{{ .CgoCount }}]
+                <span class="toggle-button" onclick="toggleOccurrences(this)">+</span>
+                <ul class="occurrences-list">
+                    {{ if .CgoOccurrences }}
+                        {{ range .CgoOccurrences }}
+                        <li class="occurrence">
+                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
+                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
+                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
+                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
+                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
+                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
+                        </li>
+                        {{ end }}
+                    {{ else }}
+                        <li class="occurrence">No occurrences found.</li>
+                    {{ end }}
+                </ul>
+            </li>
+            <li>
+                [E6] Assembly Functions [{{ .AssemblyCount }}]
+                <span class="toggle-button" onclick="toggleOccurrences(this)">+</span>
+                <ul class="occurrences-list">
+                    {{ if .AssemblyOccurrences }}
+                        {{ range .AssemblyOccurrences }}
+                        <li class="occurrence">
+                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
+                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
+                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
+                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
+                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
+                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
+                        </li>
+                        {{ end }}
+                    {{ else }}
+                        <li class="occurrence">No occurrences found.</li>
+                    {{ end }}
+                </ul>
+            </li>
+            <li>
+                [E7] Dynamic Plugins [{{ .PluginCount }}]
+                <span class="toggle-button" onclick="toggleOccurrences(this)">+</span>
+                <ul class="occurrences-list">
+                    {{ if .PluginOccurrences }}
+                        {{ range .PluginOccurrences }}
+                        <li class="occurrence">
+                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
+                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
+                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
+                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
+                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
+                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
+                        </li>
+                        {{ end }}
+                    {{ else }}
+                        <li class="occurrence">No occurrences found.</li>
+                    {{ end }}
+                </ul>
+            </li>
+            <li>
+                [E8] External Execution [{{ .ExecCount }}]
+                <span class="toggle-button" onclick="toggleOccurrences(this)">+</span>
+                <ul class="occurrences-list">
+                    {{ if .ExecOccurrences }}
+                        {{ range .ExecOccurrences }}
+                        <li class="occurrence">
+                            <a href="{{ .FilePath }}#L{{ .LineNumber }}">{{ .FilePath }}:{{ .LineNumber }}</a>
+                            {{ if .VariableName }} - Variable Name: {{ .VariableName }}{{ end }}
+                            {{ if .Command }} - Command: {{ .Command }}{{ end }}
+                            {{ if .MethodInvoked }} - Method Invoked: {{ .MethodInvoked }}{{ end }}
+                            {{ if .TypePassed }} - Type Passed: {{ .TypePassed }}{{ end }}
+                            {{ if .Pattern }} - Pattern: {{ .Pattern }}{{ end }}
+                        </li>
+                        {{ end }}
+                    {{ else }}
+                        <li class="occurrence">No occurrences found.</li>
+                    {{ end }}
+                </ul>
+            </li>
+           
         </ul>
     </div>
     {{ end }}
