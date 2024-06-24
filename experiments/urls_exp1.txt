@@ -1,0 +1,10 @@
+https://github.com/hashicorp/terraform v1.8.5
+https://github.com/kubernetes/kubernetes v1.30.2
+https://github.com/ethereum/go-ethereum v1.14.5
+https://github.com/coredns/coredns v1.11.1
+https://github.com/onsi/ginkgo v2.19.0
+https://github.com/stretchr/testify v1.9.0
+https://github.com/hashicorp/vault v1.17.0
+https://github.com/sirupsen/logrus v1.9.3
+https://github.com/prometheus/prometheus v2.53.0
+https://github.com/spf13/cobra v1.8.1
