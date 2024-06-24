@@ -2,8 +2,11 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
+	"io"
 	"log"
+	"net/http"
 	"net/url"
 	"os"
 	"os/exec"
@@ -19,7 +22,7 @@ type ModuleDetails struct {
 	Name                   string
 	ModulePath             string
 	RepositoryURL          string
-	Dependants             string
+	Dependants             int
 	Version                string
 	LOC                    int
 	InitCount              []float64
@@ -50,21 +53,30 @@ type ModuleDetails struct {
 
 func main() {
 
+	expName := "exp1"
+	if len(os.Args) > 1 {
+		expName = os.Args[1]
+	}
+	if expName != "exp1" && expName != "exp2" {
+		fmt.Println("Invalid input. Please provide 'exp1' or 'exp2'.")
+		return
+	}
+
 	token := os.Getenv("GITHUB_TOKEN")
 	if token == "" {
 		log.Fatal("GITHUB_TOKEN environment variable is not set")
 	}
 
-	if err := os.MkdirAll("./modules", 0755); err != nil {
+	if err := os.MkdirAll(fmt.Sprintf("./modules/%s", expName), 0755); err != nil {
 		fmt.Printf("Error creating cloned repos directory: %v\n", err)
 		return
 	}
-	if err := os.MkdirAll("./results", 0755); err != nil {
+	if err := os.MkdirAll(fmt.Sprintf("./results/%s", expName), 0755); err != nil {
 		fmt.Printf("Error creating results directory: %v\n", err)
 		return
 	}
 
-	var urlListFile = "repo_urls.txt"
+	var urlListFile = fmt.Sprintf("urls_%s.txt", expName)
 	allModules, itemCount, err := readModulesFromFile(urlListFile)
 	if err != nil {
 		fmt.Printf("Error reading modules from file: %v\n", err)
@@ -81,13 +93,13 @@ func main() {
 		fmt.Println("Error parsing details template:", err)
 		return
 	}
-	overviewFile, err := os.Create("./results/results_overview.html")
+	overviewFile, err := os.Create(fmt.Sprintf("./results/%s/results_overview.html", expName))
 	if err != nil {
 		fmt.Println("Error creating overview file:", err)
 		return
 	}
 	defer overviewFile.Close()
-	detailsFile, err := os.Create("./results/results_detail.html")
+	detailsFile, err := os.Create(fmt.Sprintf("./results/%s/results_detail.html", expName))
 	if err != nil {
 		fmt.Println("Error creating details file:", err)
 		return
@@ -100,7 +112,7 @@ func main() {
 		repoName := module.Name
 		repoURL := module.RepositoryURL
 		releaseNumber := module.Version
-		modulePath := filepath.Join("./modules", fmt.Sprintf("%s@%s", repoName, releaseNumber))
+		modulePath := filepath.Join(fmt.Sprintf("./modules/%s", expName), fmt.Sprintf("%s@%s", repoName, releaseNumber))
 
 		fmt.Printf("\n\nCloning module %s@%s into %s...\n", repoName, releaseNumber, modulePath)
 		if _, err := os.Stat(modulePath); !os.IsNotExist(err) {
@@ -121,10 +133,17 @@ func main() {
 	for idx, module := range allModules {
 
 		repoName := module.Name
+		repoURL := module.RepositoryURL
 		releaseNumber := module.Version
-		modulePath := filepath.Join("./modules", fmt.Sprintf("%s@%s", repoName, releaseNumber))
+		modulePath := filepath.Join(fmt.Sprintf("./modules/%s", expName), fmt.Sprintf("%s@%s", repoName, releaseNumber))
 
 		fmt.Printf("\n[%d/%d] Analyzing module %s@%s...\n", idx+1, itemCount, repoName, releaseNumber)
+
+		dependantsCount, err := fetchDependantsCount(repoURL)
+		if err != nil {
+			fmt.Printf("Error fetching dependants count for %s: %v\n", repoName, err)
+			continue
+		}
 
 		// TODO: use directly the API of this package
 		locCount, err := analysis.GetLineOfCodeCount(modulePath)
@@ -175,6 +194,7 @@ func main() {
 		moduleDetails := ModuleDetails{
 			ModulePath:             modulePath,
 			Version:                releaseNumber,
+			Dependants:             dependantsCount,
 			LOC:                    locCount,
 			InitCount:              []float64{float64(initCount), float64(initCount) / float64(locCount)},
 			GlobalVarCount:         []float64{float64(globalVarCount), float64(globalVarCount) / float64(locCount)},
@@ -216,7 +236,7 @@ func main() {
 		return
 	}
 
-	fmt.Println("\nHTML report generated successfully in the ./results directory.")
+	fmt.Printf("\nHTML report generated successfully in the ./results/%s directory.\n", expName)
 
 }
 
@@ -248,7 +268,6 @@ func readModulesFromFile(urlListFile string) ([]ModuleDetails, int, error) {
 			}
 			allModules = append(allModules, moduleDetails)
 			itemCount++
-
 		}
 	}
 
@@ -257,4 +276,35 @@ func readModulesFromFile(urlListFile string) ([]ModuleDetails, int, error) {
 	}
 
 	return allModules, itemCount, nil
+}
+
+func fetchDependantsCount(packageURL string) (int, error) {
+
+	packageURL = strings.TrimPrefix(packageURL, "https://")
+	packageURL = strings.ReplaceAll(packageURL, "/", "%2F")
+	apiURL := fmt.Sprintf("https://libraries.io/api/go/%s?api_key=ff76aa15a1d65e44843fb94dab1ead62", packageURL)
+
+	resp, err := http.Get(apiURL)
+	if err != nil {
+		return 0, err
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return 0, err
+	}
+
+	var data map[string]interface{}
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+		return 0, err
+	}
+
+	dependentsCount, ok := data["dependents_count"].(float64)
+	if !ok {
+		return 0, fmt.Errorf("failed to parse dependents_count")
+	}
+
+	return int(dependentsCount), nil
 }
