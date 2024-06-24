@@ -97,7 +97,7 @@ func GetDependencies(modulePath string) ([]Dependency, error) { // TODO should r
 }
 
 func GetLineOfCodeCount(modulePath string) (int, error) {
-	cmd := exec.Command("gocloc", "--output-type=json", "--exclude-ext=txt,md", ".")
+	cmd := exec.Command("gocloc", "--output-type=json", "--include-lang=Go", ".")
 	cmd.Dir = modulePath
 	output, err := cmd.Output()
 	if err != nil {
