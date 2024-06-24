@@ -8,3 +8,4 @@ https://github.com/hashicorp/vault v1.17.0
 https://github.com/sirupsen/logrus v1.9.3
 https://github.com/prometheus/prometheus v2.53.0
 https://github.com/spf13/cobra v1.8.1
+https://github.com/apparentlymart/go-textseg v15.0.0
