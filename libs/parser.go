@@ -400,6 +400,7 @@ func (p InterfaceParser) FindOccurrences(path string, packageName string, occurr
 
 }
 
+// Parser for imports of reflect package.
 func (p ReflectParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
@@ -408,22 +409,30 @@ func (p ReflectParser) FindOccurrences(path string, packageName string, occurren
 		return
 	}
 
-	ast.Inspect(node, func(n ast.Node) bool {
-		switch x := n.(type) {
-		case *ast.ImportSpec:
-			if pkg := x.Path.Value; pkg == `"reflect"` {
+	for _, decl := range node.Decls {
+		gd, ok := decl.(*ast.GenDecl)
+		if !ok || len(gd.Specs) == 0 {
+			continue
+		}
+
+		for _, spec := range gd.Specs {
+			im, ok := spec.(*ast.ImportSpec)
+			if !ok {
+				continue
+			}
+			if pkg := im.Path.Value; pkg == `"reflect"` {
 				*occurrences = append(*occurrences, &Occurrence{
 					PackageName:  packageName,
 					AttackVector: "reflect",
 					FilePath:     path,
-					LineNumber:   fset.Position(x.Pos()).Line})
-				return false
+					LineNumber:   fset.Position(im.Pos()).Line})
+				break
 			}
 		}
-		return true
-	})
+	}
 }
 
+// Parser for constructor usage.
 func (p ConstructorParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 
 	fset := token.NewFileSet()
@@ -471,7 +480,7 @@ func (p ConstructorParser) FindOccurrences(path string, packageName string, occu
 	})
 }
 
-// Parser for Assembly function use
+// Parser for Assembly function use.
 func (p AssemblyParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
