@@ -58,7 +58,7 @@ go generate
 **N.B.**: `go generate` is not part of `go build` and requires explicit invocation beforehand. It lacks dependency analysis and operates solely on the shipping module, primarily intended for use by package authors rather than clients.
 
 
-### [I2] Testing Functions [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/build_time/generators)
+### [I2] Testing Functions [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/prebuild_time/testing)
 Execution of code contained in the testing functions and execute with `go test` tool.  
 
 `main.go` file:
@@ -280,7 +280,7 @@ func main() {
 Build in module-aware mode executing `go mod init` and `go build` to compile and link the objects together.
 
 
-### [E7] E7. Dynamic Library Linking  [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/runtime/plugins)
+### [E7] Dynamic Library Linking  [[POC]](https://github.com/chains-project/capslock-analysis/tree/main/attack_vectors/runtime/plugins)
 Attackers can load pre-build externa binary as plugins using the Go plugin system.  
 
 ```go
