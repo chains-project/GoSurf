@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	analysis "github.com/chains-project/capslock-analysis/gosurface/libs"
+	analysis "example.com/gosurface/gosurface/libs"
 )
 
 var (

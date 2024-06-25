@@ -14,7 +14,7 @@ To use the GoSurface tool, follow these steps:
 
 ```bash
 # Clone the repository
-git clone https://github.com/chains-project/capslock-analysis.git
+git clone https://github.com/chains-project/GoSurface.git
 
 # Navigate to the gosurface directory
 cd gosurface

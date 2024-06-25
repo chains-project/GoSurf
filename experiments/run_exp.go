@@ -15,7 +15,7 @@ import (
 	"strings"
 	"text/template"
 
-	analysis "github.com/chains-project/capslock-analysis/gosurface/libs"
+	analysis "example.com/gosurface/gosurface/libs"
 )
 
 type ModuleDetails struct {
