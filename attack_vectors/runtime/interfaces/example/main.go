@@ -11,22 +11,19 @@ type CustomType interface {
 	InvokeOperation()
 }
 
-type TypeA struct{}
-type TypeB struct{}
+type SafeType struct{}
+type UnsafeType struct{}
 
-func invokeOperation(customType CustomType) {
-	customType.InvokeOperation()
-}
-
-func (typeA TypeA) InvokeOperation() {
+func (typeA SafeType) InvokeOperation() {
 	fmt.Println("Invoked Method on Type A: CAPABILITY_EXEC")
 	cmd := exec.Command("ls")
 	cmd.Stdout = os.Stdout
 	_ = cmd.Run()
 }
 
-func (typeB TypeB) InvokeOperation() {
-	fmt.Printf("Invoked Method on Type B: CAPABILITY_NETWORK\n")
+func (typeA UnsafeType) InvokeOperation() {
+
+	fmt.Printf("Invoked Method on Type B: CAPABILITY_NETWORK")
 	resp, err := http.Get("https://www.google.com")
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -44,9 +41,11 @@ func (typeB TypeB) InvokeOperation() {
 
 func main() {
 
-	elems := []CustomType{TypeA{}, TypeB{}}
+	instance := SafeType{}
+	//instance := UnsafeType{}
 
-	for _, elem := range elems {
-		invokeOperation(elem)
-	}
+	value, ok := instance.(UnsafeType)
+
+	instance.InvokeOperation()
+
 }

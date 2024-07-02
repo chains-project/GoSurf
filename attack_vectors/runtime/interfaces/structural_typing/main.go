@@ -7,6 +7,10 @@ import (
 	"os/exec"
 )
 
+type CustomType interface {
+	InvokeOperation()
+}
+
 type TypeA struct{}
 type TypeB struct{}
 
@@ -31,15 +35,16 @@ func (typeA TypeB) InvokeOperation() {
 		fmt.Printf("Error: Unexpected status code %d\n", resp.StatusCode)
 		return
 	} else {
-		fmt.Printf("GET request successfully made\n")
+		fmt.Printf("\nGET request successfully made\n")
 	}
 }
 
 func main() {
 
-	typeA := TypeA{}
-	typeB := TypeB{}
+	elems := []CustomType{TypeA{}, TypeB{}}
 
-	typeA.InvokeOperation()
-	typeB.InvokeOperation()
+	for _, elem := range elems {
+		elem.InvokeOperation()
+	}
+
 }
