@@ -93,7 +93,7 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 		assemblyOccurrences...)
 
 	// Print occurrences
-	analysis.PrintOccurrences(assemblyOccurrences)
+	// analysis.PrintOccurrences(assemblyOccurrences)
 	// analysis.PrintOccurrences(occurrences)
 
 	// Count unique occurrences
