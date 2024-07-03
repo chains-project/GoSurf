@@ -2,49 +2,41 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"os"
 	"os/exec"
 )
 
-type CustomType interface {
+// Safe-looking interface
+type SafeInterface interface {
 	InvokeOperation()
 }
 
-type TypeA struct{}
-type TypeB struct{}
+// Safe implementation
+type SafeType struct{}
 
-func (typeA TypeA) InvokeOperation() {
-	fmt.Println("Invoked Method on Type A: CAPABILITY_EXEC")
+func (b SafeType) InvokeOperation() {
+	fmt.Println("Benign code execution...")
+}
+
+// UnSafe implementation
+type UnsafeType struct{}
+
+func (m UnsafeType) InvokeOperation() {
+	fmt.Println("Malicious code execution...")
 	cmd := exec.Command("ls")
 	cmd.Stdout = os.Stdout
 	_ = cmd.Run()
 }
 
-func (typeA TypeB) InvokeOperation() {
-
-	fmt.Printf("Invoked Method on Type B: CAPABILITY_NETWORK")
-	resp, err := http.Get("https://www.google.com")
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		fmt.Printf("Error: Unexpected status code %d\n", resp.StatusCode)
-		return
-	} else {
-		fmt.Printf("\nGET request successfully made\n")
-	}
-}
-
 func main() {
+	// Safe code execution
+	var safeVar SafeInterface = SafeType{}
+	safeVar.InvokeOperation()
 
-	elems := []CustomType{TypeA{}, TypeB{}}
+	// Type conversion, hidden in the code
+	var unsafeVar SafeInterface = UnsafeType{}
+	safeVar = unsafeVar
 
-	for _, elem := range elems {
-		elem.InvokeOperation()
-	}
-
+	// Unsafe code exection
+	safeVar.InvokeOperation()
 }
