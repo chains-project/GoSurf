@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -51,6 +50,9 @@ type ModuleDetails struct {
 	AssemblyOccurrences    []*analysis.Occurrence
 }
 
+// Get API tokens for libraries.io
+var librariesio_token = os.Getenv("LIBRARIESIO_TOKEN")
+
 func main() {
 
 	expName := "exp1"
@@ -60,11 +62,6 @@ func main() {
 	if expName != "exp1" && expName != "exp2" {
 		fmt.Println("Invalid input. Please provide 'exp1' or 'exp2'.")
 		return
-	}
-
-	token := os.Getenv("GITHUB_TOKEN")
-	if token == "" {
-		log.Fatal("GITHUB_TOKEN environment variable is not set")
 	}
 
 	// Create result folders
@@ -290,7 +287,7 @@ func fetchDependantsCount(packageURL string) (int, error) {
 	if strings.Contains(packageURL, "kubernetes") {
 		packageURL = strings.ReplaceAll(packageURL, "github.com%2Fkubernetes", "k8s.io")
 	}
-	apiURL := fmt.Sprintf("https://libraries.io/api/go/%s?api_key=ff76aa15a1d65e44843fb94dab1ead62", packageURL)
+	apiURL := fmt.Sprintf("https://libraries.io/api/go/%s?api_key=%s", packageURL, librariesio_token)
 
 	resp, err := http.Get(apiURL)
 	if err != nil {

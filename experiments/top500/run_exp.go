@@ -15,22 +15,17 @@ import (
 )
 
 type Repository struct {
-	ContributionsCount             int      `json:"contributions_count"`
-	DependentReposCount            int      `json:"dependent_repos_count"`
-	DependentsCount                int      `json:"dependents_count"`
-	Description                    string   `json:"description"`
-	Forks                          int      `json:"forks"`
-	Keywords                       []string `json:"keywords"`
-	Language                       string   `json:"language"`
-	LatestReleaseNumber            string   `json:"latest_release_number"`
-	LatestReleasePublishedAt       string   `json:"latest_release_published_at"`
-	LatestStableReleaseNumber      string   `json:"latest_stable_release_number"`
-	LatestStableReleasePublishedAt string   `json:"latest_stable_release_published_at"`
-	Name                           string   `json:"name"`
-	PackageManagerURL              string   `json:"package_manager_url"`
-	Platform                       string   `json:"platform"`
-	RepositoryURL                  string   `json:"repository_url"`
-	Stars                          int      `json:"stars"`
+	ContributionsCount        int    `json:"contributions_count"`
+	DependentReposCount       int    `json:"dependent_repos_count"`
+	DependentsCount           int    `json:"dependents_count"`
+	Description               string `json:"description"`
+	Language                  string `json:"language"`
+	LatestReleaseNumber       string `json:"latest_release_number"`
+	LatestStableReleaseNumber string `json:"latest_stable_release_number"`
+	Name                      string `json:"name"`
+	PackageManagerURL         string `json:"package_manager_url"`
+	Platform                  string `json:"platform"`
+	RepositoryURL             string `json:"repository_url"`
 }
 
 type ModuleDetails struct {
@@ -64,6 +59,9 @@ type ModuleDetails struct {
 	AssemblyOccurrences    []*analysis.Occurrence
 }
 
+// Get API tokens for libraries.io
+var librariesio_token = os.Getenv("LIBRARIESIO_TOKEN")
+
 func main() {
 
 	// Create folders
@@ -84,12 +82,12 @@ func main() {
 	}
 
 	// Parse the HTML templates
-	overviewTmpl, err := template.ParseFiles("../report_tmpl/tmpl_overview.html")
+	overviewTmpl, err := template.ParseFiles("../../template/tmpl_overview.html")
 	if err != nil {
 		fmt.Println("Error parsing overview template:", err)
 		return
 	}
-	detailsTmpl, err := template.ParseFiles("../report_tmpl/tmpl_details.html")
+	detailsTmpl, err := template.ParseFiles("../../template/tmpl_details.html")
 	if err != nil {
 		fmt.Println("Error parsing details template:", err)
 		return
@@ -250,7 +248,7 @@ func main() {
 
 func retrieveModulesFromLibrariesIO(moduleInfoFile string) {
 
-	fmt.Printf("Retrieving of TOP x modules from libraries.io API\n")
+	fmt.Printf("Retrieving of TOP 500 modules from libraries.io API\n")
 
 	currentDir, err := os.Getwd()
 	if err != nil {
@@ -261,9 +259,9 @@ func retrieveModulesFromLibrariesIO(moduleInfoFile string) {
 
 	var allModules []Repository
 
-	// Retrieve TOP x packages from libraries.io API
+	// Retrieve TOP 500 packages from libraries.io API
 	for page := 1; page <= 6; page++ {
-		url := fmt.Sprintf("https://libraries.io/api/search?order=desc&platforms=Go&sort=dependents_count&per_page=100&page=%d&api_key=ff76aa15a1d65e44843fb94dab1ead62", page)
+		url := fmt.Sprintf("https://libraries.io/api/search?order=desc&platforms=Go&sort=dependents_count&per_page=100&page=%d&api_key=%s", page, librariesio_token)
 		resp, err := http.Get(url)
 		if err != nil {
 			fmt.Println("Error making HTTP request:", err)
