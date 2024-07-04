@@ -13,7 +13,8 @@ func (t MyType) UnsafeMethod() {
 
 func main() {
 	var target MyType
-	var methodName string = "UnsafeMethod"
+	var methodName string = "SafeMethod"
+	methodName = "UnsafeMethod"
 	v := reflect.ValueOf(target)
 	m := v.MethodByName(methodName)
 	m.Call(nil)

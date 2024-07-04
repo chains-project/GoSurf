@@ -15,7 +15,7 @@ import (
 	"strings"
 	"text/template"
 
-	analysis "example.com/gosurface/gosurface/libs"
+	analysis "example.com/gosurf/gosurf/libs"
 )
 
 type ModuleDetails struct {

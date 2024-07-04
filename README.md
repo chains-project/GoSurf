@@ -1,29 +1,29 @@
-# GoSurface
+# GoSurf
 
-GoSurface is a tool that aims to analyze the potential attack surface of open-source Go packages and modules. It looks for occurrences of various features and constructs that could potentially introduce security risks, known as attack vectors.
+GoSurf is a tool that aims to analyze the potential attack surface of open-source Go packages and modules. It looks for occurrences of various features and constructs that could potentially introduce security risks, known as attack vectors.
 
 ## Repository Structure
 
 - **attack_vectors**: This folder contains an analysis of 12 different attack vectors in Go, along with their respective proof-of-concept implementations.
-- **gosurface.go**: The file `gosurface.go` file is the entry point for the GoSurface tool, which allows you to analyze a Go module and identify all the defined attack vectors, effectively framing the attack surface through Abstract Syntax Tree (AST) analysis.
-- **libs**: This folder contains utility functions used by the GoSurface tool.
+- **gosurf.go**: The file `gosurf.go` file is the entry point for the GoSurf tool, which allows you to analyze a Go module and identify all the defined attack vectors, effectively framing the attack surface through Abstract Syntax Tree (AST) analysis.
+- **libs**: This folder contains utility functions used by the GoSurf tool.
 - **experiments**: This folder contains scripts to perform an analysis of the attack surface for different popular Go modules.
 
 ## Simple Usage
-To use the GoSurface tool, follow these steps:
+To use the GoSurf tool, follow these steps:
 
 ```bash
 # Clone the repository
-git clone https://github.com/chains-project/GoSurface.git
+git clone https://github.com/chains-project/GoSurf.git
 
-# Navigate to the gosurface directory
-cd gosurface
+# Navigate to the gosurf directory
+cd gosurf
 
 # Build the tool
 go build
 
 # Analyze the github.com/ethereum/go-ethereum module
-./gosurface $GOPATH/pkg/mod/github.com/ethereum/go-ethereum@v1.13.14
+./gosurf $GOPATH/pkg/mod/github.com/ethereum/go-ethereum@v1.13.14
 
 ```
 The tool will analyze the specified module and its direct dependencies,
@@ -31,7 +31,7 @@ identifying occurrences of the defined attack vectors, and print results on the 
 
 
 ## Experiments
-The `run_exp.go` script in the experiments folder allows for automating large-scale analysis on Go modules using the GoSurface library. To use this script, simply insert a list of "go_module_name version" entries in a text file.
+The `run_exp.go` script in the experiments folder allows for automating large-scale analysis on Go modules using the GoSurf library. To use this script, simply insert a list of "go_module_name version" entries in a text file.
 
 Two experiments are pre-configured to run:
 

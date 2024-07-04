@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	analysis "example.com/gosurface/gosurface/libs"
+	analysis "example.com/gosurf/gosurf/libs"
 )
 
 var (
@@ -47,7 +47,7 @@ Y8,        88  8b       d8          '8b  88       88  88            88     ,adPP
 `
 	fmt.Println(asciiArt)
 
-	fmt.Println("GoSurface is a tool that aims to analyze the potential attack surface of open-source Go packages and modules.")
+	fmt.Println("GoSurf is a tool that aims to analyze the potential attack surface of open-source Go packages and modules.")
 	fmt.Println("It looks for occurrences of various features and constructs that could potentially introduce security risks.")
 	fmt.Println()
 
