@@ -36,7 +36,7 @@ The `run_exp.go` script in the experiments folder allows for automating large-sc
 Two experiments are pre-configured to run:
 
 >[!NOTE]
->These programs assume a [**Github API token**](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) stored in the environment variable `GITHUB_TOKEN`.
+>These programs assume a [**Libraries.io API token**](https://libraries.io/api) stored in the environment variable `LIBRARIESIO_TOKEN`.
 
 
 - **Experiment 1**: Analyzes 10 popular Go projects. The project names and versions are contained in the `urls_exp1.txt` file. To run this experiment, execute 
