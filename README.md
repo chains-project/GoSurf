@@ -1,4 +1,4 @@
- # GoSurf 🏄🏻
+ # GoSurf 🏄
 
 GoSurf is a tool that aims to analyze the potential attack surface of open-source Go packages and modules. It looks for occurrences of various features and constructs that could potentially introduce security risks, known as attack vectors.
 
