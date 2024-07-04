@@ -22,7 +22,7 @@ type ReflectParser struct{}
 type ConstructorParser struct{}
 type AssemblyParser struct{}
 
-// Parser for init() Function analysis
+// Parser for init() function declarations.
 func (p InitFuncParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
@@ -137,8 +137,7 @@ func (p ExecParser) FindOccurrences(path string, packageName string, occurrences
 	}
 
 	ast.Inspect(node, func(n ast.Node) bool {
-		switch x := n.(type) {
-		case *ast.CallExpr:
+		if x, ok := n.(*ast.CallExpr); ok {
 			fun, ok := x.Fun.(*ast.SelectorExpr)
 			if !ok {
 				return true
@@ -181,8 +180,7 @@ func (p PluginParser) FindOccurrences(path string, packageName string, occurrenc
 	}
 
 	ast.Inspect(node, func(n ast.Node) bool {
-		switch x := n.(type) {
-		case *ast.CallExpr:
+		if x, ok := n.(*ast.CallExpr); ok {
 			fun, ok := x.Fun.(*ast.SelectorExpr)
 			if !ok {
 				return true
@@ -208,7 +206,7 @@ func (p PluginParser) FindOccurrences(path string, packageName string, occurrenc
 	})
 }
 
-// Parser for go:generate directive analysis
+// Parser for go:generate directive analysis.
 func (p GoGenerateParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
@@ -232,7 +230,7 @@ func (p GoGenerateParser) FindOccurrences(path string, packageName string, occur
 	}
 }
 
-// Parser for Test functions (prefix: Test, Benchmark, Example) analysis
+// Parser for Test functions (prefix: Test, Benchmark, Example) analysis.
 func (p GoTestParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 
 	if strings.HasSuffix(path, "_test.go") {
@@ -268,7 +266,7 @@ func (p GoTestParser) FindOccurrences(path string, packageName string, occurrenc
 
 }
 
-// Parser for unsafe pointer usage
+// Parser for unsafe pointer usage.
 func (p UnsafeParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
@@ -278,8 +276,7 @@ func (p UnsafeParser) FindOccurrences(path string, packageName string, occurrenc
 	}
 
 	ast.Inspect(node, func(n ast.Node) bool {
-		switch x := n.(type) {
-		case *ast.CallExpr:
+		if x, ok := n.(*ast.CallExpr); ok {
 			if sel, ok := x.Fun.(*ast.SelectorExpr); ok {
 				if pkg, ok := sel.X.(*ast.Ident); ok && pkg.Name == "unsafe" && sel.Sel.Name == "Pointer" {
 					*occurrences = append(*occurrences, &Occurrence{
@@ -296,7 +293,7 @@ func (p UnsafeParser) FindOccurrences(path string, packageName string, occurrenc
 	})
 }
 
-// Parser for Cgo usage
+// Parser for Cgo usage.
 func (p CgoParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
@@ -306,10 +303,8 @@ func (p CgoParser) FindOccurrences(path string, packageName string, occurrences 
 	}
 
 	ast.Inspect(node, func(n ast.Node) bool {
-		switch x := n.(type) {
-		case *ast.CallExpr:
+		if x, ok := n.(*ast.CallExpr); ok {
 			sel, ok := x.Fun.(*ast.SelectorExpr)
-
 			if !ok {
 				return true
 			}
@@ -328,7 +323,7 @@ func (p CgoParser) FindOccurrences(path string, packageName string, occurrences 
 	})
 }
 
-// Parser for indirect method invocations throguh Interfaces
+// Parser for indirect method invocations throguh Interfaces.
 func (p InterfaceParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
 
@@ -342,9 +337,7 @@ func (p InterfaceParser) FindOccurrences(path string, packageName string, occurr
 	interfaceMethods := make(map[string]struct{})
 
 	ast.Inspect(node, func(n ast.Node) bool {
-		switch x := n.(type) {
-		case *ast.FuncDecl:
-
+		if x, ok := n.(*ast.FuncDecl); ok {
 			if x.Recv != nil && len(x.Recv.List) != 0 {
 				receiverType := fmt.Sprint(x.Recv.List[0].Type)
 				methods[x.Name.Name] = append(methods[x.Name.Name], receiverType)
@@ -370,8 +363,7 @@ func (p InterfaceParser) FindOccurrences(path string, packageName string, occurr
 	}
 
 	ast.Inspect(node, func(n ast.Node) bool {
-		switch x := n.(type) {
-		case *ast.CallExpr:
+		if x, ok := n.(*ast.CallExpr); ok {
 			fun, ok := x.Fun.(*ast.SelectorExpr)
 			if !ok {
 				return true
@@ -400,6 +392,7 @@ func (p InterfaceParser) FindOccurrences(path string, packageName string, occurr
 
 }
 
+// Parser for imports of reflect package.
 func (p ReflectParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
@@ -408,22 +401,29 @@ func (p ReflectParser) FindOccurrences(path string, packageName string, occurren
 		return
 	}
 
-	ast.Inspect(node, func(n ast.Node) bool {
-		switch x := n.(type) {
-		case *ast.ImportSpec:
-			if pkg := x.Path.Value; pkg == `"reflect"` {
+	for _, decl := range node.Decls {
+		gd, ok := decl.(*ast.GenDecl)
+		if !ok || len(gd.Specs) == 0 {
+			continue
+		}
+		for _, spec := range gd.Specs {
+			im, ok := spec.(*ast.ImportSpec)
+			if !ok {
+				continue
+			}
+			if pkg := im.Path.Value; pkg == `"reflect"` {
 				*occurrences = append(*occurrences, &Occurrence{
 					PackageName:  packageName,
 					AttackVector: "reflect",
 					FilePath:     path,
-					LineNumber:   fset.Position(x.Pos()).Line})
-				return false
+					LineNumber:   fset.Position(im.Pos()).Line})
+				break
 			}
 		}
-		return true
-	})
+	}
 }
 
+// Parser for constructor usage.
 func (p ConstructorParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 
 	fset := token.NewFileSet()
@@ -434,11 +434,8 @@ func (p ConstructorParser) FindOccurrences(path string, packageName string, occu
 	}
 
 	ast.Inspect(node, func(n ast.Node) bool {
-		switch x := n.(type) {
-		case *ast.CallExpr:
-
+		if x, ok := n.(*ast.CallExpr); ok {
 			switch fun := x.Fun.(type) {
-
 			// Check for factory function invocations
 			case *ast.SelectorExpr:
 				if strings.HasPrefix(fun.Sel.Name, "New") {
@@ -471,7 +468,7 @@ func (p ConstructorParser) FindOccurrences(path string, packageName string, occu
 	})
 }
 
-// Parser for Assembly function use
+// Parser for Assembly function usage.
 func (p AssemblyParser) FindOccurrences(path string, packageName string, occurrences *[]*Occurrence) {
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
@@ -481,8 +478,7 @@ func (p AssemblyParser) FindOccurrences(path string, packageName string, occurre
 	}
 
 	ast.Inspect(node, func(n ast.Node) bool {
-		switch x := n.(type) {
-		case *ast.CallExpr:
+		if x, ok := n.(*ast.CallExpr); ok {
 			if fun, ok := x.Fun.(*ast.Ident); ok {
 				for _, funSig := range pkgAsmFunctions {
 					if fun.Name == funSig {
