@@ -282,7 +282,13 @@ func fetchDependantsCount(packageURL string) (int, error) {
 
 	packageURL = strings.TrimPrefix(packageURL, "https://")
 	packageURL = strings.ReplaceAll(packageURL, "/", "%2F")
+	fmt.Printf("string: %s\n", packageURL)
+	if strings.Contains(packageURL, "kubernetes") {
+		packageURL = strings.ReplaceAll(packageURL, "github.com%2Fkubernetes", "k8s.io")
+	}
+	fmt.Printf("string: %s\n", packageURL)
 	apiURL := fmt.Sprintf("https://libraries.io/api/go/%s?api_key=ff76aa15a1d65e44843fb94dab1ead62", packageURL)
+	fmt.Printf("string: %s\n", apiURL)
 
 	resp, err := http.Get(apiURL)
 	if err != nil {
