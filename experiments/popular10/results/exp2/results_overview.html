@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attack Surface Analysis</title>
+    <style>
+        /* Add some basic styling */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Attack Surface Analysis: occurrences</h1>
+    <table>
+        <tr>
+            <th>Module</th>
+            <th>Version</th>
+            <th>Dependants</th>
+            <th>LOC</th>
+            <th>[P1] Static Code Generation</th>
+            <th>[P2] Testing Functions</th>
+            <th>[I1] Global Variable Initialization</th>
+            <th>[I2] Initialization Hooks</th>
+            <th>[E1] Constructor Methods</th>
+            <th>[E2] Reflection</th>
+            <th>[E3] Interfaces</th>
+            <th>[E4] Unsafe Pointers</th>
+            <th>[E5] CGO Functions</th>
+            <th>[E6] Assembly Functions</th>
+            <th>[E7] Dynamic Plugins</th>
+            <th>[E8] External Execution</th>                  
+        </tr>
+        
+        <tr>
+            <td>modules/kubernetes@release-1.30</td>
+            <td>release-1.30</td>
+            <td></td>
+            <td>5019130</td>
+            <td> 119</td>
+            <td> 10339</td>
+            <td> 36</td>
+            <td> 1108</td>
+            <td> 38813</td>
+            <td> 1528</td>
+            <td> 85277</td>
+            <td> 8105</td>
+            <td> 803</td>
+            <td> 1495</td>
+            <td> 1</td>         
+            <td> 230</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/kubernetes@release-1.29</td>
+            <td>release-1.29</td>
+            <td></td>
+            <td>5329682</td>
+            <td> 147</td>
+            <td> 10770</td>
+            <td> 37</td>
+            <td> 8336</td>
+            <td> 44389</td>
+            <td> 1568</td>
+            <td> 90901</td>
+            <td> 7865</td>
+            <td> 797</td>
+            <td> 1495</td>
+            <td> 1</td>         
+            <td> 244</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/kubernetes@release-1.28</td>
+            <td>release-1.28</td>
+            <td></td>
+            <td>5125051</td>
+            <td> 104</td>
+            <td> 10501</td>
+            <td> 36</td>
+            <td> 8320</td>
+            <td> 43822</td>
+            <td> 1540</td>
+            <td> 89849</td>
+            <td> 7883</td>
+            <td> 795</td>
+            <td> 1494</td>
+            <td> 1</td>         
+            <td> 236</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/kubernetes@release-1.27</td>
+            <td>release-1.27</td>
+            <td></td>
+            <td>4959230</td>
+            <td> 95</td>
+            <td> 10291</td>
+            <td> 35</td>
+            <td> 8304</td>
+            <td> 43102</td>
+            <td> 1526</td>
+            <td> 87700</td>
+            <td> 7744</td>
+            <td> 792</td>
+            <td> 1494</td>
+            <td> 1</td>         
+            <td> 236</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/kubernetes@release-1.26</td>
+            <td>release-1.26</td>
+            <td></td>
+            <td>4964974</td>
+            <td> 106</td>
+            <td> 10067</td>
+            <td> 35</td>
+            <td> 8319</td>
+            <td> 43701</td>
+            <td> 1543</td>
+            <td> 93076</td>
+            <td> 7769</td>
+            <td> 820</td>
+            <td> 1495</td>
+            <td> 1</td>         
+            <td> 242</td>
+        </tr>
+
+        
+    </table>
+
+    <h1>Attack Surface Analysis: attack density per LOC</h1>
+    <table>
+        <tr>
+            <th>Module</th>
+            <th>Version</th>
+            <th>Dependants</th>
+            <th>LOC</th>
+            <th>[P1] Static Code Generation</th>
+            <th>[P2] Testing Functions</th>
+            <th>[I1] Global Variable Initialization</th>
+            <th>[I2] Initialization Hooks</th>
+            <th>[E1] Constructor Methods</th>
+            <th>[E2] Reflection</th>
+            <th>[E3] Interfaces</th>
+            <th>[E4] Unsafe Pointers</th>
+            <th>[E5] CGO Functions</th>
+            <th>[E6] Assembly Functions</th>
+            <th>[E7] Dynamic Plugins</th>
+            <th>[E8] External Execution</th>                  
+        </tr>
+        
+        <tr>
+            <td>modules/kubernetes@release-1.30</td>
+            <td>release-1.30</td>
+            <td></td>
+            <td>5019130</td>
+            <td> 2.3709288263105358e-05</td>
+            <td> 0.0020599187508592125</td>
+            <td> 7.172557793880613e-06</td>
+            <td> 0.00022075538987832553</td>
+            <td> 0.007733013490385784</td>
+            <td> 0.0003044352308069327</td>
+            <td> 0.016990394749687696</td>
+            <td> 0.0016148216922056214</td>
+            <td> 0.000159987886346837</td>
+            <td> 0.0002978603861625421</td>
+            <td> 1.9923771649668369e-07</td>            
+            <td> 4.5824674794237245e-05</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/kubernetes@release-1.29</td>
+            <td>release-1.29</td>
+            <td></td>
+            <td>5329682</td>
+            <td> 2.7581382904270837e-05</td>
+            <td> 0.0020207584617618836</td>
+            <td> 6.942252839850483e-06</td>
+            <td> 0.0015640708019728005</td>
+            <td> 0.008328639494814136</td>
+            <td> 0.0002942014176455556</td>
+            <td> 0.017055614199871588</td>
+            <td> 0.0014756977996060554</td>
+            <td> 0.00014953987873948202</td>
+            <td> 0.00028050454042098574</td>
+            <td> 1.8762845513109413e-07</td>            
+            <td> 4.5781343051986965e-05</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/kubernetes@release-1.28</td>
+            <td>release-1.28</td>
+            <td></td>
+            <td>5125051</td>
+            <td> 2.029248099189647e-05</td>
+            <td> 0.0020489552201529313</td>
+            <td> 7.024320343348778e-06</td>
+            <td> 0.0016233984793517177</td>
+            <td> 0.008550549057950838</td>
+            <td> 0.00030048481468769773</td>
+            <td> 0.017531337736931787</td>
+            <td> 0.001538131035183845</td>
+            <td> 0.00015512040758228551</td>
+            <td> 0.0002915092942489743</td>
+            <td> 1.9512000953746606e-07</td>            
+            <td> 4.6048322250841995e-05</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/kubernetes@release-1.27</td>
+            <td>release-1.27</td>
+            <td></td>
+            <td>4959230</td>
+            <td> 1.91561996519621e-05</td>
+            <td> 0.002075120532824652</td>
+            <td> 7.0575472401965625e-06</td>
+            <td> 0.0016744534937883503</td>
+            <td> 0.008691268604198636</td>
+            <td> 0.00030770905967257014</td>
+            <td> 0.017684196941863958</td>
+            <td> 0.0015615327379452052</td>
+            <td> 0.00015970221183530509</td>
+            <td> 0.00030125644505296184</td>
+            <td> 2.0164420686275894e-07</td>            
+            <td> 4.758803281961111e-05</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/kubernetes@release-1.26</td>
+            <td>release-1.26</td>
+            <td></td>
+            <td>4964974</td>
+            <td> 2.1349557923163342e-05</td>
+            <td> 0.0020276037699291072</td>
+            <td> 7.049382333119972e-06</td>
+            <td> 0.0016755374751207157</td>
+            <td> 0.008801858781133596</td>
+            <td> 0.0003107770554286891</td>
+            <td> 0.018746523143927843</td>
+            <td> 0.0015647614670288303</td>
+            <td> 0.00016515695751881078</td>
+            <td> 0.00030110933108612453</td>
+            <td> 2.0141092380342779e-07</td>            
+            <td> 4.874144356042952e-05</td>
+        </tr>
+
+        
+    </table>
+</body>
+</html>

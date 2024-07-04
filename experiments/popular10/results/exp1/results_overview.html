@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attack Surface Analysis</title>
+    <style>
+        /* Add some basic styling */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Attack Surface Analysis: occurrences</h1>
+    <table>
+        <tr>
+            <th>Module</th>
+            <th>Version</th>
+            <th>Dependants</th>
+            <th>LOC</th>
+            <th>[P1] Static Code Generation</th>
+            <th>[P2] Testing Functions</th>
+            <th>[I1] Global Variable Initialization</th>
+            <th>[I2] Initialization Hooks</th>
+            <th>[E1] Constructor Methods</th>
+            <th>[E2] Reflection</th>
+            <th>[E3] Interfaces</th>
+            <th>[E4] Unsafe Pointers</th>
+            <th>[E5] CGO Functions</th>
+            <th>[E6] Assembly Functions</th>
+            <th>[E7] Dynamic Plugins</th>
+            <th>[E8] External Execution</th>                  
+        </tr>
+        
+        <tr>
+            <td>modules/exp1/terraform@v1.8.5</td>
+            <td>v1.8.5</td>
+            <td>1384</td>
+            <td>377115</td>
+            <td> 38</td>
+            <td> 2899</td>
+            <td> 238</td>
+            <td> 50</td>
+            <td> 4383</td>
+            <td> 121</td>
+            <td> 3707</td>
+            <td> 10</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>         
+            <td> 17</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/exp1/kubernetes@v1.30.2</td>
+            <td>v1.30.2</td>
+            <td>2024</td>
+            <td>3728835</td>
+            <td> 119</td>
+            <td> 10339</td>
+            <td> 13941</td>
+            <td> 1108</td>
+            <td> 38813</td>
+            <td> 1528</td>
+            <td> 85277</td>
+            <td> 8105</td>
+            <td> 803</td>
+            <td> 1495</td>
+            <td> 1</td>         
+            <td> 230</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/exp1/go-ethereum@v1.14.5</td>
+            <td>v1.14.5</td>
+            <td>3965</td>
+            <td>235019</td>
+            <td> 34</td>
+            <td> 2132</td>
+            <td> 1116</td>
+            <td> 76</td>
+            <td> 6470</td>
+            <td> 128</td>
+            <td> 6343</td>
+            <td> 26</td>
+            <td> 21</td>
+            <td> 12</td>
+            <td> 0</td>         
+            <td> 22</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/exp1/coredns@v1.11.1</td>
+            <td>v1.11.1</td>
+            <td>642</td>
+            <td>52348</td>
+            <td> 3</td>
+            <td> 534</td>
+            <td> 118</td>
+            <td> 98</td>
+            <td> 784</td>
+            <td> 18</td>
+            <td> 603</td>
+            <td> 3</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>         
+            <td> 1</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/exp1/ginkgo@v2.19.0</td>
+            <td>v2.19.0</td>
+            <td>15010</td>
+            <td>40768</td>
+            <td> 0</td>
+            <td> 90</td>
+            <td> 283</td>
+            <td> 7</td>
+            <td> 447</td>
+            <td> 12</td>
+            <td> 734</td>
+            <td> 23</td>
+            <td> 2</td>
+            <td> 0</td>
+            <td> 0</td>         
+            <td> 24</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/exp1/testify@v1.9.0</td>
+            <td>v1.9.0</td>
+            <td>90337</td>
+            <td>14084</td>
+            <td> 4</td>
+            <td> 426</td>
+            <td> 24</td>
+            <td> 0</td>
+            <td> 225</td>
+            <td> 7</td>
+            <td> 277</td>
+            <td> 6</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>         
+            <td> 1</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/exp1/vault@v1.17.0</td>
+            <td>v1.17.0</td>
+            <td>1235</td>
+            <td>436387</td>
+            <td> 42</td>
+            <td> 3132</td>
+            <td> 362</td>
+            <td> 55</td>
+            <td> 4351</td>
+            <td> 207</td>
+            <td> 5683</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>         
+            <td> 14</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/exp1/logrus@v1.9.3</td>
+            <td>v1.9.3</td>
+            <td>38020</td>
+            <td>4414</td>
+            <td> 0</td>
+            <td> 127</td>
+            <td> 1</td>
+            <td> 4</td>
+            <td> 73</td>
+            <td> 1</td>
+            <td> 161</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>         
+            <td> 1</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/exp1/prometheus@v2.53.0</td>
+            <td>v2.53.0</td>
+            <td>1097</td>
+            <td>173422</td>
+            <td> 5</td>
+            <td> 1186</td>
+            <td> 178</td>
+            <td> 50</td>
+            <td> 2206</td>
+            <td> 18</td>
+            <td> 3961</td>
+            <td> 11</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>         
+            <td> 12</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/exp1/cobra@v1.8.1</td>
+            <td>v1.8.1</td>
+            <td>33747</td>
+            <td>11861</td>
+            <td> 0</td>
+            <td> 271</td>
+            <td> 1</td>
+            <td> 1</td>
+            <td> 12</td>
+            <td> 2</td>
+            <td> 277</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>         
+            <td> 2</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/exp1/go-textseg@v15.0.0</td>
+            <td>v15.0.0</td>
+            <td>617</td>
+            <td>22693</td>
+            <td> 6</td>
+            <td> 3</td>
+            <td> 9</td>
+            <td> 0</td>
+            <td> 7</td>
+            <td> 2</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>         
+            <td> 2</td>
+        </tr>
+
+        
+    </table>
+
+    <h1>Attack Surface Analysis: attack density per LOC</h1>
+    <table>
+        <tr>
+            <th>Module</th>
+            <th>Version</th>
+            <th>Dependants</th>
+            <th>LOC</th>
+            <th>[P1] Static Code Generation</th>
+            <th>[P2] Testing Functions</th>
+            <th>[I1] Global Variable Initialization</th>
+            <th>[I2] Initialization Hooks</th>
+            <th>[E1] Constructor Methods</th>
+            <th>[E2] Reflection</th>
+            <th>[E3] Interfaces</th>
+            <th>[E4] Unsafe Pointers</th>
+            <th>[E5] CGO Functions</th>
+            <th>[E6] Assembly Functions</th>
+            <th>[E7] Dynamic Plugins</th>
+            <th>[E8] External Execution</th>                  
+        </tr>
+        
+        <tr>
+            <td>modules/exp1/terraform@v1.8.5</td>
+            <td>v1.8.5</td>
+            <td>1384</td>
+            <td>377115</td>
+            <td> 0.0001007650186282699</td>
+            <td> 0.007687310236930379</td>
+            <td> 0.0006311072219349535</td>
+            <td> 0.0001325855508266709</td>
+            <td> 0.011622449385465972</td>
+            <td> 0.0003208570330005436</td>
+            <td> 0.00982989273828938</td>
+            <td> 2.6517110165334182e-05</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>            
+            <td> 4.507908728106811e-05</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/exp1/kubernetes@v1.30.2</td>
+            <td>v1.30.2</td>
+            <td>2024</td>
+            <td>3728835</td>
+            <td> 3.1913452861282414e-05</td>
+            <td> 0.0027727158750655363</td>
+            <td> 0.0037387012297406563</td>
+            <td> 0.0002971437459689152</td>
+            <td> 0.010408881058024826</td>
+            <td> 0.00040977946194991195</td>
+            <td> 0.022869609408836807</td>
+            <td> 0.002173601138157092</td>
+            <td> 0.00021534876174461996</td>
+            <td> 0.00040092951283711935</td>
+            <td> 2.6818027614523037e-07</td>            
+            <td> 6.168146351340297e-05</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/exp1/go-ethereum@v1.14.5</td>
+            <td>v1.14.5</td>
+            <td>3965</td>
+            <td>235019</td>
+            <td> 0.00014466915440879247</td>
+            <td> 0.009071606976457222</td>
+            <td> 0.0047485522447121295</td>
+            <td> 0.00032337810985494787</td>
+            <td> 0.027529689088967274</td>
+            <td> 0.000544636816597807</td>
+            <td> 0.02698930724749914</td>
+            <td> 0.00011062935337142954</td>
+            <td> 8.93544777230777e-05</td>
+            <td> 5.1059701556044405e-05</td>
+            <td> 0</td>            
+            <td> 9.360945285274808e-05</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/exp1/coredns@v1.11.1</td>
+            <td>v1.11.1</td>
+            <td>642</td>
+            <td>52348</td>
+            <td> 5.7308779705050817e-05</td>
+            <td> 0.010200962787499044</td>
+            <td> 0.002254145335065332</td>
+            <td> 0.0018720868036983267</td>
+            <td> 0.014976694429586613</td>
+            <td> 0.0003438526782303049</td>
+            <td> 0.011519064720715214</td>
+            <td> 5.7308779705050817e-05</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>            
+            <td> 1.9102926568350272e-05</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/exp1/ginkgo@v2.19.0</td>
+            <td>v2.19.0</td>
+            <td>15010</td>
+            <td>40768</td>
+            <td> 0</td>
+            <td> 0.002207613814756672</td>
+            <td> 0.006941718995290424</td>
+            <td> 0.00017170329670329672</td>
+            <td> 0.010964481946624804</td>
+            <td> 0.0002943485086342229</td>
+            <td> 0.01800431711145997</td>
+            <td> 0.0005641679748822606</td>
+            <td> 4.905808477237049e-05</td>
+            <td> 0</td>
+            <td> 0</td>            
+            <td> 0.0005886970172684458</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/exp1/testify@v1.9.0</td>
+            <td>v1.9.0</td>
+            <td>90337</td>
+            <td>14084</td>
+            <td> 0.00028401022436807724</td>
+            <td> 0.03024708889520023</td>
+            <td> 0.0017040613462084636</td>
+            <td> 0</td>
+            <td> 0.015975575120704345</td>
+            <td> 0.0004970178926441351</td>
+            <td> 0.01966770803748935</td>
+            <td> 0.0004260153365521159</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>            
+            <td> 7.100255609201931e-05</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/exp1/vault@v1.17.0</td>
+            <td>v1.17.0</td>
+            <td>1235</td>
+            <td>436387</td>
+            <td> 9.62448468904894e-05</td>
+            <td> 0.00717711572526221</td>
+            <td> 0.0008295389184370753</td>
+            <td> 0.00012603491854706945</td>
+            <td> 0.009970507829059986</td>
+            <td> 0.00047434960253169776</td>
+            <td> 0.01302284440187265</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>            
+            <td> 3.208161563016313e-05</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/exp1/logrus@v1.9.3</td>
+            <td>v1.9.3</td>
+            <td>38020</td>
+            <td>4414</td>
+            <td> 0</td>
+            <td> 0.02877208880833711</td>
+            <td> 0.00022655188038060717</td>
+            <td> 0.0009062075215224287</td>
+            <td> 0.01653828726778432</td>
+            <td> 0.00022655188038060717</td>
+            <td> 0.03647485274127775</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>            
+            <td> 0.00022655188038060717</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/exp1/prometheus@v2.53.0</td>
+            <td>v2.53.0</td>
+            <td>1097</td>
+            <td>173422</td>
+            <td> 2.8831405473354015e-05</td>
+            <td> 0.006838809378279572</td>
+            <td> 0.001026398034851403</td>
+            <td> 0.00028831405473354015</td>
+            <td> 0.01272041609484379</td>
+            <td> 0.00010379305970407445</td>
+            <td> 0.022840239415991052</td>
+            <td> 6.342909204137884e-05</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>            
+            <td> 6.919537313604964e-05</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/exp1/cobra@v1.8.1</td>
+            <td>v1.8.1</td>
+            <td>33747</td>
+            <td>11861</td>
+            <td> 0</td>
+            <td> 0.02284798920832982</td>
+            <td> 8.430992327796982e-05</td>
+            <td> 8.430992327796982e-05</td>
+            <td> 0.0010117190793356378</td>
+            <td> 0.00016861984655593964</td>
+            <td> 0.02335384874799764</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>            
+            <td> 0.00016861984655593964</td>
+        </tr>
+
+        
+        <tr>
+            <td>modules/exp1/go-textseg@v15.0.0</td>
+            <td>v15.0.0</td>
+            <td>617</td>
+            <td>22693</td>
+            <td> 0.0002643987132595955</td>
+            <td> 0.00013219935662979774</td>
+            <td> 0.0003965980698893932</td>
+            <td> 0</td>
+            <td> 0.00030846516546952806</td>
+            <td> 8.813290441986516e-05</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>
+            <td> 0</td>            
+            <td> 8.813290441986516e-05</td>
+        </tr>
+
+        
+    </table>
+</body>
+</html>
