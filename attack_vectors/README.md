@@ -213,8 +213,51 @@ func invokeMethod(method DynamicMethodInterface)
 ```
 
 ### [E4] Unsafe pointers [[POC]]()
+Unsafe pointers in Go introduce security risks. First, attackers can exploit this feature to create a function pointer variable and set its values to the adderss of an arbitrary function. 
 
-TODO
+```golang
+package main
+import (
+	"fmt"
+	"unsafe"
+)
+
+func targetFunction() {
+	// malicious code here
+}
+
+func main() {
+	type FuncType func()
+	targetFunc := targetFunction
+	var funcPtr FuncType
+	funcPtr = *(*FuncType)(unsafe.Pointer(&targetFunc))
+	funcPtr()
+}
+```
+
+Second, unsafe pointers can be misused to access out-of-bound memory
+locations, potentially leading to information disclosure or
+memory-corruption vulnerabilities.
+
+```golang
+package main
+
+import (
+	"fmt"
+	"unsafe"
+)
+
+func main() {
+	// An array of integers
+	data := [4]int{1, 2, 3, 4}
+
+	// Use unsafe pointer to access an out-of-bounds element
+	ptr = unsafe.Pointer(uintptr(unsafe.Pointer(&data[0])) + unsafe.Sizeof(data[0])*4)
+	value = *(*int)(ptr)
+	fmt.Printf("Out-of-bounds value: %d\n", value)
+}
+
+```
 
 
 ### [E5] CGO feature [[POC]]()
