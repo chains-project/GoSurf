@@ -1,2 +1,2 @@
-experiments/results
-experiments/modules
+experiments/*/modules
+experiments/*/results
