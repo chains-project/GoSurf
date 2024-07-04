@@ -1,2 +1,4 @@
-experiments/*/modules
-experiments/*/results
+experiments/popular10/modules
+experiments/popular10/results
+experiments/top500/modules
+experiments/top500/results
