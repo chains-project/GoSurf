@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	analysis "example.com/gosurf/gosurf/libs"
+	analysis "example.com/gosurf/libs"
 )
 
 var (

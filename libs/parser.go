@@ -1,4 +1,4 @@
-package analysis
+package libs
 
 import (
 	"fmt"

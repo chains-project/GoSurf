@@ -1,3 +1,3 @@
-module example.com/gosurf/gosurf
+module example.com/gosurf
 
 go 1.22.4

@@ -1,29 +1,42 @@
 package main
 
 import (
-	"bufio"
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
-	"net/url"
 	"os"
 	"os/exec"
-	"path"
 	"path/filepath"
 	"strings"
 	"text/template"
 
-	analysis "example.com/gosurf/gosurf/libs"
+	analysis "example.com/gosurf/libs"
 )
 
+type Repository struct {
+	ContributionsCount             int      `json:"contributions_count"`
+	DependentReposCount            int      `json:"dependent_repos_count"`
+	DependentsCount                int      `json:"dependents_count"`
+	Description                    string   `json:"description"`
+	Forks                          int      `json:"forks"`
+	Keywords                       []string `json:"keywords"`
+	Language                       string   `json:"language"`
+	LatestReleaseNumber            string   `json:"latest_release_number"`
+	LatestReleasePublishedAt       string   `json:"latest_release_published_at"`
+	LatestStableReleaseNumber      string   `json:"latest_stable_release_number"`
+	LatestStableReleasePublishedAt string   `json:"latest_stable_release_published_at"`
+	Name                           string   `json:"name"`
+	PackageManagerURL              string   `json:"package_manager_url"`
+	Platform                       string   `json:"platform"`
+	RepositoryURL                  string   `json:"repository_url"`
+	Stars                          int      `json:"stars"`
+}
+
 type ModuleDetails struct {
-	Name                   string
 	ModulePath             string
-	RepositoryURL          string
-	Dependants             int
 	Version                string
+	Dependants             int
 	LOC                    int
 	InitCount              []float64
 	GlobalVarCount         []float64
@@ -53,113 +66,103 @@ type ModuleDetails struct {
 
 func main() {
 
-	expName := "exp1"
-	if len(os.Args) > 1 {
-		expName = os.Args[1]
-	}
-	if expName != "exp1" && expName != "exp2" {
-		fmt.Println("Invalid input. Please provide 'exp1' or 'exp2'.")
-		return
-	}
-
-	token := os.Getenv("GITHUB_TOKEN")
-	if token == "" {
-		log.Fatal("GITHUB_TOKEN environment variable is not set")
-	}
-
-	if err := os.MkdirAll(fmt.Sprintf("./modules/%s", expName), 0755); err != nil {
-		fmt.Printf("Error creating cloned repos directory: %v\n", err)
-		return
-	}
-	if err := os.MkdirAll(fmt.Sprintf("./results/%s", expName), 0755); err != nil {
+	// Create folders
+	if err := os.MkdirAll("./results", 0755); err != nil {
 		fmt.Printf("Error creating results directory: %v\n", err)
 		return
 	}
 
-	var urlListFile = fmt.Sprintf("urls_%s.txt", expName)
-	allModules, itemCount, err := readModulesFromFile(urlListFile)
+	// Retrieve module information from libraries.io and write to modules_info.json
+	var moduleInfoFile = "./results/modules_info.json"
+	retrieveModulesFromLibrariesIO(moduleInfoFile)
+
+	// Read package paths from modules_info.json
+	allModules, itemCount, err := readModulesFromFile(moduleInfoFile)
 	if err != nil {
 		fmt.Printf("Error reading modules from file: %v\n", err)
 		return
 	}
 
-	overviewTmpl, err := template.ParseFiles("./web/tmpl_overview.html")
+	// Parse the HTML templates
+	overviewTmpl, err := template.ParseFiles("../report_tmpl/tmpl_overview.html")
 	if err != nil {
 		fmt.Println("Error parsing overview template:", err)
 		return
 	}
-	detailsTmpl, err := template.ParseFiles("./web/tmpl_details.html")
+	detailsTmpl, err := template.ParseFiles("../report_tmpl/tmpl_details.html")
 	if err != nil {
 		fmt.Println("Error parsing details template:", err)
 		return
 	}
-	overviewFile, err := os.Create(fmt.Sprintf("./results/%s/results_overview.html", expName))
+
+	// Create the HTML files
+	overviewFile, err := os.Create("./results/results_overview.html")
 	if err != nil {
 		fmt.Println("Error creating overview file:", err)
 		return
 	}
 	defer overviewFile.Close()
-	detailsFile, err := os.Create(fmt.Sprintf("./results/%s/results_detail.html", expName))
+	detailsFile, err := os.Create("./results/results_detail.html")
 	if err != nil {
 		fmt.Println("Error creating details file:", err)
 		return
 	}
 	defer detailsFile.Close()
 
-	// Clone each module from github and run the analysis
-	for _, module := range allModules {
+	// Get each module
+	for idx, module := range allModules {
+		packageManagerURL := module.PackageManagerURL
+		latestReleaseNumber := module.LatestReleaseNumber
 
-		repoName := module.Name
-		repoURL := module.RepositoryURL
-		releaseNumber := module.Version
-		modulePath := filepath.Join(fmt.Sprintf("./modules/%s", expName), fmt.Sprintf("%s@%s", repoName, releaseNumber))
+		// Construct the module import path and version
+		importPath := strings.TrimPrefix(packageManagerURL, "https://pkg.go.dev/")
+		version := "@" + latestReleaseNumber
+		fmt.Printf("\n[%d/%d] Getting module %s...\n", idx+1, itemCount, importPath)
 
-		fmt.Printf("\n\nCloning module %s@%s into %s...\n", repoName, releaseNumber, modulePath)
-		if _, err := os.Stat(modulePath); !os.IsNotExist(err) {
-			fmt.Printf("Skipping %s as %s already exists.\n", repoURL, modulePath)
-			continue
-		}
-
-		cmd := exec.Command("git", "clone", "--branch", releaseNumber, repoURL, modulePath)
-		fmt.Printf("Executing command: %s\n", cmd)
-		err := cmd.Run()
+		// Get the module
+		cmd := exec.Command("go", "get", importPath+version)
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		err = cmd.Run()
 		if err != nil {
-			fmt.Println("Error cloning repository:", err)
-			return
+			fmt.Printf("Error getting module %s: %v\n", importPath, err)
+			continue
 		}
 	}
 
-	// Run the analysis
-	for idx, module := range allModules {
+	var moduleDetailsList []ModuleDetails
 
-		repoName := module.Name
-		repoURL := module.RepositoryURL
-		releaseNumber := module.Version
-		modulePath := filepath.Join(fmt.Sprintf("./modules/%s", expName), fmt.Sprintf("%s@%s", repoName, releaseNumber))
+	// Analyze each module
+	for i, module := range allModules {
 
-		fmt.Printf("\n[%d/%d] Analyzing module %s@%s...\n", idx+1, itemCount, repoName, releaseNumber)
+		packageManagerURL := module.PackageManagerURL
+		latestReleaseNumber := module.LatestReleaseNumber
+		dependants := module.DependentsCount
 
-		dependantsCount, err := fetchDependantsCount(repoURL)
-		if err != nil {
-			fmt.Printf("Error fetching dependants count for %s: %v\n", repoName, err)
-			continue
-		}
+		// Construct the module import path and version
+		importPath := strings.TrimPrefix(packageManagerURL, "https://pkg.go.dev/")
+		fmt.Printf("\n[%d/%d] Analyzing module %s...\n", i+1, itemCount, importPath)
+
+		// Analyze the module
+		var initOccurrences, globalVarOccurrences, execOccurrences, pluginOccurrences, goGenerateOccurrences, goTestOccurrences, unsafeOccurrences, cgoOccurrences, interfaceOccurrences, reflectOccurrences, constructorOccurrences, assemblyOccurrences []*analysis.Occurrence
+		modulePath := filepath.Join(os.Getenv("GOPATH"), "pkg/mod", importPath+"@"+latestReleaseNumber)
 
 		// TODO: use directly the API of this package
+		// Get the lines of code count
 		locCount, err := analysis.GetLineOfCodeCount(modulePath)
 		if err != nil {
-			fmt.Printf("Error getting line of code count for %s: %v\n", repoName, err)
+			fmt.Printf("Error getting line of code count for %s: %v\n", module.Name, err)
 			continue
 		}
 
 		// Analyze the module and its direct dependencies
-		var initOccurrences, globalVarOccurrences, execOccurrences, pluginOccurrences, goGenerateOccurrences, goTestOccurrences, unsafeOccurrences, cgoOccurrences, interfaceOccurrences, reflectOccurrences, constructorOccurrences, assemblyOccurrences []*analysis.Occurrence
 		direct_dependencies, err := analysis.GetDependencies(modulePath)
 		if err != nil {
 			fmt.Printf("Error getting files in module: %v\n", err)
 			return
 		}
 
+		// Analyze all the module direct dependencies
 		for _, dep := range direct_dependencies {
 			analysis.AnalyzePackage(dep, &initOccurrences, analysis.InitFuncParser{})
 			analysis.AnalyzePackage(dep, &globalVarOccurrences, analysis.GlobalVarParser{})
@@ -175,6 +178,7 @@ func main() {
 			analysis.AnalyzePackage(dep, &assemblyOccurrences, analysis.AssemblyParser{})
 		}
 
+		// Convert occurrences to JSON
 		occurrences := append(append(append(append(append(append(append(append(append(append(append(
 			initOccurrences,
 			globalVarOccurrences...),
@@ -189,12 +193,14 @@ func main() {
 			constructorOccurrences...),
 			assemblyOccurrences...)
 
+		// Count unique occurrences
 		initCount, globalVarCount, execCount, pluginCount, goGenerateCount, goTestCount, unsafeCount, cgoCount, interfaceCount, reflectCount, constructorCount, assemblyCount := analysis.CountUniqueOccurrences(occurrences)
 
+		// Create a ModuleDetails instance and append it to the slice
 		moduleDetails := ModuleDetails{
 			ModulePath:             modulePath,
-			Version:                releaseNumber,
-			Dependants:             dependantsCount,
+			Version:                latestReleaseNumber,
+			Dependants:             dependants,
 			LOC:                    locCount,
 			InitCount:              []float64{float64(initCount), float64(initCount) / float64(locCount)},
 			GlobalVarCount:         []float64{float64(globalVarCount), float64(globalVarCount) / float64(locCount)},
@@ -221,96 +227,96 @@ func main() {
 			ConstructorOccurrences: constructorOccurrences,
 			AssemblyOccurrences:    assemblyOccurrences,
 		}
-		allModules[idx] = moduleDetails
+		moduleDetailsList = append(moduleDetailsList, moduleDetails)
 	}
 
-	// Execute the template with the ModuleDetails instances
-	err = overviewTmpl.Execute(overviewFile, allModules)
+	// Execute the overview template with the ModuleDetails instances
+	err = overviewTmpl.Execute(overviewFile, moduleDetailsList)
 	if err != nil {
 		fmt.Println("Error executing overview template:", err)
 		return
 	}
-	err = detailsTmpl.Execute(detailsFile, allModules)
+
+	// Execute the details template with the ModuleDetails instances
+	err = detailsTmpl.Execute(detailsFile, moduleDetailsList)
 	if err != nil {
 		fmt.Println("Error executing details template:", err)
 		return
 	}
 
-	fmt.Printf("\nHTML report generated successfully in the ./results/%s directory.\n", expName)
+	fmt.Println("\nHTML report generated successfully in the current directory.")
 
 }
 
-func readModulesFromFile(urlListFile string) ([]ModuleDetails, int, error) {
-	file, err := os.Open(urlListFile)
+func retrieveModulesFromLibrariesIO(moduleInfoFile string) {
+
+	fmt.Printf("Retrieving of TOP x modules from libraries.io API\n")
+
+	currentDir, err := os.Getwd()
+	if err != nil {
+		fmt.Println("Error getting current directory:", err)
+		return
+	}
+	moduleInfoFile = filepath.Join(currentDir, moduleInfoFile)
+
+	var allModules []Repository
+
+	// Retrieve TOP x packages from libraries.io API
+	for page := 1; page <= 6; page++ {
+		url := fmt.Sprintf("https://libraries.io/api/search?order=desc&platforms=Go&sort=dependents_count&per_page=100&page=%d&api_key=ff76aa15a1d65e44843fb94dab1ead62", page)
+		resp, err := http.Get(url)
+		if err != nil {
+			fmt.Println("Error making HTTP request:", err)
+			return
+		}
+		defer resp.Body.Close()
+
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			fmt.Println("Error reading response body:", err)
+			return
+		}
+
+		var data []Repository
+		err = json.Unmarshal(body, &data)
+		if err != nil {
+			fmt.Println("Error unmarshaling JSON:", err)
+			return
+		}
+
+		allModules = append(allModules, data...)
+	}
+
+	// Write retrieved packages to modules_list.json
+	jsonData, err := json.MarshalIndent(allModules, "", "  ")
+	if err != nil {
+		fmt.Println("Error marshaling JSON:", err)
+		return
+	}
+	err = os.WriteFile(moduleInfoFile, jsonData, 0644)
+	if err != nil {
+		fmt.Println("Error writing to file:", err)
+		return
+	}
+	fmt.Println("Retrieved information written to JSON file", moduleInfoFile)
+
+}
+
+func readModulesFromFile(moduleFilePath string) ([]Repository, int, error) {
+	var allModules []Repository
+
+	file, err := os.Open(moduleFilePath)
 	if err != nil {
 		return nil, 0, err
 	}
 	defer file.Close()
 
-	var allModules []ModuleDetails
-	var itemCount int
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		line := scanner.Text()
-		parts := strings.Split(line, " ")
-		if len(parts) == 2 {
-			fullRepoURL, version := parts[0], parts[1]
-			parsedURL, err := url.Parse(fullRepoURL)
-			if err != nil {
-				continue
-			}
-			repoName := path.Base(parsedURL.Path)
-			moduleDetails := ModuleDetails{
-				Name:          repoName,
-				RepositoryURL: fullRepoURL,
-				Version:       version,
-			}
-			allModules = append(allModules, moduleDetails)
-			itemCount++
-		}
-	}
-
-	if err := scanner.Err(); err != nil {
+	err = json.NewDecoder(file).Decode(&allModules)
+	if err != nil {
 		return nil, 0, err
 	}
 
+	itemCount := len(allModules)
+
 	return allModules, itemCount, nil
-}
-
-func fetchDependantsCount(packageURL string) (int, error) {
-
-	packageURL = strings.TrimPrefix(packageURL, "https://")
-	packageURL = strings.ReplaceAll(packageURL, "/", "%2F")
-	fmt.Printf("string: %s\n", packageURL)
-	if strings.Contains(packageURL, "kubernetes") {
-		packageURL = strings.ReplaceAll(packageURL, "github.com%2Fkubernetes", "k8s.io")
-	}
-	fmt.Printf("string: %s\n", packageURL)
-	apiURL := fmt.Sprintf("https://libraries.io/api/go/%s?api_key=ff76aa15a1d65e44843fb94dab1ead62", packageURL)
-	fmt.Printf("string: %s\n", apiURL)
-
-	resp, err := http.Get(apiURL)
-	if err != nil {
-		return 0, err
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return 0, err
-	}
-
-	var data map[string]interface{}
-	err = json.Unmarshal(body, &data)
-	if err != nil {
-		return 0, err
-	}
-
-	dependentsCount, ok := data["dependents_count"].(float64)
-	if !ok {
-		return 0, fmt.Errorf("failed to parse dependents_count")
-	}
-
-	return int(dependentsCount), nil
 }
