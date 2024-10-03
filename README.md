@@ -1,7 +1,8 @@
  # GoSurf 🏄
 
-GoSurf is a tool that aims to analyze the potential attack surface of open-source Go packages and modules. It looks for occurrences of various features and constructs that could potentially introduce security risks, known as attack vectors.
+GoSurf is a tool that analyzes the potential attack surface of open-source Go packages and modules. It looks for occurrences of various features and constructs that could potentially introduce security risks, known as attack vectors.
 
+See paper [GoSurf: Identifying Software Supply Chain Attack Vectors in Go (SCORED 2024)](http://arxiv.org/pdf/2407.04442) ([doi:10.1145/3689944.3696166](https://doi.org/10.1145/3689944.3696166))
 ## Repository Structure
 
 - **attack_vectors**: This folder contains an analysis of 12 different attack vectors in Go, along with their respective proof-of-concept implementations.
